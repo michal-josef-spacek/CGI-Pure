@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.9 2004-12-01 16:50:20 skim Exp $
+# $Id: Pure.pm,v 1.10 2004-12-01 16:53:57 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -263,7 +263,6 @@ sub _common_parse {
 	# POST method.
 	# TODO POST_MAX?
 	} elsif ($method eq 'POST') {
-		# TODO Must be a content-length?
 		if ($length) {
 			read(STDIN, $data, $length) if $length > 0;
 		}
@@ -272,7 +271,7 @@ sub _common_parse {
 		$self->{'.post_data'} = $data if $self->{'save_post_data'};
 
 		# TODO Prevent warnings.
-		$data ||= '';
+		#$data ||= '';
 
 		unless ($length == length $data) {
 			$self->cgi_error("500 Bad read! wanted ".
@@ -405,6 +404,11 @@ sub _parse_multipart {
 			$self->_add_param($param, $1);
 		}
 	}
+
+	# Save post data.
+	$self->{'.post_data'} = $data if $self->{'save_post_data'};
+
+	# TODO
 	return $got_data;
 }
 # END of _parse_multipart().
