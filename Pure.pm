@@ -1,6 +1,7 @@
 package SCGI;
-# $Id: Pure.pm,v 1.1 2004-08-28 11:20:50 skim Exp $
+# $Id: Pure.pm,v 1.2 2004-08-28 11:23:10 skim Exp $
 
+# Modules.
 use strict;
 
 #------------------------------------------------------------------------------
@@ -15,11 +16,14 @@ sub new {
 }
 # END of new().
 
-sub pokus {
-	my $self = shift;
-	print "SCGI\n";
-	print $self->{'pokus'};
-	print "\n";
+#------------------------------------------------------------------------------
+sub DESTROY {
+#------------------------------------------------------------------------------
+# Destroy object.
+
+        my $self = shift;
+        undef $self;
 }
+# END of DESTROY().
 
 1;
