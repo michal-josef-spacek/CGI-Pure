@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI::Buggy;
 #------------------------------------------------------------------------------
-# $Id: Buggy.pm,v 1.4 2004-09-08 22:25:54 skim Exp $
+# $Id: Buggy.pm,v 1.5 2004-09-28 18:08:18 skim Exp $
 # Version SCGI for buggy servers/clients.
 
 # Modules.
@@ -12,7 +12,7 @@ use SCGI;
 use vars qw($VERSION);
 
 # Version.
-$VERSION = '1.0';
+$SCGI::Buggy::VERSION = '1.0';
 
 # Inheritance.
 use vars qw(@ISA);
