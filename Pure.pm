@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.11 2004-12-01 19:09:30 skim Exp $
+# $Id: Pure.pm,v 1.12 2004-12-01 19:35:59 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -22,8 +22,8 @@ sub new {
 	my $init = shift;
 	my $self = {};
 
-	# Saving of POST method data.
-	$self->{'save_post_data'} = 0;
+	# Save query data from server.
+	$self->{'save_query_data'} = 0;
 
 	# Process params.
 	croak "$class: Created with odd number of parameters - should be ".
@@ -226,18 +226,18 @@ sub cgi_error {
 # END of cgi_error().
 
 #------------------------------------------------------------------------------
-sub post_data {
+sub query_data {
 #------------------------------------------------------------------------------
-# Prints data for POST method.
+# Gets query data from server.
 
 	my $self = shift;
-	if ($self->{'save_post_data'}) {
-		return $self->{'.post_data'};
+	if ($self->{'save_query_data'}) {
+		return $self->{'.query_data'};
 	} else {
-		return "Not save POST method data.";
+		return "Not saved query data.";
 	}
 }
-# END of post_data().
+# END of query_data().
 
 #------------------------------------------------------------------------------
 # Internal methods.
@@ -250,7 +250,7 @@ sub _global_variables {
 
 	my $self = shift;
 	$self->{'.parameters'} = {};
-	$self->{'.post_data'} = '';
+	$self->{'.query_data'} = '';
 	$self->{'.cgi_error'} = [];
 }
 # END of _global_variables().
@@ -308,11 +308,9 @@ sub _common_parse {
 	my $self = shift;
 	my $data;
 
-	# TODO Is 'No CON...' right?
+	# Information from server.
 	my $type = $ENV{'CONTENT_TYPE'} || 'No CONTENT_TYPE received';
 	my $length = $ENV{'CONTENT_LENGTH'} || 0;
-
-	# TODO Is 'No REQ...' right?
 	my $method = $ENV{'REQUEST_METHOD'} || 'No REQUEST_METHOD received';
 
 	# Multipart form data.
@@ -332,7 +330,7 @@ sub _common_parse {
 		}
 
 		# Save data for post.
-		$self->{'.post_data'} = $data if $self->{'save_post_data'};
+		$self->{'.query_data'} = $data if $self->{'save_query_data'};
 
 		unless ($length == length $data) {
 			$self->cgi_error("500 Bad read! wanted ".
@@ -343,7 +341,9 @@ sub _common_parse {
 	# GET/HEAD method.	
 	} elsif ($method eq 'GET' || $method eq 'HEAD') {
 		$data = $ENV{'QUERY_STRING'} || '';
+		$self->{'.query_data'} .= $data if $self->{'save_query_data'};
 	}
+
 	# TODO Others method?
 
 	# Don't have a data.
@@ -424,7 +424,7 @@ sub _parse_multipart {
 	while (read(STDIN, $read, 4096)) {
 
 		# Adding post data.
-		$self->{'.post_data'} .= $read if $self->{'save_post_data'};
+		$self->{'.query_data'} .= $read if $self->{'save_query_data'};
 
 		$data .= $read;
 		$got_data_length += length $read;
