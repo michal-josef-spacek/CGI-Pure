@@ -1,8 +1,14 @@
 package SCGI;
-# $Id: Pure.pm,v 1.2 2004-08-28 11:23:10 skim Exp $
+# $Id: Pure.pm,v 1.3 2004-08-28 11:33:14 skim Exp $
 
 # Modules.
 use strict;
+
+# Global variables.
+use vars qw($VERSION);
+
+# Version.
+$VERSION = '0.1';
 
 #------------------------------------------------------------------------------
 sub new {
