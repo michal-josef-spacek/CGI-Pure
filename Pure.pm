@@ -1,5 +1,5 @@
 package SCGI;
-# $Id: Pure.pm,v 1.3 2004-08-28 11:33:14 skim Exp $
+# $Id: Pure.pm,v 1.4 2004-08-28 11:33:37 skim Exp $
 
 # Modules.
 use strict;
@@ -17,7 +17,6 @@ sub new {
 
 	my $class = shift;
 	my $self = {};
-	$self->{'pokus'} = 1;
 	return bless $self, $class;
 }
 # END of new().
