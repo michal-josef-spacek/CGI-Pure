@@ -1,0 +1,8 @@
+$Id: 00INDEX,v 1.1 2004-08-28 11:04:59 skim Exp $
+
+Info
+====
+
+Examples for inheritance in SCGI.
+  scgi_buggy_ex.pl
+  scgi_ex.pl
