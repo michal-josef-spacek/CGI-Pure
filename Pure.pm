@@ -1,10 +1,11 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.8 2004-10-02 12:56:00 skim Exp $
+# $Id: Pure.pm,v 1.9 2004-12-01 16:50:20 skim Exp $
 
 # Modules.
 use URI::Escape;
+use Carp;
 
 # Global variables.
 use vars qw($VERSION);
@@ -20,6 +21,22 @@ sub new {
 	my $class = shift;
 	my $init = shift;
 	my $self = {};
+
+	# Saving of POST method data.
+	$self->{'save_post_data'} = 0;
+
+	# Process params.
+	croak "$class: Created with odd number of parameters - should be ".
+		"of the form option => value." if (@_ % 2);
+	for (my $x = 0; $x <= $#_; $x += 2) {
+		if (exists $self->{$_[$x]}) {
+			$self->{$_[$x]} = $_[$x+1];
+		} else {
+			croak "$class: Bad parameter '$_[$x]'.";
+		}
+	}
+
+	# Bless object.
 	bless $self, $class;
 
 	# Global object variables.
@@ -145,6 +162,20 @@ sub cgi_error {
 # END of cgi_error().
 
 #------------------------------------------------------------------------------
+sub post_data {
+#------------------------------------------------------------------------------
+# Prints data for POST method.
+
+	my $self = shift;
+	if ($self->{'save_post_data'}) {
+		return $self->{'.post_data'};
+	} else {
+		return "Not save POST method data";
+	}
+}
+# END of post_data().
+
+#------------------------------------------------------------------------------
 # Internal methods.
 #------------------------------------------------------------------------------
 
@@ -155,6 +186,7 @@ sub _global_variables {
 
 	my $self = shift;
 	$self->{'.parameters'} = {};
+	$self->{'.post_data'} = '';
 }
 # END of _global_variables().
 
@@ -235,6 +267,9 @@ sub _common_parse {
 		if ($length) {
 			read(STDIN, $data, $length) if $length > 0;
 		}
+
+		# Save data for post.
+		$self->{'.post_data'} = $data if $self->{'save_post_data'};
 
 		# TODO Prevent warnings.
 		$data ||= '';
