@@ -1,4 +1,4 @@
-# $Id: 01_version.t,v 1.2 2004-09-28 17:15:09 skim Exp $
+# $Id: 01_version.t,v 1.3 2004-09-28 21:02:53 skim Exp $
 
 print "Testing: version.\n" if $debug;
-ok($SCGI::VERSION, '1.0');
+ok(eval('$'.$class.'::VERSION'), '1.0');

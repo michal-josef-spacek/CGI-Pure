@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.6 2004-09-28 16:28:40 skim Exp $
+# $Id: Pure.pm,v 1.7 2004-09-28 21:03:20 skim Exp $
 
 # Modules.
 use strict;
@@ -19,6 +19,7 @@ sub new {
 # Constructor.
 
 	my $class = shift;
+	my $init = shift;
 	my $self = {};
 	bless $self, $class;
 
@@ -54,7 +55,7 @@ sub param {
 
 	# Return list of all params.	
 	unless (defined $param) {
-		return keys %{$self->{'.parameters'}}
+		return keys %{$self->{'.parameters'}};
 	}
 
 	# Return values for $param.
@@ -72,6 +73,20 @@ sub param {
 		: $self->{'.parameters'}->{$param}->[0];
 }
 # END of param().
+
+#------------------------------------------------------------------------------
+sub append_param {
+#------------------------------------------------------------------------------
+# Append param value.
+
+	my $self = shift;
+	my ($param, @values) = @_;
+	return () unless defined $param;
+	$self->_add_param($param, ((defined $values[0] and ref $values[0]) 
+		? $values[0] : [@values]));
+	return $self->param($param);
+}
+# END of append_param().
 
 #------------------------------------------------------------------------------
 sub delete_param {
@@ -108,8 +123,8 @@ sub query_string {
 	foreach my $param ($self->param()) {
 		foreach my $value ($self->param($param)) {
 			next unless defined $value;
-			push @pairs, URI::Escape->uri_escape($param).'='.
-				URI::Escape->uri_escape($value);
+			push @pairs, uri_escape($param).'='.
+				uri_escape($value);
 		}
 	}
 	return join('&', @pairs);
@@ -148,35 +163,51 @@ sub _global_variables {
 sub _initialize {
 #------------------------------------------------------------------------------
 # Initializating SCGI with something input methods.
-# TODO Clone object?
-# TODO Params from and to file.
 
-	my $self = shift;
-	my $init = shift;
+	my ($self, $init) = @_;
 	
 	# Initialize from QUERY_STRING, STDIN or @ARGV.
 	if (! defined $init) {
-		$self->_read_parse();
+		$self->_common_parse();
 
 	# Initialize from param hash.	
-	} elsif ($init eq 'HASH') {
+	} elsif (ref $init eq 'HASH') {
 		foreach my $param (keys %{$init}) {
 			$self->_add_param($param, $init->{$param});
 		}
 
+	# Inicialize from SCGI object.
+	} elsif (ref $init eq 'SCGI') {
+		eval (require Data::Dumper);
+		if ($@) {
+			$self->cgi_error("Can't clone CGI::Simple ".
+				"object: $@");
+			return;
+		}
+
+		# Avoid problems with strict when Data::Dumper returns $VAR1.
+		my $VAR1;
+
+		# Clone.
+		my $clone = eval(Data::Dumper::Dumper($init));
+		if ($@) {
+			$self->cgi_error("Can't clone CGI::Simple ".
+				"object: $@");
+		} else {
+			$_[0] = $clone;
+		}
+
 	# Initialize from a query string.
 	} else {
-
-		# TODO why $init?
 		$self->_parse_params($init);
 	}
 }
 # END of _initialize().
 
 #------------------------------------------------------------------------------
-sub _read_parse {
+sub _common_parse {
 #------------------------------------------------------------------------------
-# TODO
+# Common parsing from any methods..
 
 	my $self = shift;
 	my $data;
@@ -207,7 +238,7 @@ sub _read_parse {
 		}
 
 		# TODO Prevent warnings.
-		$data ||= ''
+		$data ||= '';
 
 		unless ($length == length $data) {
 			$self->cgi_error("500 Bad read! wanted ".
@@ -232,7 +263,7 @@ sub _read_parse {
 	# Parse params.
 	$self->_parse_params($data);
 }
-# END of _read_parse().
+# END of _common_parse().
 
 #------------------------------------------------------------------------------
 sub _add_param {
@@ -261,39 +292,17 @@ sub _parse_params {
 	my $data = shift;
 	return () unless defined $data;	
 
-	# TODO Why?
-	unless ($data =~ /[&=;]/) {
-		$self->{'keywords'} = [$self->_parse_keywordlist($data)];
-		return;
-	}
-
-	# TODO '&' and ';'?
-	my @pairs = split(/[&;]/, $data);
+	# Parse params.
+	my @pairs = split(/&/, $data);
 	foreach my $pair (@pairs) {
 		my ($param, $value) = split('=', $pair);
 		next unless defined $param;
 		$value = '' unless defined $value;
-		$self->_add_param(URI::Escape->uri_unescape($param),
-			URI::Escape->uri_unescape($value));
+		$self->_add_param(uri_unescape($param),
+			uri_unescape($value));
 	}
 }
 # END of _parse_params().
-
-#------------------------------------------------------------------------------
-sub _parse_keywordlist {
-#------------------------------------------------------------------------------
-# TODO
-# TODO Why? -> _parse_params.
-# TODO method keywords() Why?
-
-	my $self = shift;
-	my $data = shift;
-	return () unless defined $data;
-	$data = URI::Escape->uri_unescape($data);	
-	my @keywords = split(/\s+/, $data);
-	return @keywords;
-}
-# END of _parse_keywordlist().
 
 #------------------------------------------------------------------------------
 sub _parse_multipart {
