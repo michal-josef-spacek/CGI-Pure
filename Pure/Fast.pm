@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.2 2004-10-02 12:56:13 skim Exp $
+# $Id: Fast.pm,v 1.3 2004-10-02 13:08:34 skim Exp $
 
 # Modules.
 use SCGI;
@@ -48,7 +48,7 @@ sub new {
 			return undef unless FCGI::accept() >= 0;
 		}
 	}
-	return my $self = $self->SUPER::new($initializer, @param);
+	return $self = $self->SUPER::new($initializer, @param);
 }
 # END of new().
 
