@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.12 2004-12-01 19:35:59 skim Exp $
+# $Id: Pure.pm,v 1.13 2004-12-01 19:50:11 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -24,6 +24,12 @@ sub new {
 
 	# Save query data from server.
 	$self->{'save_query_data'} = 0;
+
+	# Disable upload.
+	$self->{'disable_upload'} = 1;
+
+	# Use a post max of 100K, set to -1 for no limits.
+	$self->{'post_max'} = 102_400;
 
 	# Process params.
 	croak "$class: Created with odd number of parameters - should be ".
@@ -155,7 +161,7 @@ sub upload {
 	my ($self, $filename, $writefile) = @_;
 	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
 		$self->cgi_error('Oops! File uploads only work if you '.
-			'specify ENCTYPE="multipart/form-data" in your '.
+			'specify enctype="multipart/form-data" in your '.
 			'form.');
 		return undef;
 	}
@@ -186,11 +192,9 @@ sub upload {
 		undef $fh;
 		return 1;
 	} else {
-
-		# TODO DISABLE_UPLOADS, POST_MAX?
 		$self->cgi_error("No filehandle for '$filename'. ".
-			"Are uploads enabled (\$DISABLE_UPLOADS = 0)? ".
-			"Is \$POST_MAX big enough?");
+			"Are uploads enabled (disable_upload = 0)? ".
+			"Is post_max big enough?");
 		return undef;
 	}
 }
@@ -204,7 +208,7 @@ sub upload_info {
 	my ($self, $filename, $info) = @_;
 	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
 		$self->cgi_error('Oops! File uploads only work if you '.
-			'specify ENCTYPE="multipart/form-data" in your '.
+			'specify enctype="multipart/form-data" in your '.
 			'form.');
 		return undef;
 	}
@@ -315,23 +319,36 @@ sub _common_parse {
 
 	# Multipart form data.
 	if ($length && $type =~ m|^multipart/form-data|i) {
+
+		# Get data_length, store data to internal structure.
 		my $got_data_length = $self->_parse_multipart();
 
+		# Bad data length vs content_length.
 		$self->cgi_error("500 Bad read! wanted $length, ".
 			"got $got_data_length") 
 			unless $length == $got_data_length;
 		return;
 
 	# POST method.
-	# TODO POST_MAX?
 	} elsif ($method eq 'POST') {
-		if ($length) {
+
+		# Maximal post length is above my length.
+                if ($self->{'post_max'} != -1
+                        and $length > $self->{'post_max'}) {
+                        $self->cgi_error("413 Request entity too large: ".
+                                "$length bytes on STDIN exceeds ".
+                                "post_max !");
+                        return;
+
+		# Get data.
+                } elsif ($length) {
 			read(STDIN, $data, $length) if $length > 0;
 		}
 
 		# Save data for post.
 		$self->{'.query_data'} = $data if $self->{'save_query_data'};
 
+		# Bad length of data.
 		unless ($length == length $data) {
 			$self->cgi_error("500 Bad read! wanted ".
 				"$length, got ".(length $data));
@@ -343,8 +360,6 @@ sub _common_parse {
 		$data = $ENV{'QUERY_STRING'} || '';
 		$self->{'.query_data'} .= $data if $self->{'save_query_data'};
 	}
-
-	# TODO Others method?
 
 	# Don't have a data.
 	unless ($data) {
@@ -491,15 +506,16 @@ sub _save_tmpfile {
 	my $CRLF = $self->_crlf();
 	my $file_size = 0;
 
-	# TODO Disable download?
-
-	if ($filename) {
-		eval { require IO::File };
-		$self->cgi_error("500 IO::File is not available $@") if $@;
-		$fh = new_tmpfile IO::File;
-		$self->cgi_error("500 IO::File can't create new temp_file")
-			unless $fh;
-	}
+        if ($self->{'disable_upload'}) {
+                $self->cgi_error("405 Not Allowed - File uploads are ".
+                        "disabled");
+        } elsif ($filename) {
+                eval { require IO::File };
+                $self->cgi_error("500 IO::File is not available $@") if $@;
+                $fh = new_tmpfile IO::File;
+                $self->cgi_error("500 IO::File can't create new temp_file")
+                        unless $fh;
+        }
 
 	binmode $fh if $fh;
 	while (1) {
