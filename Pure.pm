@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.14 2004-12-01 20:04:44 skim Exp $
+# $Id: Pure.pm,v 1.15 2004-12-01 20:07:44 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -526,7 +526,7 @@ sub _save_tmpfile {
 			last;
 		}
 
-		# Fixed hanging bug if browser terminates upload part way.
+		# BUG: Fixed hanging bug if browser terminates upload part way.
 		unless ($data) {
 			$self->cgi_error('400 Malformed multipart, no '.
 				'terminating boundary');
