@@ -1,16 +1,16 @@
 #!/usr/bin/perl -w
-# $Id: 01_cgi_pure.t,v 1.1 2004-09-27 13:52:35 skim Exp $
+# $Id: 01_cgi_pure.t,v 1.2 2004-09-28 18:07:40 skim Exp $
 
 # Modules.
 use strict;
 use SCGI;
 use Test;
 
-# Global variables.
-use vars qw/$debug $q/;
+# Global variables.:
+use vars qw/$debug $obj $class/;
 
 BEGIN {
-	my $tests = `grep -r \"^ok(\" t/test/*.t | wc -l`;
+	my $tests = `grep -r \"^ok(\" t/SCGI/*.t | wc -l`;
 	chomp $tests;
 	plan('tests' => $tests);
 
@@ -18,7 +18,14 @@ BEGIN {
 	$debug = 1;
 }
 
-my @list = `ls t/test/*.t`;
+# Name of class.
+$class = 'SCGI';
+
+# Prints debug information about class.
+print "\nClass '$class'\n" if $debug;
+
+# For every test for this class.
+my @list = `ls t/SCGI/*.t`;
 foreach (@list) {
 	chomp;
 	do $_;
