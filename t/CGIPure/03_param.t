@@ -1,4 +1,4 @@
-# $Id: 03_param.t,v 1.1 2004-09-28 18:07:49 skim Exp $
+# $Id: 03_param.t,v 1.2 2004-11-26 22:08:49 skim Exp $
 
 print "Testing: param() empty method.\n" if $debug;
 $obj = new $class();
@@ -43,8 +43,8 @@ ok($param, 'value3');
 @params = $obj->param('param');
 ok(join(' ', @params), 'value3');
 
-print "Testing: append_param('param', 'value4') adding 'value4' of param 'param'.\n"
-	if $debug;
+print "Testing: append_param('param', 'value4') adding 'value4' of param ".
+	"'param'.\n" if $debug;
 $param = $obj->append_param('param', 'value4');
 ok($param, 'value3');
 @params = $obj->param('param');

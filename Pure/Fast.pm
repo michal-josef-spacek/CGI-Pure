@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.3 2004-10-02 13:08:34 skim Exp $
+# $Id: Fast.pm,v 1.4 2004-11-26 22:10:02 skim Exp $
 
 # Modules.
 use SCGI;
@@ -31,7 +31,7 @@ BEGIN {
 		my $backlog = $ENV{'FCGI_LISTEN_QUEUE'} || 100;
 		my $socket  = FCGI::OpenSocket($path, $backlog);
 		$Ext_Request = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, 
-					\%ENV, $socket, 1);
+			\%ENV, $socket, 1);
 	}
 }
 
