@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: test.t,v 1.1 2004-09-17 00:56:59 skim Exp $
+# $Id: test.t,v 1.2 2004-09-17 00:57:44 skim Exp $
 
 # Modules.
 use strict;
@@ -10,7 +10,7 @@ use Test;
 use vars qw/$debug $q/;
 
 BEGIN {
-	my $tests = `grep -r \"^ok(\" t/tests/*.t | wc -l`;
+	my $tests = `grep -r \"^ok(\" t/test/*.t | wc -l`;
 	chomp $tests;
 	plan('tests' => $tests);
 
@@ -18,7 +18,7 @@ BEGIN {
 	$debug = 1;
 }
 
-my @list = `ls t/tests/*.t`;
+my @list = `ls t/test/*.t`;
 foreach (@list) {
 	chomp;
 	do $_;
