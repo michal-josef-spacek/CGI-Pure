@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
-package SCGI;
+package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.15 2004-12-01 20:07:44 skim Exp $
+# $Id: Pure.pm,v 1.16 2005-01-07 21:51:21 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -11,7 +11,7 @@ use Carp;
 use vars qw($VERSION);
 
 # Version.
-$SCGI::VERSION = '1.0';
+$CGI::Pure::VERSION = '1.0';
 
 #------------------------------------------------------------------------------
 sub new {
@@ -262,7 +262,7 @@ sub _global_variables {
 #------------------------------------------------------------------------------
 sub _initialize {
 #------------------------------------------------------------------------------
-# Initializating SCGI with something input methods.
+# Initializating CGI::Pure with something input methods.
 
 	my ($self, $init) = @_;
 
@@ -276,11 +276,11 @@ sub _initialize {
 			$self->_add_param($param, $init->{$param});
 		}
 
-	# Inicialize from SCGI object.
-	} elsif (ref $init eq 'SCGI') {
+	# Inicialize from CGI::Pure object.
+	} elsif (ref $init eq 'CGI::Pure') {
 		eval (require Data::Dumper);
 		if ($@) {
-			$self->cgi_error("Can't clone SCGI ".
+			$self->cgi_error("Can't clone CGI::Pure ".
 				"object: $@");
 			return;
 		}
@@ -291,7 +291,7 @@ sub _initialize {
 		# Clone.
 		my $clone = eval(Data::Dumper::Dumper($init));
 		if ($@) {
-			$self->cgi_error("Can't clone CGI::Simple ".
+			$self->cgi_error("Can't clone CGI::Pure ".
 				"object: $@");
 		} else {
 			$_[0] = $clone;

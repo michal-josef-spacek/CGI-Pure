@@ -1,18 +1,18 @@
 #------------------------------------------------------------------------------
-package SCGI::Fast;
+package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.4 2004-11-26 22:10:02 skim Exp $
+# $Id: Fast.pm,v 1.5 2005-01-07 21:51:22 skim Exp $
 
 # Modules.
-use SCGI;
+use CGI::Pure;
 use FCGI;
 
 # Inheritance.
 use vars qw(@ISA);
-@ISA = ('SCGI');
+@ISA = ('CGI::Pure');
 
 # Version.
-$SCGI::Fast::VERSION='skim_1.05';
+$CGI::Pure::Fast::VERSION='skim_1.05';
 
 # Global variables.
 use vars qw($Ext_Request);

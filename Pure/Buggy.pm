@@ -1,21 +1,21 @@
 #------------------------------------------------------------------------------
-package SCGI::Buggy;
+package CGI::Pure::Buggy;
 #------------------------------------------------------------------------------
-# $Id: Buggy.pm,v 1.6 2004-10-02 12:56:13 skim Exp $
-# Version SCGI for buggy servers/clients.
+# $Id: Buggy.pm,v 1.7 2005-01-07 21:51:22 skim Exp $
+# Version CGI::Pure for buggy servers/clients.
 
 # Modules.
-use SCGI;
+use CGI::Pure;
 
 # Global variables.
 use vars qw($VERSION);
 
 # Version.
-$SCGI::Buggy::VERSION = '1.0';
+$CGI::Pure::Buggy::VERSION = '1.0';
 
 # Inheritance.
 use vars qw(@ISA);
-@ISA = ('SCGI');
+@ISA = ('CGI::Pure');
 
 #------------------------------------------------------------------------------
 sub new {

@@ -1,9 +1,12 @@
-#!/usr/bin/perl -w
-# $Id: 02_cgi_pure_save.t,v 1.1 2004-09-28 21:03:06 skim Exp $
+#!/usr/bin/perl
+# $Id: 02_cgi_pure_save.t,v 1.2 2005-01-07 21:51:24 skim Exp $
+
+# Pragmas.
+use strict;
+use warnings;
 
 # Modules.
-use strict;
-use SCGI::Save;
+use CGI::Pure::Save;
 use Test;
 
 # Global variables.:
@@ -19,7 +22,7 @@ BEGIN {
 }
 
 # Name of class.
-$class = 'SCGI::Save';
+$class = 'CGI::Pure::Save';
 
 # Prints debug information about class.
 print "\nClass '$class'\n" if $debug;

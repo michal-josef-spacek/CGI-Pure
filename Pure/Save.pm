@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
-package SCGI::Save;
+package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.2 2004-10-02 12:56:13 skim Exp $
+# $Id: Save.pm,v 1.3 2005-01-07 21:51:22 skim Exp $
 # Saving and loading query params from file.
 
 # Modules.
@@ -12,7 +12,7 @@ use URI::Escape;
 use vars qw($VERSION);
 
 # Version.
-$SCGI::Save::VERSION = '1.0';
+$CGI::Pure::Save::VERSION = '1.0';
 
 #------------------------------------------------------------------------------
 sub new {
@@ -22,8 +22,8 @@ sub new {
 	my $class = shift;
 	my $self = {};
 
-	# SCGI object.
-	$self->{'scgi'} = '';
+	# CGI::Pure object.
+	$self->{'cgi_pure'} = '';
 
 	# Process params.
 	croak "$class: Created with odd number of parameters - should be ".
@@ -36,9 +36,9 @@ sub new {
 		}
 	}
 
-	# SCGI object not exist.
-	unless ($self->{'scgi'} && $self->{'scgi'}->isa('SCGI')) {
-		croak "$class: SCGI object doesn't define.";
+	# CGI::Pure object not exist.
+	unless ($self->{'cgi_pure'} && $self->{'cgi_pure'}->isa('CGI::Pure')) {
+		croak "$class: CGI::Pure object doesn't define.";
 	}
 
 	# Object.
@@ -54,11 +54,11 @@ sub save {
 	my ($self, $fh) = @_;
 	local ($,, $\) = ('', '');
 	unless ($fh && fileno $fh) {
-		$self->{'scgi'}->cgi_error('Invalid filehandle.');
+		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
 		return undef;
 	}
-	foreach my $param ($self->{'scgi'}->param()) {
-		foreach my $value ($self->{'scgi'}->param($param)) {
+	foreach my $param ($self->{'cgi_pure'}->param()) {
+		foreach my $value ($self->{'cgi_pure'}->param($param)) {
 			print $fh uri_escape($param), '=',
 				uri_escape($value), "\n";
 		}
@@ -75,14 +75,14 @@ sub load {
 
 	my ($self, $fh) = @_;
 	unless ($fh && fileno $fh) {
-		$self->{'scgi'}->cgi_error('Invalid filehandle.');
+		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
 		return undef;
 	}
 	local $/ = "\n";
 	while (my $pair = <$fh>) {
 		chomp $pair;
 		return 1 if $pair eq '=';
-		$self->{'scgi'}->_parse_params($pair);
+		$self->{'cgi_pure'}->_parse_params($pair);
 	}
 	return undef;
 }

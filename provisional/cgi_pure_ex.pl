@@ -1,9 +1,12 @@
-#!/usr/bin/perl -w
-# $Id: cgi_pure_ex.pl,v 1.2 2004-11-26 22:11:13 skim Exp $
+#!/usr/bin/perl
+# $Id: cgi_pure_ex.pl,v 1.3 2005-01-07 21:51:23 skim Exp $
+
+# Pragmas.
+use strict;
+use warnings;
 
 # Modules.
-use strict;
-use SCGI;
+use CGI::Pure;
 
-# SCGI object.
-my $scgi = new SCGI();
+# CGI::Pure object.
+my $cgi_pure = new CGI::Pure();

@@ -1,11 +1,11 @@
 #------------------------------------------------------------------------------
-package SCGI::ModPerl;
+package CGI::Pure::ModPerl;
 #------------------------------------------------------------------------------
-# $Id: ModPerl.pm,v 1.5 2004-10-02 12:56:13 skim Exp $
-# Version SCGI for mod_perl.
+# $Id: ModPerl.pm,v 1.6 2005-01-07 21:51:22 skim Exp $
+# Version CGI::Pure for mod_perl.
 
 # Modules.
-use SCGI;
+use CGI::Pure;
 
 # Global variables.
 use vars qw($VERSION);
@@ -15,7 +15,7 @@ $VERSION = '1.0';
 
 # Inheritance.
 use vars qw(@ISA);
-@ISA = ('SCGI');
+@ISA = ('CGI::Pure');
 
 #------------------------------------------------------------------------------
 sub new {
