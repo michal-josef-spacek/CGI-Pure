@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI::ModPerl;
 #------------------------------------------------------------------------------
-# $Id: ModPerl.pm,v 1.3 2004-09-08 22:25:54 skim Exp $
+# $Id: ModPerl.pm,v 1.4 2004-09-28 18:08:33 skim Exp $
 # Version SCGI for mod_perl.
 
 # Modules.
@@ -25,7 +25,7 @@ sub new {
 
 	my $class = shift;
 	my $self = $class->SUPER::new(@_);
-	return bless $self, $class;
+	return $self;
 }
 # END of new().
 
