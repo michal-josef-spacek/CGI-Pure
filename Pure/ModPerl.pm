@@ -1,5 +1,7 @@
+#------------------------------------------------------------------------------
 package SCGI::ModPerl;
-# $Id: ModPerl.pm,v 1.2 2004-08-28 11:33:15 skim Exp $
+#------------------------------------------------------------------------------
+# $Id: ModPerl.pm,v 1.3 2004-09-08 22:25:54 skim Exp $
 # Version SCGI for mod_perl.
 
 # Modules.
@@ -10,7 +12,7 @@ use SCGI;
 use vars qw($VERSION);
 
 # Version.
-$VERSION = '0.1';
+$VERSION = '1.0';
 
 # Inheritance.
 use vars qw(@ISA);
