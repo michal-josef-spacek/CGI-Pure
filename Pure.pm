@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.10 2004-12-01 16:53:57 skim Exp $
+# $Id: Pure.pm,v 1.11 2004-12-01 19:09:30 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -148,16 +148,80 @@ sub query_string {
 # END of query_string().
 
 #------------------------------------------------------------------------------
+sub upload {
+#------------------------------------------------------------------------------
+# Upload file from tmp.
+
+	my ($self, $filename, $writefile) = @_;
+	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
+		$self->cgi_error('Oops! File uploads only work if you '.
+			'specify ENCTYPE="multipart/form-data" in your '.
+			'form.');
+		return undef;
+	}
+	unless ($filename) {;
+		$self->cgi_error("No filename submitted for upload ".
+			"to $writefile.") if $writefile;
+		return $self->{'.filehandles'} 
+			? keys %{$self->{'.filehandles'}} : ();
+	}
+	my $fh = $self->{'.filehandles'}->{$filename};
+	if ($fh) {
+
+		# Get ready for reading.
+		seek $fh, 0, 0;
+
+		return $fh unless $writefile;
+		my $buffer;
+		unless (open(OUT, ">$writefile")) {
+			$self->cgi_error("500 Can't write to ".
+				"$writefile: $!\n");
+			return undef;
+		}
+		binmode OUT;
+		binmode $fh;
+		print OUT $buffer while read($fh, $buffer, 4096);
+		close OUT;
+		$self->{'.filehandles'}->{$filename} = undef;
+		undef $fh;
+		return 1;
+	} else {
+
+		# TODO DISABLE_UPLOADS, POST_MAX?
+		$self->cgi_error("No filehandle for '$filename'. ".
+			"Are uploads enabled (\$DISABLE_UPLOADS = 0)? ".
+			"Is \$POST_MAX big enough?");
+		return undef;
+	}
+}
+# END of upload().
+
+#------------------------------------------------------------------------------
+sub upload_info {
+#------------------------------------------------------------------------------
+# Return the file size of an uploaded file.
+
+	my ($self, $filename, $info) = @_;
+	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
+		$self->cgi_error('Oops! File uploads only work if you '.
+			'specify ENCTYPE="multipart/form-data" in your '.
+			'form.');
+		return undef;
+	}
+	return keys %{$self->{'.tmpfiles'}} unless $filename;
+	return $self->{'.tmpfiles'}->{$filename}->{'mime'} if $info =~ /mime/i;
+	return $self->{'.tmpfiles'}->{$filename}->{'size'};
+}
+# END of upload_info().
+
+#------------------------------------------------------------------------------
 sub cgi_error {
 #------------------------------------------------------------------------------
 # Returns croak/carp error output.
 
 	my ($self, $error) = @_;
-
-	# TODO Fatal errors in croak/carp output? 
-	#if ($error) {
-	#}
-	return $error;
+	push @{$self->{'.cgi_error'}}, $error if $error;
+	return wantarray ? @{$self->{'.cgi_error'}} : $self->{'.cgi_error'};
 }
 # END of cgi_error().
 
@@ -170,7 +234,7 @@ sub post_data {
 	if ($self->{'save_post_data'}) {
 		return $self->{'.post_data'};
 	} else {
-		return "Not save POST method data";
+		return "Not save POST method data.";
 	}
 }
 # END of post_data().
@@ -187,6 +251,7 @@ sub _global_variables {
 	my $self = shift;
 	$self->{'.parameters'} = {};
 	$self->{'.post_data'} = '';
+	$self->{'.cgi_error'} = [];
 }
 # END of _global_variables().
 
@@ -196,7 +261,7 @@ sub _initialize {
 # Initializating SCGI with something input methods.
 
 	my ($self, $init) = @_;
-	
+
 	# Initialize from QUERY_STRING, STDIN or @ARGV.
 	if (! defined $init) {
 		$self->_common_parse();
@@ -211,7 +276,7 @@ sub _initialize {
 	} elsif (ref $init eq 'SCGI') {
 		eval (require Data::Dumper);
 		if ($@) {
-			$self->cgi_error("Can't clone CGI::Simple ".
+			$self->cgi_error("Can't clone SCGI ".
 				"object: $@");
 			return;
 		}
@@ -251,13 +316,12 @@ sub _common_parse {
 	my $method = $ENV{'REQUEST_METHOD'} || 'No REQUEST_METHOD received';
 
 	# Multipart form data.
-	# TODO Multipart in CGI?
 	if ($length && $type =~ m|^multipart/form-data|i) {
-		my $got_length = $self->_parse_multipart();
+		my $got_data_length = $self->_parse_multipart();
 
-		# TODO Is this right?
 		$self->cgi_error("500 Bad read! wanted $length, ".
-			"got $got_length") unless $length == $got_length;
+			"got $got_data_length") 
+			unless $length == $got_data_length;
 		return;
 
 	# POST method.
@@ -269,9 +333,6 @@ sub _common_parse {
 
 		# Save data for post.
 		$self->{'.post_data'} = $data if $self->{'save_post_data'};
-
-		# TODO Prevent warnings.
-		#$data ||= '';
 
 		unless ($length == length $data) {
 			$self->cgi_error("500 Bad read! wanted ".
@@ -287,7 +348,6 @@ sub _common_parse {
 
 	# Don't have a data.
 	unless ($data) {
-		# TODO Is this right?
 		$self->cgi_error("400 No data received via method: ".
 			"$method, type: $type");
 		return;
@@ -341,7 +401,6 @@ sub _parse_params {
 sub _parse_multipart {
 #------------------------------------------------------------------------------
 # Parse multipart data.
-# TODO In CGI?
 
 	my $self = shift;
 	my ($boundary) = $ENV{'CONTENT_TYPE'} =~ /boundary=\"?([^\";,]+)\"?/;
@@ -350,15 +409,25 @@ sub _parse_multipart {
 			'multipart/form-data');
 		return 0;
 	}
+
+	# BUG: IE 3.01 on the Macintosh uses just the boundary, forgetting
+	# the --
+	$boundary = '--'.$boundary
+		unless $ENV{'HTTP_USER_AGENT'} =~ m/MSIE\s+3\.0[12];\s*Mac/i;
+
 	$boundary = quotemeta $boundary;
-	my $got_data = 0;
+	my $got_data_length = 0;
 	my $data = '';
 	my $CRLF = $self->_crlf();
 	
 	READ:
-	while (my $read = _read_data()) {
+	while (read(STDIN, $read, 4096)) {
+
+		# Adding post data.
+		$self->{'.post_data'} .= $read if $self->{'save_post_data'};
+
 		$data .= $read;
-		$got_data += length $read;
+		$got_data_length += length $read;
 
 		BOUNDARY:
 		while ($data =~ m/^$boundary$CRLF/) {
@@ -368,32 +437,33 @@ sub _parse_multipart {
 				=~ m/^([\040-\176$CRLF]+?$CRLF$CRLF)/o;
 			my $header = $1;
 
-			# Unhold header per RFC822
+			# Unhold header per RFC822.
 			(my $unfold = $1) =~ s/$CRLF\s+/ /og;
 
-			my $param = $unfold
+			my ($param) = $unfold
 				=~ m/form-data;\s+name="?([^\";]*)"?/;
 
 			# TODO 80 chars?
-			my $filename = $unfold
+			my ($filename) = $unfold
 				=~ m/name="?\Q$param\E"?;\s+filename="?([^\"]*)"?/;
 			if (defined $filename) {
-				my $mime = $unfold
+				my ($mime) = $unfold
 					=~ m/Content-Type:\s+([-\w\/]+)/io;
 
 				# Trim off header.
 				$data =~ s/^\Q$header\E//;
 
-				($got_data, $data, my $fh, my $size)
+				($got_data_length, $data, my $fh, my $size)
 					= $self->_save_tmpfile($boundary,
-					$filename, $got_data, $data);
+					$filename, $got_data_length, $data);
+
 				$self->_add_param($param, $filename);
 
-				# TODO Why .filehandle variable?
+				# Filehandle.
 				$self->{'.filehandles'}->{$filename} = $fh
 					if $fh;
-				
-				# TODO Why .tmpfile variable?
+			
+				# Information about file.	
 				$self->{'.tmpfiles'}->{$filename}
 					= {'size' => $size, 'mime' => $mime }
 					if $size;
@@ -405,21 +475,18 @@ sub _parse_multipart {
 		}
 	}
 
-	# Save post data.
-	$self->{'.post_data'} = $data if $self->{'save_post_data'};
-
-	# TODO
-	return $got_data;
+	# Length of data.
+	return $got_data_length;
 }
 # END of _parse_multipart().
 
 #------------------------------------------------------------------------------
 sub _save_tmpfile {
 #------------------------------------------------------------------------------
-# TODO
+# Save file from multiform.
 
 	my $self = shift;
-	my ($boundary, $filename, $got_data, $data) = @_;
+	my ($boundary, $filename, $got_data_length, $data) = @_;
 	my $fh;
 	my $CRLF = $self->_crlf();
 	my $file_size = 0;
@@ -437,8 +504,9 @@ sub _save_tmpfile {
 	binmode $fh if $fh;
 	while (1) {
 		my $buffer = $data;
-		$data = _read_data() || '';
-		$got_data += length $data;
+		read(STDIN, $data, 4096);
+		if (! $data) { $data = ''; }
+		$got_data_length += length $data;
 		if ("$buffer$data" =~ m/$boundary/) {
 			$data = $buffer.$data;
 			last;
@@ -449,7 +517,7 @@ sub _save_tmpfile {
 			$self->cgi_error('400 Malformed multipart, no '.
 				'terminating boundary');
 			undef $fh;
-			return $got_data;
+			return $got_data_length;
 		}
 
 		# We do not have partial boundary so print to file if valid $fh.
@@ -461,19 +529,9 @@ sub _save_tmpfile {
 	# Print remainder of file if valie $fh.
 	print $fh $1 if $fh;
 	$file_size += length $1;
-	return $got_data, $data, $fh, $file_size;
+	return $got_data_length, $data, $fh, $file_size;
 }
 # END of _save_tmpfile().
-
-#------------------------------------------------------------------------------
-sub _read_data {
-#------------------------------------------------------------------------------
-# TODO Why?
-
-	read(STDIN, my $buffer, 4096);
-	return $buffer;
-}
-# END of _read_data().
 
 #------------------------------------------------------------------------------
 sub _crlf {
