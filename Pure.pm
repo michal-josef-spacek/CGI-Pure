@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package SCGI;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.13 2004-12-01 19:50:11 skim Exp $
+# $Id: Pure.pm,v 1.14 2004-12-01 20:04:44 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -457,8 +457,6 @@ sub _parse_multipart {
 
 			my ($param) = $unfold
 				=~ m/form-data;\s+name="?([^\";]*)"?/;
-
-			# TODO 80 chars?
 			my ($filename) = $unfold
 				=~ m/name="?\Q$param\E"?;\s+filename="?([^\"]*)"?/;
 			if (defined $filename) {
