@@ -1,4 +1,4 @@
-$Id: TODO,v 1.4 2004-12-01 20:05:28 skim Exp $
+$Id: TODO,v 1.5 2005-01-26 22:46:48 skim Exp $
 
 TODO
 ====
@@ -8,7 +8,9 @@ TODO
    debug hlasky a potom tu funkci.
    Druha moznost je to nejak resit pomoci volani metod, funkci.. apod..
 3. Udelat testy na post data ukladani.
-4.
+4. Mozna by bylo zahodno udelat misto if ($cgi->param()) neco jako if
+   ($cgi->is_param()). Mohlo by to byt rychlejsi.
+5.
 
 Applied
 =======
