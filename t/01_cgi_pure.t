@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: test.t,v 1.2 2004-09-17 00:57:44 skim Exp $
+# $Id: 01_cgi_pure.t,v 1.1 2004-09-27 13:52:35 skim Exp $
 
 # Modules.
 use strict;
@@ -22,4 +22,5 @@ my @list = `ls t/test/*.t`;
 foreach (@list) {
 	chomp;
 	do $_;
+	print $@;
 }
