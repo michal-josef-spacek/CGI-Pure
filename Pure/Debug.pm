@@ -1,11 +1,10 @@
 #------------------------------------------------------------------------------
 package SCGI::ModPerl;
 #------------------------------------------------------------------------------
-# $Id: Debug.pm,v 1.2 2004-09-08 22:25:54 skim Exp $
+# $Id: Debug.pm,v 1.3 2004-10-02 12:56:13 skim Exp $
 # Version with debug.
 
 # Modules.
-use strict;
 use SCGI;
 
 # Global variables.

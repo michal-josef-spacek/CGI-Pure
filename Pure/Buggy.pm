@@ -1,11 +1,10 @@
 #------------------------------------------------------------------------------
 package SCGI::Buggy;
 #------------------------------------------------------------------------------
-# $Id: Buggy.pm,v 1.5 2004-09-28 18:08:18 skim Exp $
+# $Id: Buggy.pm,v 1.6 2004-10-02 12:56:13 skim Exp $
 # Version SCGI for buggy servers/clients.
 
 # Modules.
-use strict;
 use SCGI;
 
 # Global variables.

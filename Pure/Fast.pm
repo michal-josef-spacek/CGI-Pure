@@ -1,14 +1,14 @@
 #------------------------------------------------------------------------------
 package SCGI::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.1 2004-09-30 06:59:15 skim Exp $
+# $Id: Fast.pm,v 1.2 2004-10-02 12:56:13 skim Exp $
 
 # Modules.
-use strict;
 use SCGI;
 use FCGI;
 
 # Inheritance.
+use vars qw(@ISA);
 @ISA = ('SCGI');
 
 # Version.

@@ -1,11 +1,10 @@
 #------------------------------------------------------------------------------
 package SCGI::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.1 2004-09-28 21:02:18 skim Exp $
+# $Id: Save.pm,v 1.2 2004-10-02 12:56:13 skim Exp $
 # Saving and loading query params from file.
 
 # Modules.
-use strict;
 use Carp;
 use URI::Escape;
 
