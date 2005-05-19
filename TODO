@@ -1,4 +1,4 @@
-$Id: TODO,v 1.5 2005-01-26 22:46:48 skim Exp $
+$Id: TODO,v 1.6 2005-05-19 16:27:43 skim Exp $
 
 TODO
 ====
@@ -10,7 +10,8 @@ TODO
 3. Udelat testy na post data ukladani.
 4. Mozna by bylo zahodno udelat misto if ($cgi->param()) neco jako if
    ($cgi->is_param()). Mohlo by to byt rychlejsi.
-5.
+5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
+6.
 
 Applied
 =======
