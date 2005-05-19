@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.17 2005-05-19 16:14:34 skim Exp $
+# $Id: Pure.pm,v 1.18 2005-05-19 16:27:17 skim Exp $
 
 # Modules.
 use URI::Escape;
@@ -142,8 +142,8 @@ sub query_string {
 	foreach my $param ($self->param()) {
 		foreach my $value ($self->param($param)) {
 			next unless defined $value;
-			push @pairs, uri_escape($param).'='.
-				uri_escape($value);
+			push @pairs, _uri_escape($param).'='.
+				_uri_escape($value);
 		}
 	}
 	return join('&', @pairs);
@@ -403,8 +403,8 @@ sub _parse_params {
 		my ($param, $value) = split('=', $pair);
 		next unless defined $param;
 		$value = '' unless defined $value;
-		$self->_add_param(uri_unescape($param),
-			uri_unescape($value));
+		$self->_add_param(_uri_unescape($param),
+			_uri_unescape($value));
 	}
 }
 # END of _parse_params().
@@ -564,5 +564,27 @@ sub _crlf {
 	return $self->{'.crlf'};
 }
 # END of _crlf().
+
+#------------------------------------------------------------------------------
+sub _uri_escape {
+#------------------------------------------------------------------------------
+# Escapes uri.
+
+	my ($self, $string) = @_;
+	$string =~ tr/ /+/;
+	return uri_escape($string);
+}
+# END of _uri_escape().
+
+#------------------------------------------------------------------------------
+sub _uri_unescape {
+#------------------------------------------------------------------------------
+# Unescapes uri.
+
+	my ($self, $string) = @_;
+	$string =~ tr/+/ /;
+	return uri_unescape($string);
+}
+# END of _uri_unescape().
 
 1;
