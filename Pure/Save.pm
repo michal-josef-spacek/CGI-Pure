@@ -1,18 +1,15 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.3 2005-01-07 21:51:22 skim Exp $
+# $Id: Save.pm,v 1.4 2005-05-19 16:16:04 skim Exp $
 # Saving and loading query params from file.
 
 # Modules.
 use Carp;
 use URI::Escape;
 
-# Global variables.
-use vars qw($VERSION);
-
 # Version.
-$CGI::Pure::Save::VERSION = '1.0';
+our $VERSION = 0.1;
 
 #------------------------------------------------------------------------------
 sub new {

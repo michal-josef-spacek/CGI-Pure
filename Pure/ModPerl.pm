@@ -1,17 +1,14 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::ModPerl;
 #------------------------------------------------------------------------------
-# $Id: ModPerl.pm,v 1.6 2005-01-07 21:51:22 skim Exp $
+# $Id: ModPerl.pm,v 1.7 2005-05-19 16:16:04 skim Exp $
 # Version CGI::Pure for mod_perl.
 
 # Modules.
 use CGI::Pure;
 
-# Global variables.
-use vars qw($VERSION);
-
 # Version.
-$VERSION = '1.0';
+our $VERSION = 0.1;
 
 # Inheritance.
 use vars qw(@ISA);

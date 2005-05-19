@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.5 2005-01-07 21:51:22 skim Exp $
+# $Id: Fast.pm,v 1.6 2005-05-19 16:16:04 skim Exp $
 
 # Modules.
 use CGI::Pure;
@@ -12,7 +12,7 @@ use vars qw(@ISA);
 @ISA = ('CGI::Pure');
 
 # Version.
-$CGI::Pure::Fast::VERSION='skim_1.05';
+our $VERSION = 0.1;
 
 # Global variables.
 use vars qw($Ext_Request);

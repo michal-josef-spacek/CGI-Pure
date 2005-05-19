@@ -1,17 +1,14 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Buggy;
 #------------------------------------------------------------------------------
-# $Id: Buggy.pm,v 1.7 2005-01-07 21:51:22 skim Exp $
+# $Id: Buggy.pm,v 1.8 2005-05-19 16:16:03 skim Exp $
 # Version CGI::Pure for buggy servers/clients.
 
 # Modules.
 use CGI::Pure;
 
-# Global variables.
-use vars qw($VERSION);
-
 # Version.
-$CGI::Pure::Buggy::VERSION = '1.0';
+our $VERSION = 0.1;
 
 # Inheritance.
 use vars qw(@ISA);
