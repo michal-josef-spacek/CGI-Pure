@@ -1,11 +1,11 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.18 2005-05-19 16:27:17 skim Exp $
+# $Id: Pure.pm,v 1.19 2005-06-03 21:24:45 skim Exp $
 
 # Modules.
-use URI::Escape;
 use Carp;
+use URI::Escape qw(uri_escape uri_unescape);
 
 # Version.
 our $VERSION = 0.1;
@@ -142,8 +142,8 @@ sub query_string {
 	foreach my $param ($self->param()) {
 		foreach my $value ($self->param($param)) {
 			next unless defined $value;
-			push @pairs, _uri_escape($param).'='.
-				_uri_escape($value);
+			push @pairs, $self->_uri_escape($param).'='.
+				$self->_uri_escape($value);
 		}
 	}
 	return join('&', @pairs);
@@ -403,8 +403,8 @@ sub _parse_params {
 		my ($param, $value) = split('=', $pair);
 		next unless defined $param;
 		$value = '' unless defined $value;
-		$self->_add_param(_uri_unescape($param),
-			_uri_unescape($value));
+		$self->_add_param($self->_uri_unescape($param),
+			$self->_uri_unescape($value));
 	}
 }
 # END of _parse_params().
@@ -571,8 +571,9 @@ sub _uri_escape {
 # Escapes uri.
 
 	my ($self, $string) = @_;
-	$string =~ tr/ /+/;
-	return uri_escape($string);
+	$string = uri_escape($string);
+	$string =~ s/\ /\+/g;
+	return $string;
 }
 # END of _uri_escape().
 
@@ -582,7 +583,7 @@ sub _uri_unescape {
 # Unescapes uri.
 
 	my ($self, $string) = @_;
-	$string =~ tr/+/ /;
+	$string =~ s/\+/\ /g;
 	return uri_unescape($string);
 }
 # END of _uri_unescape().
