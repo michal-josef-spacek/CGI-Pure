@@ -1,8 +1,11 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.4 2005-05-19 16:16:04 skim Exp $
+# $Id: Save.pm,v 1.5 2005-07-02 16:16:48 skim Exp $
 # Saving and loading query params from file.
+
+# Pragmas.
+use strict;
 
 # Modules.
 use Carp;
@@ -41,7 +44,25 @@ sub new {
 	# Object.
 	return bless $self, $class;
 }
-# END of new().
+
+#------------------------------------------------------------------------------
+sub load {
+#------------------------------------------------------------------------------
+# Load parameters from file.
+
+	my ($self, $fh) = @_;
+	unless ($fh && fileno $fh) {
+		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
+		return undef;
+	}
+	local $/ = "\n";
+	while (my $pair = <$fh>) {
+		chomp $pair;
+		return 1 if $pair eq '=';
+		$self->{'cgi_pure'}->_parse_params($pair);
+	}
+	return undef;
+}
 
 #------------------------------------------------------------------------------
 sub save {
@@ -63,26 +84,5 @@ sub save {
 	print $fh "=\n";
 	return 1;
 }
-# END of save().
-
-#------------------------------------------------------------------------------
-sub load {
-#------------------------------------------------------------------------------
-# Load parameters from file.
-
-	my ($self, $fh) = @_;
-	unless ($fh && fileno $fh) {
-		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
-		return undef;
-	}
-	local $/ = "\n";
-	while (my $pair = <$fh>) {
-		chomp $pair;
-		return 1 if $pair eq '=';
-		$self->{'cgi_pure'}->_parse_params($pair);
-	}
-	return undef;
-}
-# END of load().
 
 1;

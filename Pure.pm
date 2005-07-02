@@ -1,7 +1,10 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.19 2005-06-03 21:24:45 skim Exp $
+# $Id: Pure.pm,v 1.20 2005-07-02 16:16:53 skim Exp $
+
+# Pragmas.
+use strict;
 
 # Modules.
 use Carp;
@@ -18,6 +21,7 @@ sub new {
 	my $class = shift;
 	my $init = shift;
 	my $self = {};
+	bless $self, $class;
 
 	# Save query data from server.
 	$self->{'save_query_data'} = 0;
@@ -39,9 +43,6 @@ sub new {
 		}
 	}
 
-	# Bless object.
-	bless $self, $class;
-
 	# Global object variables.
 	$self->_global_variables();
 	
@@ -51,7 +52,6 @@ sub new {
 	# Object.
 	return $self;
 }
-# END of new().
 
 #------------------------------------------------------------------------------
 sub DESTROY {
@@ -61,7 +61,6 @@ sub DESTROY {
         my $self = shift;
         undef $self;
 }
-# END of DESTROY().
 
 #------------------------------------------------------------------------------
 sub param {
@@ -91,7 +90,6 @@ sub param {
 	return wantarray ? @{$self->{'.parameters'}->{$param}}
 		: $self->{'.parameters'}->{$param}->[0];
 }
-# END of param().
 
 #------------------------------------------------------------------------------
 sub append_param {
@@ -105,7 +103,6 @@ sub append_param {
 		? $values[0] : [@values]));
 	return $self->param($param);
 }
-# END of append_param().
 
 #------------------------------------------------------------------------------
 sub delete_param {
@@ -119,7 +116,6 @@ sub delete_param {
 	delete $self->{'.parameters'}->{$param};
 	return 1;
 }
-# END of delete_param().
 
 #------------------------------------------------------------------------------
 sub delete_all_params {
@@ -130,7 +126,6 @@ sub delete_all_params {
 	delete $self->{'.parameters'};
 	$self->{'.parameters'} = {};	
 }
-# END of delete_all_params().
 
 #------------------------------------------------------------------------------
 sub query_string {
@@ -148,7 +143,6 @@ sub query_string {
 	}
 	return join('&', @pairs);
 }
-# END of query_string().
 
 #------------------------------------------------------------------------------
 sub upload {
@@ -195,7 +189,6 @@ sub upload {
 		return undef;
 	}
 }
-# END of upload().
 
 #------------------------------------------------------------------------------
 sub upload_info {
@@ -213,7 +206,6 @@ sub upload_info {
 	return $self->{'.tmpfiles'}->{$filename}->{'mime'} if $info =~ /mime/i;
 	return $self->{'.tmpfiles'}->{$filename}->{'size'};
 }
-# END of upload_info().
 
 #------------------------------------------------------------------------------
 sub cgi_error {
@@ -224,7 +216,6 @@ sub cgi_error {
 	push @{$self->{'.cgi_error'}}, $error if $error;
 	return wantarray ? @{$self->{'.cgi_error'}} : $self->{'.cgi_error'};
 }
-# END of cgi_error().
 
 #------------------------------------------------------------------------------
 sub query_data {
@@ -238,7 +229,6 @@ sub query_data {
 		return "Not saved query data.";
 	}
 }
-# END of query_data().
 
 #------------------------------------------------------------------------------
 # Internal methods.
@@ -254,7 +244,6 @@ sub _global_variables {
 	$self->{'.query_data'} = '';
 	$self->{'.cgi_error'} = [];
 }
-# END of _global_variables().
 
 #------------------------------------------------------------------------------
 sub _initialize {
@@ -299,7 +288,6 @@ sub _initialize {
 		$self->_parse_params($init);
 	}
 }
-# END of _initialize().
 
 #------------------------------------------------------------------------------
 sub _common_parse {
@@ -368,7 +356,6 @@ sub _common_parse {
 	# Parse params.
 	$self->_parse_params($data);
 }
-# END of _common_parse().
 
 #------------------------------------------------------------------------------
 sub _add_param {
@@ -386,7 +373,6 @@ sub _add_param {
 		push @{$self->{'.parameters'}->{$param}}, $value;
 	}	
 }
-# END of _add_param().
 
 #------------------------------------------------------------------------------
 sub _parse_params {
@@ -407,7 +393,6 @@ sub _parse_params {
 			$self->_uri_unescape($value));
 	}
 }
-# END of _parse_params().
 
 #------------------------------------------------------------------------------
 sub _parse_multipart {
@@ -488,7 +473,6 @@ sub _parse_multipart {
 	# Length of data.
 	return $got_data_length;
 }
-# END of _parse_multipart().
 
 #------------------------------------------------------------------------------
 sub _save_tmpfile {
@@ -542,7 +526,6 @@ sub _save_tmpfile {
 	$file_size += length $1;
 	return $got_data_length, $data, $fh, $file_size;
 }
-# END of _save_tmpfile().
 
 #------------------------------------------------------------------------------
 sub _crlf {
@@ -563,7 +546,6 @@ sub _crlf {
 	# Return sequence.
 	return $self->{'.crlf'};
 }
-# END of _crlf().
 
 #------------------------------------------------------------------------------
 sub _uri_escape {
@@ -575,7 +557,6 @@ sub _uri_escape {
 	$string =~ s/\ /\+/g;
 	return $string;
 }
-# END of _uri_escape().
 
 #------------------------------------------------------------------------------
 sub _uri_unescape {
@@ -586,6 +567,5 @@ sub _uri_unescape {
 	$string =~ s/\+/\ /g;
 	return uri_unescape($string);
 }
-# END of _uri_unescape().
 
 1;

@@ -1,8 +1,11 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Buggy;
 #------------------------------------------------------------------------------
-# $Id: Buggy.pm,v 1.8 2005-05-19 16:16:03 skim Exp $
+# $Id: Buggy.pm,v 1.9 2005-07-02 16:16:47 skim Exp $
 # Version CGI::Pure for buggy servers/clients.
+
+# Pragmas.
+use strict;
 
 # Modules.
 use CGI::Pure;
@@ -23,6 +26,5 @@ sub new {
 	my $self = $class->SUPER::new(@_);
 	return bless $self, $class;
 }
-# END of new().
 
 1;

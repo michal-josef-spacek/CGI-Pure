@@ -1,7 +1,10 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.6 2005-05-19 16:16:04 skim Exp $
+# $Id: Fast.pm,v 1.7 2005-07-02 16:16:48 skim Exp $
+
+# Pragmas.
+use strict;
 
 # Modules.
 use CGI::Pure;
@@ -50,6 +53,5 @@ sub new {
 	}
 	return $self = $self->SUPER::new($initializer, @param);
 }
-# END of new().
 
 1;

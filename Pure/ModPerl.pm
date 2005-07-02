@@ -1,8 +1,11 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::ModPerl;
 #------------------------------------------------------------------------------
-# $Id: ModPerl.pm,v 1.7 2005-05-19 16:16:04 skim Exp $
+# $Id: ModPerl.pm,v 1.8 2005-07-02 16:16:48 skim Exp $
 # Version CGI::Pure for mod_perl.
+
+# Pragmas.
+use strict;
 
 # Modules.
 use CGI::Pure;
@@ -23,7 +26,6 @@ sub new {
 	my $self = $class->SUPER::new(@_);
 	return $self;
 }
-# END of new().
 
 #------------------------------------------------------------------------------
 sub _initialize_mod_perl {
@@ -78,7 +80,6 @@ sub _initialize_mod_perl {
                 }
         }
 }
-# END of _initialize_mod_perl().
 
 #------------------------------------------------------------------------------
 sub _mod_perl {
@@ -90,6 +91,5 @@ sub _mod_perl {
                 || ($ENV{'GATEWAY_INTERFACE'}
                 && $ENV{'GATEWAY_INTERFACE'} =~ m{^CGI-Perl/}));
 }
-# END of _mod_perl().
 
 1;
