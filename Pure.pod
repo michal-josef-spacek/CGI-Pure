@@ -1,8 +1,0 @@
-=pod
-
-=head1 AUTHOR
-
-  Michal ©paèek skim (at) skim.cz
-  $Id: Pure.pod,v 1.1 2004-09-08 17:31:42 skim Exp $
-
-=cut
