@@ -1,4 +1,4 @@
-# $Id: 01_version.t,v 1.4 2005-05-19 16:35:58 skim Exp $
+# $Id: 01_version.t,v 1.5 2005-08-09 08:32:23 skim Exp $
 
 print "Testing: version.\n" if $debug;
-ok(eval('$'.$class.'::VERSION'), '0.1');
+ok(eval('$'.$class.'::VERSION'), '0.01');

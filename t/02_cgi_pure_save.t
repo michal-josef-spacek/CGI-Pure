@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: 02_cgi_pure_save.t,v 1.2 2005-01-07 21:51:24 skim Exp $
+# $Id: 02_cgi_pure_save.t,v 1.3 2005-08-09 08:32:22 skim Exp $
 
 # Pragmas.
 use strict;
@@ -10,10 +10,14 @@ use CGI::Pure::Save;
 use Test;
 
 # Global variables.:
-use vars qw/$debug $obj $class/;
+use vars qw/$debug $dir $class/;
 
 BEGIN {
-	my $tests = `grep -r \"^ok(\" t/Save/*.t | wc -l`;
+	# Name of class.
+	$dir = $class = 'CGI::Pure::Save';
+	$dir =~ s/:://g;
+
+	my $tests = `grep -r \"^ok(\" t/$dir/*.t | wc -l`;
 	chomp $tests;
 	plan('tests' => $tests);
 
@@ -21,14 +25,11 @@ BEGIN {
 	$debug = 1;
 }
 
-# Name of class.
-$class = 'CGI::Pure::Save';
-
 # Prints debug information about class.
 print "\nClass '$class'\n" if $debug;
 
 # For every test for this class.
-my @list = `ls t/Save/*.t`;
+my @list = `ls t/$dir/*.t`;
 foreach (@list) {
 	chomp;
 	do $_;
