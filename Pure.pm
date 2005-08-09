@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.20 2005-07-02 16:16:53 skim Exp $
+# $Id: Pure.pm,v 1.21 2005-08-09 08:25:47 skim Exp $
 
 # Pragmas.
 use strict;
@@ -11,7 +11,7 @@ use Carp;
 use URI::Escape qw(uri_escape uri_unescape);
 
 # Version.
-our $VERSION = 0.1;
+our $VERSION = 0.01;
 
 #------------------------------------------------------------------------------
 sub new {
@@ -20,8 +20,7 @@ sub new {
 
 	my $class = shift;
 	my $init = shift;
-	my $self = {};
-	bless $self, $class;
+	my $self = bless {}, $class;
 
 	# Save query data from server.
 	$self->{'save_query_data'} = 0;

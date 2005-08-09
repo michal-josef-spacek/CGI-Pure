@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.5 2005-07-02 16:16:48 skim Exp $
+# $Id: Save.pm,v 1.6 2005-08-09 08:25:50 skim Exp $
 # Saving and loading query params from file.
 
 # Pragmas.
@@ -12,7 +12,7 @@ use Carp;
 use URI::Escape;
 
 # Version.
-our $VERSION = 0.1;
+our $VERSION = 0.01;
 
 #------------------------------------------------------------------------------
 sub new {
@@ -20,7 +20,7 @@ sub new {
 # Constructor.
 
 	my $class = shift;
-	my $self = {};
+	my $self = bless {}, $class;
 
 	# CGI::Pure object.
 	$self->{'cgi_pure'} = '';
@@ -42,7 +42,7 @@ sub new {
 	}
 
 	# Object.
-	return bless $self, $class;
+	return $self;
 }
 
 #------------------------------------------------------------------------------
