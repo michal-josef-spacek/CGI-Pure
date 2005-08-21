@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.21 2005-08-09 08:25:47 skim Exp $
+# $Id: Pure.pm,v 1.22 2005-08-21 09:46:23 skim Exp $
 
 # Pragmas.
 use strict;
@@ -414,6 +414,7 @@ sub _parse_multipart {
 	$boundary = quotemeta $boundary;
 	my $got_data_length = 0;
 	my $data = '';
+	my $read;
 	my $CRLF = $self->_crlf();
 	
 	READ:
