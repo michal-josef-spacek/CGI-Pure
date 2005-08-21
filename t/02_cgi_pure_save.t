@@ -1,5 +1,5 @@
-#!/usr/bin/perl
-# $Id: 02_cgi_pure_save.t,v 1.3 2005-08-09 08:32:22 skim Exp $
+#!/usr/bin/env perl
+# $Id: 02_cgi_pure_save.t,v 1.4 2005-08-21 09:44:09 skim Exp $
 
 # Pragmas.
 use strict;
@@ -17,7 +17,7 @@ BEGIN {
 	$dir = $class = 'CGI::Pure::Save';
 	$dir =~ s/:://g;
 
-	my $tests = `grep -r \"^ok(\" t/$dir/*.t | wc -l`;
+	my $tests = `egrep -r \"^[[:space:]]*ok\\(\" t/$dir/*.t | wc -l`;
 	chomp $tests;
 	plan('tests' => $tests);
 
