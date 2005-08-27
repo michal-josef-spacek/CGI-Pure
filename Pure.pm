@@ -1,13 +1,13 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.22 2005-08-21 09:46:23 skim Exp $
+# $Id: Pure.pm,v 1.23 2005-08-27 10:43:26 skim Exp $
 
 # Pragmas.
 use strict;
 
 # Modules.
-use Carp;
+use Error::Simple;
 use URI::Escape qw(uri_escape uri_unescape);
 
 # Version.
@@ -32,18 +32,16 @@ sub new {
 	$self->{'post_max'} = 102_400;
 
 	# Process params.
-	croak "$class: Created with odd number of parameters - should be ".
-		"of the form option => value." if (@_ % 2);
-	for (my $x = 0; $x <= $#_; $x += 2) {
-		if (exists $self->{$_[$x]}) {
-			$self->{$_[$x]} = $_[$x+1];
-		} else {
-			croak "$class: Bad parameter '$_[$x]'.";
-		}
-	}
+        while (@_) {
+                my $key = shift;
+                my $val = shift;
+                err "Unknown parameter '$key'." 
+			if ! exists $self->{$key};
+                $self->{$key} = $val;
+        }
 
 	# Global object variables.
-	$self->_global_variables();
+	$self->_global_variables;
 	
 	# Inicialization.
 	$self->_initialize($init);
@@ -133,7 +131,7 @@ sub query_string {
 
 	my $self = shift;
 	my @pairs;
-	foreach my $param ($self->param()) {
+	foreach my $param ($self->param) {
 		foreach my $value ($self->param($param)) {
 			next unless defined $value;
 			push @pairs, $self->_uri_escape($param).'='.
@@ -209,7 +207,7 @@ sub upload_info {
 #------------------------------------------------------------------------------
 sub cgi_error {
 #------------------------------------------------------------------------------
-# Returns croak/carp error output.
+# Returns error output.
 
 	my ($self, $error) = @_;
 	push @{$self->{'.cgi_error'}}, $error if $error;
@@ -253,7 +251,7 @@ sub _initialize {
 
 	# Initialize from QUERY_STRING, STDIN or @ARGV.
 	if (! defined $init) {
-		$self->_common_parse();
+		$self->_common_parse;
 
 	# Initialize from param hash.	
 	} elsif (ref $init eq 'HASH') {
@@ -305,7 +303,7 @@ sub _common_parse {
 	if ($length && $type =~ m|^multipart/form-data|i) {
 
 		# Get data_length, store data to internal structure.
-		my $got_data_length = $self->_parse_multipart();
+		my $got_data_length = $self->_parse_multipart;
 
 		# Bad data length vs content_length.
 		$self->cgi_error("500 Bad read! wanted $length, ".
@@ -415,7 +413,7 @@ sub _parse_multipart {
 	my $got_data_length = 0;
 	my $data = '';
 	my $read;
-	my $CRLF = $self->_crlf();
+	my $CRLF = $self->_crlf;
 	
 	READ:
 	while (read(STDIN, $read, 4096)) {
@@ -482,7 +480,7 @@ sub _save_tmpfile {
 	my $self = shift;
 	my ($boundary, $filename, $got_data_length, $data) = @_;
 	my $fh;
-	my $CRLF = $self->_crlf();
+	my $CRLF = $self->_crlf;
 	my $file_size = 0;
 
         if ($self->{'disable_upload'}) {

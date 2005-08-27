@@ -1,14 +1,14 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.6 2005-08-09 08:25:50 skim Exp $
+# $Id: Save.pm,v 1.7 2005-08-27 10:44:53 skim Exp $
 # Saving and loading query params from file.
 
 # Pragmas.
 use strict;
 
 # Modules.
-use Carp;
+use Error::Simple;
 use URI::Escape;
 
 # Version.
@@ -26,19 +26,17 @@ sub new {
 	$self->{'cgi_pure'} = '';
 
 	# Process params.
-	croak "$class: Created with odd number of parameters - should be ".
-		"of the form option => value." if (@_ % 2);
-	for (my $x = 0; $x <= $#_; $x += 2) {
-		if (exists $self->{$_[$x]}) {
-			$self->{$_[$x]} = $_[$x+1];
-		} else {
-			croak "$class: Bad parameter '$_[$x]'.";
-		}
-	}
+        while (@_) {
+                my $key = shift;
+                my $val = shift;
+                err "Unknown parameter '$key'." 
+			if ! exists $self->{$key};
+                $self->{$key} = $val;
+        }
 
 	# CGI::Pure object not exist.
 	unless ($self->{'cgi_pure'} && $self->{'cgi_pure'}->isa('CGI::Pure')) {
-		croak "$class: CGI::Pure object doesn't define.";
+		err "CGI::Pure object doesn't define.";
 	}
 
 	# Object.
