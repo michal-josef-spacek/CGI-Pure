@@ -1,12 +1,11 @@
-# $Id: 02_simple_constructor.t,v 1.3 2005-08-09 08:32:16 skim Exp $
+# $Id: 02_simple_constructor.t,v 1.4 2005-08-27 10:45:58 skim Exp $
 
 print "Testing: new() plain constructor.\n" if $debug;
 my $obj;
 eval {
 	$obj = $class->new;
 };
-$@ =~ s/(.*)\ at.*\n/$1/;
-ok($@, "$class: CGI::Pure object doesn't define.");
+ok($@, "$class: CGI::Pure object doesn't define.\n");
 
 print "Testing: new('cgi_pure' => 'CGI::Pure object') constructor.\n" if $debug;
 use CGI::Pure;
