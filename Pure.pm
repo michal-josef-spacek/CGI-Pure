@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.23 2005-08-27 10:43:26 skim Exp $
+# $Id: Pure.pm,v 1.24 2005-10-09 10:12:03 skim Exp $
 
 # Pragmas.
 use strict;
@@ -18,8 +18,7 @@ sub new {
 #------------------------------------------------------------------------------
 # Constructor.
 
-	my $class = shift;
-	my $init = shift;
+	my ($class, $init) = (shift, shift);
 	my $self = bless {}, $class;
 
 	# Save query data from server.
