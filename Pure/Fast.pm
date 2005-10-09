@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.8 2005-08-09 08:25:50 skim Exp $
+# $Id: Fast.pm,v 1.9 2005-10-09 09:53:13 skim Exp $
 
 # Pragmas.
 use strict;
@@ -11,8 +11,7 @@ use CGI::Pure;
 use FCGI;
 
 # Inheritance.
-use vars qw(@ISA);
-@ISA = ('CGI::Pure');
+our @ISA = ('CGI::Pure');
 
 # Version.
 our $VERSION = 0.01;
