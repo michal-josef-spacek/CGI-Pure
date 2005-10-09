@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.9 2005-10-09 09:53:13 skim Exp $
+# $Id: Fast.pm,v 1.10 2005-10-09 09:54:45 skim Exp $
 
 # Pragmas.
 use strict;
@@ -20,7 +20,7 @@ our $VERSION = 0.01;
 use vars qw($Ext_Request);
 
 # Workaround for known bug in libfcgi.
-while (($ignore) = each %ENV) { }
+while ((my $ignore) = each %ENV) { }
 
 # If ENV{'FCGI_SOCKET_PATH'} is specified, we maintain a FCGI Request handle
 # in this package variable.
