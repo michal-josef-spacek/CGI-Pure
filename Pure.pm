@@ -1,13 +1,13 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.24 2005-10-09 10:12:03 skim Exp $
+# $Id: Pure.pm,v 1.25 2005-11-02 11:53:45 skim Exp $
 
 # Pragmas.
 use strict;
 
 # Modules.
-use Error::Simple;
+use Error::Simple::Multiple;
 use URI::Escape qw(uri_escape uri_unescape);
 
 # Version.
@@ -34,8 +34,7 @@ sub new {
         while (@_) {
                 my $key = shift;
                 my $val = shift;
-                err "Unknown parameter '$key'." 
-			if ! exists $self->{$key};
+                err "Unknown parameter '$key'." unless exists $self->{$key};
                 $self->{$key} = $val;
         }
 
