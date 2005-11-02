@@ -1,14 +1,14 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# $Id: Save.pm,v 1.7 2005-08-27 10:44:53 skim Exp $
+# $Id: Save.pm,v 1.8 2005-11-02 11:53:46 skim Exp $
 # Saving and loading query params from file.
 
 # Pragmas.
 use strict;
 
 # Modules.
-use Error::Simple;
+use Error::Simple::Multiple;
 use URI::Escape;
 
 # Version.
@@ -29,8 +29,7 @@ sub new {
         while (@_) {
                 my $key = shift;
                 my $val = shift;
-                err "Unknown parameter '$key'." 
-			if ! exists $self->{$key};
+                err "Unknown parameter '$key'." unless exists $self->{$key};
                 $self->{$key} = $val;
         }
 

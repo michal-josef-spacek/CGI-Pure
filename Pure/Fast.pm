@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.10 2005-10-09 09:54:45 skim Exp $
+# $Id: Fast.pm,v 1.11 2005-11-02 11:53:46 skim Exp $
 
 # Pragmas.
 use strict;
@@ -45,9 +45,9 @@ sub new {
 	my ($self, $initializer, @param) = @_;
 	unless (defined $initializer) {
 		if ($Ext_Request) {
-			return undef unless $Ext_Request->Accept() >= 0;
+			return undef unless $Ext_Request->Accept >= 0;
 		} else {
-			return undef unless FCGI::accept() >= 0;
+			return undef unless FCGI::accept >= 0;
 		}
 	}
 	return $self = $self->SUPER::new($initializer, @param);

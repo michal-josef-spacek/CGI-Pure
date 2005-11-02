@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::ModPerl;
 #------------------------------------------------------------------------------
-# $Id: ModPerl.pm,v 1.9 2005-08-09 08:25:50 skim Exp $
+# $Id: ModPerl.pm,v 1.10 2005-11-02 11:53:46 skim Exp $
 # Version CGI::Pure for mod_perl.
 
 # Pragmas.
@@ -14,8 +14,7 @@ use CGI::Pure;
 our $VERSION = 0.01;
 
 # Inheritance.
-use vars qw(@ISA);
-@ISA = ('CGI::Pure');
+our @ISA = ('CGI::Pure');
 
 #------------------------------------------------------------------------------
 sub new {

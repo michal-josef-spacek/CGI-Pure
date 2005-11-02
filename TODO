@@ -1,4 +1,4 @@
-$Id: TODO,v 1.6 2005-05-19 16:27:43 skim Exp $
+$Id: TODO,v 1.7 2005-11-02 11:53:45 skim Exp $
 
 TODO
 ====
@@ -8,8 +8,8 @@ TODO
    debug hlasky a potom tu funkci.
    Druha moznost je to nejak resit pomoci volani metod, funkci.. apod..
 3. Udelat testy na post data ukladani.
-4. Mozna by bylo zahodno udelat misto if ($cgi->param()) neco jako if
-   ($cgi->is_param()). Mohlo by to byt rychlejsi.
+4. Mozna by bylo zahodno udelat misto if ($cgi->param) neco jako if
+   ($cgi->is_param). Mohlo by to byt rychlejsi.
 5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
 6.
 
