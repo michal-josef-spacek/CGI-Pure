@@ -1,8 +1,0 @@
-$Id: 00INDEX,v 1.2 2005-01-07 21:51:23 skim Exp $
-
-Info
-====
-
-Examples for inheritance in CGI::Pure.
-  cgi_pure_buggy_ex.pl
-  cgi_pure_ex.pl
