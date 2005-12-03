@@ -5,7 +5,7 @@ version:      0.01
 version_from: 
 installdirs:  site
 requires:
-    Error::Simple:                 0.01
+    Error::Simple::Multiple:       0.01
     URI::Escape:                   3.22
 
 distribution_type: module
