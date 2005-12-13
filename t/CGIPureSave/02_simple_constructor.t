@@ -1,4 +1,4 @@
-# $Id: 02_simple_constructor.t,v 1.5 2005-12-13 22:40:48 skim Exp $
+# $Id: 02_simple_constructor.t,v 1.6 2005-12-13 22:56:03 skim Exp $
 
 # Modules.
 use CGI::Pure;
@@ -8,7 +8,7 @@ my $obj;
 eval {
 	$obj = $class->new;
 };
-ok($@, "$class: CGI::Pure object doesn't define.\n");
+ok($@, "CGI::Pure object doesn't define.\n");
 
 print "Testing: new('cgi_pure' => 'CGI::Pure object') constructor.\n" if $debug;
 my $cgi_pure = CGI::Pure->new;
