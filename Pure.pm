@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.26 2005-11-02 11:58:06 skim Exp $
+# $Id: Pure.pm,v 1.27 2005-12-23 15:06:14 skim Exp $
 
 # Pragmas.
 use strict;
@@ -146,14 +146,12 @@ sub upload {
 
 	my ($self, $filename, $writefile) = @_;
 	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
-		$self->cgi_error('Oops! File uploads only work if you '.
-			'specify enctype="multipart/form-data" in your '.
-			'form.');
-		return undef;
+		err 'Oops! File uploads only work if you specify '.
+			'enctype="multipart/form-data" in your form.';
 	}
 	unless ($filename) {;
-		$self->cgi_error("No filename submitted for upload ".
-			"to $writefile.") if $writefile;
+		err "No filename submitted for upload ".
+			"to $writefile." if $writefile;
 		return $self->{'.filehandles'} 
 			? keys %{$self->{'.filehandles'}} : ();
 	}
@@ -166,9 +164,7 @@ sub upload {
 		return $fh unless $writefile;
 		my $buffer;
 		unless (open(OUT, ">$writefile")) {
-			$self->cgi_error("500 Can't write to ".
-				"$writefile: $!\n");
-			return undef;
+			err "500 Can't write to $writefile: $!.";
 		}
 		binmode OUT;
 		binmode $fh;
@@ -178,10 +174,9 @@ sub upload {
 		undef $fh;
 		return 1;
 	} else {
-		$self->cgi_error("No filehandle for '$filename'. ".
+		err "No filehandle for '$filename'. ".
 			"Are uploads enabled (disable_upload = 0)? ".
-			"Is post_max big enough?");
-		return undef;
+			"Is post_max big enough?";
 	}
 }
 
@@ -192,24 +187,13 @@ sub upload_info {
 
 	my ($self, $filename, $info) = @_;
 	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
-		$self->cgi_error('Oops! File uploads only work if you '.
+		err 'Oops! File uploads only work if you '.
 			'specify enctype="multipart/form-data" in your '.
-			'form.');
-		return undef;
+			'form.';
 	}
 	return keys %{$self->{'.tmpfiles'}} unless $filename;
 	return $self->{'.tmpfiles'}->{$filename}->{'mime'} if $info =~ /mime/i;
 	return $self->{'.tmpfiles'}->{$filename}->{'size'};
-}
-
-#------------------------------------------------------------------------------
-sub cgi_error {
-#------------------------------------------------------------------------------
-# Returns error output.
-
-	my ($self, $error) = @_;
-	push @{$self->{'.cgi_error'}}, $error if $error;
-	return wantarray ? @{$self->{'.cgi_error'}} : $self->{'.cgi_error'};
 }
 
 #------------------------------------------------------------------------------
@@ -237,7 +221,6 @@ sub _global_variables {
 	my $self = shift;
 	$self->{'.parameters'} = {};
 	$self->{'.query_data'} = '';
-	$self->{'.cgi_error'} = [];
 }
 
 #------------------------------------------------------------------------------
@@ -261,9 +244,7 @@ sub _initialize {
 	} elsif (ref $init eq 'CGI::Pure') {
 		eval (require Data::Dumper);
 		if ($@) {
-			$self->cgi_error("Can't clone CGI::Pure ".
-				"object: $@");
-			return;
+			err "Can't clone CGI::Pure object: $@";
 		}
 
 		# Avoid problems with strict when Data::Dumper returns $VAR1.
@@ -272,8 +253,7 @@ sub _initialize {
 		# Clone.
 		my $clone = eval(Data::Dumper::Dumper($init));
 		if ($@) {
-			$self->cgi_error("Can't clone CGI::Pure ".
-				"object: $@");
+			err "Can't clone CGI::Pure object: $@.";
 		} else {
 			$_[0] = $clone;
 		}
@@ -304,9 +284,9 @@ sub _common_parse {
 		my $got_data_length = $self->_parse_multipart;
 
 		# Bad data length vs content_length.
-		$self->cgi_error("500 Bad read! wanted $length, ".
-			"got $got_data_length") 
+		err "500 Bad read! wanted $length, got $got_data_length."
 			unless $length == $got_data_length;
+
 		return;
 
 	# POST method.
@@ -315,10 +295,10 @@ sub _common_parse {
 		# Maximal post length is above my length.
                 if ($self->{'post_max'} != -1
                         and $length > $self->{'post_max'}) {
-                        $self->cgi_error("413 Request entity too large: ".
+
+                        err "413 Request entity too large: ".
                                 "$length bytes on STDIN exceeds ".
-                                "post_max !");
-                        return;
+                                "post_max !";
 
 		# Get data.
                 } elsif ($length) {
@@ -330,9 +310,8 @@ sub _common_parse {
 
 		# Bad length of data.
 		unless ($length == length $data) {
-			$self->cgi_error("500 Bad read! wanted ".
-				"$length, got ".(length $data));
-			return;
+			err "500 Bad read! wanted $length, got ".
+				(length $data).'.';
 		}
 	
 	# GET/HEAD method.	
@@ -343,9 +322,8 @@ sub _common_parse {
 
 	# Don't have a data.
 	unless ($data) {
-		$self->cgi_error("400 No data received via method: ".
-			"$method, type: $type");
-		return;
+		err ("400 No data received.", 'method', $method, 
+			'type', $type);
 	}
 
 	# Parse params.
@@ -397,9 +375,7 @@ sub _parse_multipart {
 	my $self = shift;
 	my ($boundary) = $ENV{'CONTENT_TYPE'} =~ /boundary=\"?([^\";,]+)\"?/;
 	unless ($boundary) {
-		$self->cgi_error('400 No boundary supplied for '.
-			'multipart/form-data');
-		return 0;
+		err '400 No boundary supplied for multipart/form-data.';
 	}
 
 	# BUG: IE 3.01 on the Macintosh uses just the boundary, forgetting
@@ -481,16 +457,14 @@ sub _save_tmpfile {
 	my $CRLF = $self->_crlf;
 	my $file_size = 0;
 
-        if ($self->{'disable_upload'}) {
-                $self->cgi_error("405 Not Allowed - File uploads are ".
-                        "disabled");
-        } elsif ($filename) {
-                eval { require IO::File };
-                $self->cgi_error("500 IO::File is not available $@") if $@;
-                $fh = new_tmpfile IO::File;
-                $self->cgi_error("500 IO::File can't create new temp_file")
-                        unless $fh;
-        }
+	if ($self->{'disable_upload'}) {
+		err '405 Not Allowed - File uploads are disabled.';
+	} elsif ($filename) {
+		eval { require IO::File };
+		err "500 IO::File is not available $@." if $@;
+		$fh = new_tmpfile IO::File;
+		err "500 IO::File can't create new temp_file." unless $fh;
+	}
 
 	binmode $fh if $fh;
 	while (1) {
@@ -505,10 +479,9 @@ sub _save_tmpfile {
 
 		# BUG: Fixed hanging bug if browser terminates upload part way.
 		unless ($data) {
-			$self->cgi_error('400 Malformed multipart, no '.
-				'terminating boundary');
 			undef $fh;
-			return $got_data_length;
+			err '400 Malformed multipart, no terminating '.
+				'boundary.';
 		}
 
 		# We do not have partial boundary so print to file if valid $fh.

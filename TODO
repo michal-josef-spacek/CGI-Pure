@@ -1,4 +1,4 @@
-$Id: TODO,v 1.7 2005-11-02 11:53:45 skim Exp $
+$Id: TODO,v 1.8 2005-12-23 15:06:14 skim Exp $
 
 TODO
 ====
@@ -11,7 +11,9 @@ TODO
 4. Mozna by bylo zahodno udelat misto if ($cgi->param) neco jako if
    ($cgi->is_param). Mohlo by to byt rychlejsi.
 5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
-6.
+7.
 
 Applied
 =======
+6. Zrusit error stavajici errory a nahradit pomoci Error::Simple.
+OK [20051223] skim
