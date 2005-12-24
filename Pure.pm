@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.27 2005-12-23 15:06:14 skim Exp $
+# $Id: Pure.pm,v 1.28 2005-12-24 10:31:29 skim Exp $
 
 # Pragmas.
 use strict;
@@ -318,6 +318,7 @@ sub _common_parse {
 	} elsif ($method eq 'GET' || $method eq 'HEAD') {
 		$data = $ENV{'QUERY_STRING'} || '';
 		$self->{'.query_data'} .= $data if $self->{'save_query_data'};
+		return unless $data;
 	}
 
 	# Don't have a data.
