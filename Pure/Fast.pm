@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.12 2006-01-01 21:01:25 skim Exp $
+# $Id: Fast.pm,v 1.13 2006-01-01 21:03:19 skim Exp $
 
 # Pragmas.
 use strict;
@@ -43,7 +43,7 @@ sub new {
 # New is slightly different in that it calls FCGI's accept() method.
 
 	my ($class, $init, @params) = @_;
-	unless (defined $initializer) {
+	unless (defined $init) {
 		if ($Ext_Request) {
 			return undef unless $Ext_Request->Accept >= 0;
 		} else {
