@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.31 2006-01-04 19:54:32 skim Exp $
+# $Id: Pure.pm,v 1.32 2006-01-04 19:57:04 skim Exp $
 
 # Pragmas.
 use strict;
@@ -18,11 +18,14 @@ sub new {
 #------------------------------------------------------------------------------
 # Constructor.
 
-	my ($class, $init) = (shift, shift);
+	my $class = shift;
 	my $self = bless {}, $class;
 
 	# Disable upload.
 	$self->{'disable_upload'} = 1;
+
+	# Init.
+	$self->{'init'} = undef;
 
 	# Use a post max of 100K, set to -1 for no limits.
 	$self->{'post_max'} = 102_400;
@@ -42,7 +45,7 @@ sub new {
 	$self->_global_variables;
 	
 	# Inicialization.
-	$self->_initialize($init);
+	$self->_initialize;
 
 	# Object.
 	return $self;
@@ -219,20 +222,20 @@ sub _initialize {
 #------------------------------------------------------------------------------
 # Initializating CGI::Pure with something input methods.
 
-	my ($self, $init) = @_;
+	my $self = shift;
 
 	# Initialize from QUERY_STRING, STDIN or @ARGV.
-	if (! defined $init) {
+	if (! defined $self->{'init'}) {
 		$self->_common_parse;
 
 	# Initialize from param hash.	
-	} elsif (ref $init eq 'HASH') {
-		foreach my $param (keys %{$init}) {
-			$self->_add_param($param, $init->{$param});
+	} elsif (ref $self->{'init'} eq 'HASH') {
+		foreach my $param (keys %{$self->{'init'}}) {
+			$self->_add_param($param, $self->{'init'}->{$param});
 		}
 
 	# Inicialize from CGI::Pure object.
-	} elsif (ref $init eq 'CGI::Pure') {
+	} elsif (ref $self->{'init'} eq 'CGI::Pure') {
 		eval (require Data::Dumper);
 		if ($@) {
 			err "Can't clone CGI::Pure object: $@";
@@ -242,7 +245,7 @@ sub _initialize {
 		my $VAR1;
 
 		# Clone.
-		my $clone = eval(Data::Dumper::Dumper($init));
+		my $clone = eval(Data::Dumper::Dumper($self->{'init'}));
 		if ($@) {
 			err "Can't clone CGI::Pure object: $@.";
 		} else {
@@ -251,7 +254,7 @@ sub _initialize {
 
 	# Initialize from a query string.
 	} else {
-		$self->_parse_params($init);
+		$self->_parse_params($self->{'init'});
 	}
 }
 

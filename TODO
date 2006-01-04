@@ -1,4 +1,4 @@
-$Id: TODO,v 1.8 2005-12-23 15:06:14 skim Exp $
+$Id: TODO,v 1.9 2006-01-04 19:58:14 skim Exp $
 
 TODO
 ====
@@ -11,9 +11,14 @@ TODO
 4. Mozna by bylo zahodno udelat misto if ($cgi->param) neco jako if
    ($cgi->is_param). Mohlo by to byt rychlejsi.
 5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
-7.
+8.
 
 Applied
 =======
 6. Zrusit error stavajici errory a nahradit pomoci Error::Simple.
 OK [20051223] skim
+
+7. Prepsat pouziti init v konstruktoru.
+   Ted se muselo psat my $obj = CGI::Pure->new(undef, 'param' => 'param');
+   Chce predelat tak, aby se psalo 'init' => $init a jinak nic.
+OK [20060104] skim
