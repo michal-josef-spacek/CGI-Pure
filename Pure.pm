@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.30 2006-01-01 17:09:59 skim Exp $
+# $Id: Pure.pm,v 1.31 2006-01-04 19:54:32 skim Exp $
 
 # Pragmas.
 use strict;
@@ -21,14 +21,14 @@ sub new {
 	my ($class, $init) = (shift, shift);
 	my $self = bless {}, $class;
 
-	# Save query data from server.
-	$self->{'save_query_data'} = 0;
-
 	# Disable upload.
 	$self->{'disable_upload'} = 1;
 
 	# Use a post max of 100K, set to -1 for no limits.
 	$self->{'post_max'} = 102_400;
+
+	# Save query data from server.
+	$self->{'save_query_data'} = 0;
 
 	# Process params.
         while (@_) {
