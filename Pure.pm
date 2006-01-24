@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.32 2006-01-04 19:57:04 skim Exp $
+# $Id: Pure.pm,v 1.33 2006-01-24 23:45:42 skim Exp $
 
 # Pragmas.
 use strict;
@@ -166,7 +166,6 @@ sub upload {
 		close OUT;
 		$self->{'.filehandles'}->{$filename} = undef;
 		undef $fh;
-		return 1;
 	} else {
 		err "No filehandle for '$filename'. ".
 			"Are uploads enabled (disable_upload = 0)? ".
