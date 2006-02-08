@@ -1,4 +1,4 @@
-# $Id: 03_save.t,v 1.4 2005-08-21 09:45:24 skim Exp $
+# $Id: 03_save.t,v 1.5 2006-02-08 22:04:38 skim Exp $
 
 # Tests directory.
 my $test_dir = "$ENV{'PWD'}/t/CGIPureSave";
@@ -6,7 +6,7 @@ my $test_dir = "$ENV{'PWD'}/t/CGIPureSave";
 print "Testing: save(\$fh) - saving parameters from CGI::Pure object.\n" 
 	if $debug;
 use CGI::Pure;
-my $cgi_pure = CGI::Pure->new('par=val&par2=val2');
+my $cgi_pure = CGI::Pure->new('init' => 'par=val&par2=val2');
 my $obj = $class->new('cgi_pure' => $cgi_pure);
 my $file = "$test_dir/data/params";
 open(OUF, ">$file") || die "Can't open file '$file'.";

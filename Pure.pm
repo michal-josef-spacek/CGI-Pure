@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.33 2006-01-24 23:45:42 skim Exp $
+# $Id: Pure.pm,v 1.34 2006-02-08 22:04:36 skim Exp $
 
 # Pragmas.
 use strict;
@@ -45,7 +45,9 @@ sub new {
 	$self->_global_variables;
 	
 	# Inicialization.
-	$self->_initialize;
+	my $init = $self->{'init'};
+	delete $self->{'init'};
+	$self->_initialize($init);
 
 	# Object.
 	return $self;
@@ -221,20 +223,20 @@ sub _initialize {
 #------------------------------------------------------------------------------
 # Initializating CGI::Pure with something input methods.
 
-	my $self = shift;
+	my ($self, $init) = @_;
 
 	# Initialize from QUERY_STRING, STDIN or @ARGV.
-	if (! defined $self->{'init'}) {
+	if (! defined $init) {
 		$self->_common_parse;
 
 	# Initialize from param hash.	
-	} elsif (ref $self->{'init'} eq 'HASH') {
-		foreach my $param (keys %{$self->{'init'}}) {
-			$self->_add_param($param, $self->{'init'}->{$param});
+	} elsif (ref $init eq 'HASH') {
+		foreach my $param (keys %{$init}) {
+			$self->_add_param($param, $init->{$param});
 		}
 
 	# Inicialize from CGI::Pure object.
-	} elsif (ref $self->{'init'} eq 'CGI::Pure') {
+	} elsif (ref $init eq 'CGI::Pure') {
 		eval (require Data::Dumper);
 		if ($@) {
 			err "Can't clone CGI::Pure object: $@";
@@ -244,7 +246,7 @@ sub _initialize {
 		my $VAR1;
 
 		# Clone.
-		my $clone = eval(Data::Dumper::Dumper($self->{'init'}));
+		my $clone = eval(Data::Dumper::Dumper($init));
 		if ($@) {
 			err "Can't clone CGI::Pure object: $@.";
 		} else {
@@ -253,7 +255,7 @@ sub _initialize {
 
 	# Initialize from a query string.
 	} else {
-		$self->_parse_params($self->{'init'});
+		$self->_parse_params($init);
 	}
 }
 
