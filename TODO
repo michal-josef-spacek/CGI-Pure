@@ -1,4 +1,4 @@
-$Id: TODO,v 1.9 2006-01-04 19:58:14 skim Exp $
+$Id: TODO,v 1.10 2006-02-22 00:14:48 skim Exp $
 
 TODO
 ====
@@ -11,7 +11,9 @@ TODO
 4. Mozna by bylo zahodno udelat misto if ($cgi->param) neco jako if
    ($cgi->is_param). Mohlo by to byt rychlejsi.
 5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
-8.
+8. Testy k CGI::Pure::Fast. Jak to testovat, kdyz po dalsim konstruktoru 
+   vraci undef. Projit man FCGI a doresit.
+9.
 
 Applied
 =======
