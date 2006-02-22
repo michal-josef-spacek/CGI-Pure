@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Fast;
 #------------------------------------------------------------------------------
-# $Id: Fast.pm,v 1.13 2006-01-01 21:03:19 skim Exp $
+# $Id: Fast.pm,v 1.14 2006-02-22 00:15:25 skim Exp $
 
 # Pragmas.
 use strict;
@@ -11,10 +11,10 @@ use CGI::Pure;
 use FCGI;
 
 # Inheritance.
-our @ISA = ('CGI::Pure');
+our @ISA = qw(CGI::Pure);
 
 # Version.
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 # Global variables.
 use vars qw($Ext_Request);
@@ -42,15 +42,15 @@ sub new {
 #------------------------------------------------------------------------------
 # New is slightly different in that it calls FCGI's accept() method.
 
-	my ($class, $init, @params) = @_;
-	unless (defined $init) {
+	my ($class, %params) = @_;
+	unless (exists $params{'init'}) {
 		if ($Ext_Request) {
 			return undef unless $Ext_Request->Accept >= 0;
 		} else {
 			return undef unless FCGI::accept >= 0;
 		}
 	}
-	return $class = $class->SUPER::new($init, @params);
+	return $class = $class->SUPER::new(%params);
 }
 
 1;
