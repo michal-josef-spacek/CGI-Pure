@@ -1,4 +1,4 @@
-$Id: TODO,v 1.11 2006-03-23 00:23:39 skim Exp $
+$Id: TODO,v 1.12 2006-03-23 02:36:30 skim Exp $
 
 TODO
 ====
@@ -17,7 +17,9 @@ TODO
    Pridat tam rutinu pro obecne debugovani z prikazove radky. 
    Idealni by by bylo na to napojit nejaky system, ktery by simuloval 
    prohlizec.
-10.
+10. CGI::Pure zabira o neco vice pameti nez CGI::Simple. Proc?
+    Viz priklady na zabirani pameti v cvsprac/perl/CGI::Simple vs CGI::Pure.
+11.
 
 Applied
 =======
