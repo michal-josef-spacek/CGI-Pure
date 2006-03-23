@@ -1,4 +1,4 @@
-$Id: TODO,v 1.10 2006-02-22 00:14:48 skim Exp $
+$Id: TODO,v 1.11 2006-03-23 00:23:39 skim Exp $
 
 TODO
 ====
@@ -13,7 +13,11 @@ TODO
 5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
 8. Testy k CGI::Pure::Fast. Jak to testovat, kdyz po dalsim konstruktoru 
    vraci undef. Projit man FCGI a doresit.
-9.
+9. Udelat nejaky debug mod. Vytvorit tridu pro debug, ktera dedi CGI::Pure.
+   Pridat tam rutinu pro obecne debugovani z prikazove radky. 
+   Idealni by by bylo na to napojit nejaky system, ktery by simuloval 
+   prohlizec.
+10.
 
 Applied
 =======
