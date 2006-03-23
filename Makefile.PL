@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.7 2005-11-02 11:53:45 skim Exp $
+# $Id: Makefile.PL,v 1.8 2006-03-23 00:23:32 skim Exp $
 
 # Modules.
 use ExtUtils::MakeMaker;
@@ -8,7 +8,7 @@ WriteMakefile(
 	'AUTHOR' => 'Michal Spacek',
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
-		'Error::Simple::Multiple' => 0.01,
+		'Error::Simple::Multiple' => 0.02,
 		'URI::Escape' => 3.22,
 	},
 	'VERSION' => 0.01,
