@@ -1,4 +1,4 @@
-$Id: TODO,v 1.12 2006-03-23 02:36:30 skim Exp $
+$Id: TODO,v 1.13 2006-08-21 19:40:55 skim Exp $
 
 TODO
 ====
@@ -19,7 +19,8 @@ TODO
    prohlizec.
 10. CGI::Pure zabira o neco vice pameti nez CGI::Simple. Proc?
     Viz priklady na zabirani pameti v cvsprac/perl/CGI::Simple vs CGI::Pure.
-11.
+11. Pokud nechci pouzivat FCGI verzi, tak jak udelat prereq a testy?
+12.
 
 Applied
 =======
