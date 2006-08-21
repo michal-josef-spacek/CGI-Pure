@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.8 2006-03-23 00:23:32 skim Exp $
+# $Id: Makefile.PL,v 1.9 2006-08-21 19:41:02 skim Exp $
 
 # Modules.
 use ExtUtils::MakeMaker;
@@ -9,6 +9,7 @@ WriteMakefile(
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
 		'Error::Simple::Multiple' => 0.02,
+		'FCGI' => 0,
 		'URI::Escape' => 3.22,
 	},
 	'VERSION' => 0.01,
