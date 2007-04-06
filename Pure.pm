@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.34 2006-02-08 22:04:36 skim Exp $
+# $Id: Pure.pm,v 1.35 2007-04-06 22:03:19 skim Exp $
 
 # Pragmas.
 use strict;
@@ -14,7 +14,7 @@ use URI::Escape qw(uri_escape uri_unescape);
 our $VERSION = 0.01;
 
 #------------------------------------------------------------------------------
-sub new {
+sub new($%) {
 #------------------------------------------------------------------------------
 # Constructor.
 
@@ -54,13 +54,11 @@ sub new {
 }
 
 #------------------------------------------------------------------------------
-sub param {
+sub param($;$@) {
 #------------------------------------------------------------------------------
 # Return param[s]. If sets parameters, than overwrite.
 
-	my $self = shift;
-	my $param = shift;
-	my @values = @_;
+	my ($self, $param, @values) = @_;
 
 	# Return list of all params.	
 	unless (defined $param) {
@@ -83,12 +81,11 @@ sub param {
 }
 
 #------------------------------------------------------------------------------
-sub append_param {
+sub append_param($;$@) {
 #------------------------------------------------------------------------------
 # Append param value.
 
-	my $self = shift;
-	my ($param, @values) = @_;
+	my ($self, $param, @values) = @_;
 	return () unless defined $param;
 	$self->_add_param($param, ((defined $values[0] and ref $values[0]) 
 		? $values[0] : [@values]));
@@ -96,12 +93,11 @@ sub append_param {
 }
 
 #------------------------------------------------------------------------------
-sub delete_param {
+sub delete_param($;$) {
 #------------------------------------------------------------------------------
 # Delete param.
 
-	my $self = shift;
-	my $param = shift;
+	my ($self, $param) = @_;
 	return () unless defined $param;
 	return undef unless defined $self->{'.parameters'}->{$param};
 	delete $self->{'.parameters'}->{$param};
@@ -109,7 +105,7 @@ sub delete_param {
 }
 
 #------------------------------------------------------------------------------
-sub delete_all_params {
+sub delete_all_params($) {
 #------------------------------------------------------------------------------
 # Delete all params.
 
@@ -119,7 +115,7 @@ sub delete_all_params {
 }
 
 #------------------------------------------------------------------------------
-sub query_string {
+sub query_string($) {
 #------------------------------------------------------------------------------
 # Return actual query string.
 
@@ -136,7 +132,7 @@ sub query_string {
 }
 
 #------------------------------------------------------------------------------
-sub upload {
+sub upload($$$) {
 #------------------------------------------------------------------------------
 # Upload file from tmp.
 
@@ -176,7 +172,7 @@ sub upload {
 }
 
 #------------------------------------------------------------------------------
-sub upload_info {
+sub upload_info($$$) {
 #------------------------------------------------------------------------------
 # Return the file size of an uploaded file.
 
@@ -192,7 +188,7 @@ sub upload_info {
 }
 
 #------------------------------------------------------------------------------
-sub query_data {
+sub query_data($) {
 #------------------------------------------------------------------------------
 # Gets query data from server.
 
@@ -209,7 +205,7 @@ sub query_data {
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
-sub _global_variables {
+sub _global_variables($) {
 #------------------------------------------------------------------------------
 # Sets global object variables.
 
@@ -219,7 +215,7 @@ sub _global_variables {
 }
 
 #------------------------------------------------------------------------------
-sub _initialize {
+sub _initialize($;$) {
 #------------------------------------------------------------------------------
 # Initializating CGI::Pure with something input methods.
 
@@ -260,7 +256,7 @@ sub _initialize {
 }
 
 #------------------------------------------------------------------------------
-sub _common_parse {
+sub _common_parse($) {
 #------------------------------------------------------------------------------
 # Common parsing from any methods..
 
@@ -322,12 +318,11 @@ sub _common_parse {
 }
 
 #------------------------------------------------------------------------------
-sub _add_param {
+sub _add_param($;$$$) {
 #------------------------------------------------------------------------------
 # Adding param.
 
-	my $self = shift;
-	my ($param, $value, $overwrite) = @_;
+	my ($self, $param, $value, $overwrite) = @_;
 	return () unless defined $param and defined $value;
 	@{$self->{'.parameters'}->{$param}} = () if $overwrite;
 	@{$self->{'.parameters'}->{$param}} = () 
@@ -339,12 +334,11 @@ sub _add_param {
 }
 
 #------------------------------------------------------------------------------
-sub _parse_params {
+sub _parse_params($;$) {
 #------------------------------------------------------------------------------
 # Parse params from data.
 
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 	return () unless defined $data;	
 
 	# Parse params.
@@ -359,7 +353,7 @@ sub _parse_params {
 }
 
 #------------------------------------------------------------------------------
-sub _parse_multipart {
+sub _parse_multipart($) {
 #------------------------------------------------------------------------------
 # Parse multipart data.
 
@@ -438,12 +432,11 @@ sub _parse_multipart {
 }
 
 #------------------------------------------------------------------------------
-sub _save_tmpfile {
+sub _save_tmpfile($$$$$) {
 #------------------------------------------------------------------------------
 # Save file from multiform.
 
-	my $self = shift;
-	my ($boundary, $filename, $got_data_length, $data) = @_;
+	my ($self, $boundary, $filename, $got_data_length, $data) = @_;
 	my $fh;
 	my $CRLF = $self->_crlf;
 	my $file_size = 0;
@@ -488,7 +481,7 @@ sub _save_tmpfile {
 }
 
 #------------------------------------------------------------------------------
-sub _crlf {
+sub _crlf($;$) {
 #------------------------------------------------------------------------------
 # Define the CRLF sequence.
 
@@ -508,7 +501,7 @@ sub _crlf {
 }
 
 #------------------------------------------------------------------------------
-sub _uri_escape {
+sub _uri_escape($$) {
 #------------------------------------------------------------------------------
 # Escapes uri.
 
@@ -519,7 +512,7 @@ sub _uri_escape {
 }
 
 #------------------------------------------------------------------------------
-sub _uri_unescape {
+sub _uri_unescape($$) {
 #------------------------------------------------------------------------------
 # Unescapes uri.
 
