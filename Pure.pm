@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.35 2007-04-06 22:03:19 skim Exp $
+# $Id: Pure.pm,v 1.36 2007-04-06 22:12:10 skim Exp $
 
 # Pragmas.
 use strict;
@@ -522,3 +522,78 @@ sub _uri_unescape($$) {
 }
 
 1;
+
+=pod
+
+=head1 NAME 
+
+ CGI::Pure - TODO
+
+=head1 SYNOPSIS
+
+ TODO
+
+=head1 DESCRIPTION
+
+ TODO
+
+=head1 SUBROUTINES
+
+=over 4
+
+=item B<new()>
+
+ TODO
+
+=item B<param()>
+
+ TODO
+
+=item B<append_param()>
+
+ TODO
+
+=item B<delete_param()>
+
+ TODO
+
+=item B<delete_all_params()>
+
+ TODO
+
+=item B<query_string()>
+
+ TODO
+
+=item B<upload()>
+
+ TODO
+
+=item B<upload_info()>
+
+ TODO
+
+=item B<query_data()>
+
+ TODO
+
+=back
+
+=head1 EXAMPLE
+
+ TODO
+
+=head1 REQUIREMENTS
+
+ L<Error::Simple::Multiple>
+ L<URI::Escape>
+
+=head1 AUTHOR
+
+ Michal Spacek L<tupinek@gmail.com>
+
+=head1 VERSION
+
+ 0.01
+
+=cut
