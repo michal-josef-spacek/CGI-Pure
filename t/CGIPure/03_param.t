@@ -1,4 +1,4 @@
-# $Id: 03_param.t,v 1.3 2005-08-09 08:32:23 skim Exp $
+# $Id: 03_param.t,v 1.4 2008-01-01 11:39:31 skim Exp $
 
 print "Testing: param() empty method.\n" if $debug;
 my $obj = $class->new;
@@ -14,7 +14,7 @@ ok($param, undef);
 @params = $obj->param;
 ok($#params, -1);
 
-print "Testing: param('param', 'value') is inicialization of 'param' value.\n"
+print "Testing: param('param', 'value') is initialization of 'param' value.\n"
 	if $debug;
 $obj = $class->new;
 $param = $obj->param('param', 'value');
@@ -22,7 +22,7 @@ ok($param, 'value');
 @params = $obj->param('param', 'value');
 ok(join(' ', @params), 'value');
 
-print "Testing: param('param', ['value1', 'value2']) is inicialization of ".
+print "Testing: param('param', ['value1', 'value2']) is initialization of ".
 	"'param' value.\n" if $debug;
 $obj = $class->new;
 $param = $obj->param('param', ['value1', 'value2']);
