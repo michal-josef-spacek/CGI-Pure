@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.37 2007-04-06 22:39:57 skim Exp $
+# $Id: Pure.pm,v 1.38 2008-01-01 11:38:54 skim Exp $
 
 # Pragmas.
 use strict;
@@ -44,7 +44,7 @@ sub new($%) {
 	# Global object variables.
 	$self->_global_variables;
 	
-	# Inicialization.
+	# Initialization.
 	my $init = $self->{'init'};
 	delete $self->{'init'};
 	$self->_initialize($init);
