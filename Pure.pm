@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.38 2008-01-01 11:38:54 skim Exp $
+# $Id: Pure.pm,v 1.39 2008-05-12 22:29:38 skim Exp $
 
 # Pragmas.
 use strict;
@@ -527,23 +527,41 @@ sub _uri_unescape($$) {
 
 =head1 NAME 
 
-CGI::Pure - TODO
+CGI::Pure - Common Gateway Interface Class.
 
 =head1 SYNOPSIS
 
-TODO
+ use CGI::Pure;
+ my $cgi = CGI::Pure->new(%parameters);
+ TODO
 
-=head1 DESCRIPTION
-
-TODO
-
-=head1 SUBROUTINES
+=head1 METHODS
 
 =over 4
 
-=item B<new()>
+=item B<new(%parameters)>
 
-TODO
+ Constructor
+
+=over 4
+
+=item * disable_upload
+
+ TODO
+
+=item * init
+
+ TODO
+
+=item * post_max
+
+ TODO
+
+=item * save_query_data
+
+ TODO
+
+=back
 
 =item B<param()>
 
@@ -585,8 +603,14 @@ TODO
 
 =head1 REQUIREMENTS
 
-L<Error::Simple::Multiple>,
-L<URI::Escape>
+L<Error::Simple::Multiple(3pm)>,
+L<URI::Escape(3pm)>.
+
+=head1 SEE ALSO
+
+L<CGI::Pure::Fast(3pm)>,
+L<CGI::Pure::ModPerl(3pm)>,
+L<CGI::Pure::Save(3pm)>.
 
 =head1 AUTHOR
 
