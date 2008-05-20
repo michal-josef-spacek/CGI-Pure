@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.39 2008-05-12 22:29:38 skim Exp $
+# $Id: Pure.pm,v 1.40 2008-05-20 09:46:39 skim Exp $
 
 # Pragmas.
 use strict;
@@ -525,6 +525,8 @@ sub _uri_unescape($$) {
 
 =pod
 
+=encoding utf8
+
 =head1 NAME 
 
 CGI::Pure - Common Gateway Interface Class.
@@ -614,7 +616,7 @@ L<CGI::Pure::Save(3pm)>.
 
 =head1 AUTHOR
 
-Michal Spacek L<tupinek@gmail.com>
+Michal Špaček L<tupinek@gmail.com>
 
 =head1 VERSION
 
