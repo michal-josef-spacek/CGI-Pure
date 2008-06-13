@@ -1,4 +1,4 @@
-$Id: TODO,v 1.14 2008-04-10 15:13:58 skim Exp $
+$Id: TODO,v 1.15 2008-06-13 23:40:44 skim Exp $
 
 TODO
 ====
@@ -21,7 +21,8 @@ TODO
     Viz priklady na zabirani pameti v cvsprac/perl/CGI::Simple vs CGI::Pure.
 11. Pokud nechci pouzivat FCGI verzi, tak jak udelat prereq a testy?
 12. Priklady z CGI::Minimal?
-13.
+13. Parsovani query by melo jit i pres ';' namisto '&'. Viz standard. 
+14.
 
 Applied
 =======
