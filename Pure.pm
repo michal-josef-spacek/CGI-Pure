@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.40 2008-05-20 09:46:39 skim Exp $
+# $Id: Pure.pm,v 1.41 2008-06-13 23:39:37 skim Exp $
 
 # Pragmas.
 use strict;
@@ -342,6 +342,7 @@ sub _parse_params($;$) {
 	return () unless defined $data;	
 
 	# Parse params.
+	# XXX In standard is possible '&' and ';'.
 	my @pairs = split(/&/, $data);
 	foreach my $pair (@pairs) {
 		my ($param, $value) = split('=', $pair);
@@ -547,19 +548,19 @@ CGI::Pure - Common Gateway Interface Class.
 
 =over 4
 
-=item * disable_upload
+=item * B<disable_upload>
 
  TODO
 
-=item * init
+=item * B<init>
 
  TODO
 
-=item * post_max
+=item * B<post_max>
 
  TODO
 
-=item * save_query_data
+=item * B<save_query_data>
 
  TODO
 
