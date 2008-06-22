@@ -1,12 +1,13 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.45 2008-06-22 11:35:20 skim Exp $
+# $Id: Pure.pm,v 1.46 2008-06-22 12:17:15 skim Exp $
 
 # Pragmas.
 use strict;
 
 # Modules.
+use CGI::Deurl::XS qw(parse_query_string);
 use Error::Simple::Multiple;
 use URI::Escape qw(uri_escape uri_unescape);
 
@@ -27,6 +28,9 @@ sub new($%) {
 	# Init.
 	$self->{'init'} = undef;
 
+	# Parameter separator.
+	$self->{'par_sep'} = '&';
+
 	# Use a post max of 100K, set to -1 for no limits.
 	$self->{'post_max'} = 102_400;
 
@@ -40,6 +44,11 @@ sub new($%) {
                 err "Unknown parameter '$key'." unless exists $self->{$key};
                 $self->{$key} = $val;
         }
+
+	# Check to parameter separator.
+	if (! grep { $_ eq $self->{'par_sep'} } ('&', ';')) {
+		err "Bad parameter separator '$self->{'par_sep'}'.";
+	}
 
 	# Global object variables.
 	$self->_global_variables;
@@ -126,7 +135,7 @@ sub query_string($) {
 				$self->_uri_escape($value);
 		}
 	}
-	return join('&', @pairs);
+	return join($self->{'par_sep'}, @pairs);
 }
 
 #------------------------------------------------------------------------------
@@ -340,14 +349,9 @@ sub _parse_params($;$) {
 	return () unless defined $data;	
 
 	# Parse params.
-	# XXX In standard is possible '&' and ';'.
-	my @pairs = split(/&/, $data);
-	foreach my $pair (@pairs) {
-		my ($param, $value) = split('=', $pair);
-		next unless defined $param;
-		$value = '' unless defined $value;
-		$self->_add_param($self->_uri_unescape($param),
-			$self->_uri_unescape($value));
+	my $pairs = parse_query_string($data);
+	foreach (keys %{$pairs}) {
+		$self->_add_param($_, $pairs->{$_});
 	}
 }
 
@@ -560,6 +564,12 @@ CGI::Pure - Common Gateway Interface Class.
  - Query string.
  Default is undef.
 
+=item * B<par_sep>
+
+ Parameter separator.
+ Default value is '&'.
+ Possible values are '&' or ';'.
+
 =item * B<post_max>
 
  Maximal post length.
@@ -621,6 +631,7 @@ TODO
 
 =head1 REQUIREMENTS
 
+L<CGI::Deurl::XS(3pm)>,
 L<Error::Simple::Multiple(3pm)>,
 L<URI::Escape(3pm)>.
 
