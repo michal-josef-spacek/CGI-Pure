@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.46 2008-06-22 12:17:15 skim Exp $
+# $Id: Pure.pm,v 1.47 2008-06-22 12:39:38 skim Exp $
 
 # Pragmas.
 use strict;
@@ -63,33 +63,6 @@ sub new($%) {
 }
 
 #------------------------------------------------------------------------------
-sub param($;$@) {
-#------------------------------------------------------------------------------
-# Return param[s]. If sets parameters, than overwrite.
-
-	my ($self, $param, @values) = @_;
-
-	# Return list of all params.	
-	unless (defined $param) {
-		return keys %{$self->{'.parameters'}};
-	}
-
-	# Return values for $param.
-	unless (@values) {
-		return () unless exists $self->{'.parameters'}->{$param};
-
-	# Values exists, than sets them.
-	} else {
-		$self->_add_param($param, (ref $values[0] eq 'ARRAY' 
-			? $values[0] : [@values]), 'overwrite');
-	}
-
-	# Return values of param, or first value of param.
-	return wantarray ? @{$self->{'.parameters'}->{$param}}
-		: $self->{'.parameters'}->{$param}->[0];
-}
-
-#------------------------------------------------------------------------------
 sub append_param($$;@) {
 #------------------------------------------------------------------------------
 # Append param value.
@@ -122,6 +95,33 @@ sub delete_all_params($) {
 }
 
 #------------------------------------------------------------------------------
+sub param($;$@) {
+#------------------------------------------------------------------------------
+# Return param[s]. If sets parameters, than overwrite.
+
+	my ($self, $param, @values) = @_;
+
+	# Return list of all params.	
+	unless (defined $param) {
+		return keys %{$self->{'.parameters'}};
+	}
+
+	# Return values for $param.
+	unless (@values) {
+		return () unless exists $self->{'.parameters'}->{$param};
+
+	# Values exists, than sets them.
+	} else {
+		$self->_add_param($param, (ref $values[0] eq 'ARRAY' 
+			? $values[0] : [@values]), 'overwrite');
+	}
+
+	# Return values of param, or first value of param.
+	return wantarray ? @{$self->{'.parameters'}->{$param}}
+		: $self->{'.parameters'}->{$param}->[0];
+}
+
+#------------------------------------------------------------------------------
 sub query_string($) {
 #------------------------------------------------------------------------------
 # Return actual query string.
@@ -139,18 +139,18 @@ sub query_string($) {
 }
 
 #------------------------------------------------------------------------------
-sub upload($$$) {
+sub upload($$;$) {
 #------------------------------------------------------------------------------
 # Upload file from tmp.
 
 	my ($self, $filename, $writefile) = @_;
 	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
-		err 'Oops! File uploads only work if you specify '.
+		err 'File uploads only work if you specify '.
 			'enctype="multipart/form-data" in your form.';
 	}
 	unless ($filename) {;
 		err "No filename submitted for upload ".
-			"to $writefile." if $writefile;
+			"to '$writefile'." if $writefile;
 		return $self->{'.filehandles'} 
 			? keys %{$self->{'.filehandles'}} : ();
 	}
@@ -179,13 +179,13 @@ sub upload($$$) {
 }
 
 #------------------------------------------------------------------------------
-sub upload_info($$$) {
+sub upload_info($$;$) {
 #------------------------------------------------------------------------------
-# Return the file size of an uploaded file.
+# Return informations from uploaded files.
 
 	my ($self, $filename, $info) = @_;
 	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
-		err 'Oops! File uploads only work if you '.
+		err 'File uploads only work if you '.
 			'specify enctype="multipart/form-data" in your '.
 			'form.';
 	}
@@ -538,7 +538,14 @@ CGI::Pure - Common Gateway Interface Class.
 
  use CGI::Pure;
  my $cgi = CGI::Pure->new(%parameters);
- TODO
+ $cgi->append_param('par', 'value');
+ my @par_value = $cgi->param('par');
+ $cgi->delete_param('par');
+ $cgi->delete_all_params;
+ my $query_string = $cgi->query_string;
+ $cgi->upload('filename', '~/filename');
+ my $mime = $cgi->upload_info('filename', 'mime');
+ my $query_data = $cgi->query_data;
 
 =head1 METHODS
 
@@ -584,13 +591,6 @@ CGI::Pure - Common Gateway Interface Class.
 
 =back
 
-=item B<param([$param], [@values])>
-
- Returns or sets parameters in CGI.
- params() returns all parameters name.
- params('param') returns parameter 'param' value.
- params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2' values.
-
 =item B<append_param($param, [@values])>
 
  Append param value.
@@ -606,28 +606,82 @@ CGI::Pure - Common Gateway Interface Class.
 
  Delete all params.
 
+=item B<param([$param], [@values])>
+
+ Returns or sets parameters in CGI.
+ params() returns all parameters name.
+ params('param') returns parameter 'param' value.
+ params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2' values.
+
 =item B<query_string()>
 
  Return actual query string.
 
-=item B<upload()>
+=item B<upload($filename, [$write_to])>
 
-TODO
+ Upload file from tmp.
+ upload() returns array of uploaded filenames.
+ upload($filename) returns handler to uploaded filename.
+ upload($filename, $write_to) uploads temporary '$filename' file to '$write_to' file.
 
-=item B<upload_info()>
+=item B<upload_info($filename, [$info])>
 
-TODO
+ Return informations from uploaded files.
+ upload_info() returns array of uploaded files.
+ upload_info('filename') returns size of uploaded 'filename' file.
+ upload_info('filename', 'mime') returns mime type of uploaded 'filename' file.
 
 =item B<query_data()>
 
  Gets query data from server.
- Is possible only for enabled 'save_data' flag.
+ There is possible only for enabled 'save_data' flag.
 
 =back
 
-=head1 EXAMPLE
+=head1 EXAMPLE1
 
-TODO
+ # Pragmas.
+ use strict;
+ use warnings;
+
+ # Modules.
+ use CGI::Pure;
+
+ # Object.
+ my $query_string = 'par1=val1;par1=val2;par2=value';
+ my $cgi = CGI::Pure->new(
+   'init' => $query_string,
+ );
+ foreach ($cgi->param) {
+   print "Param '$_': ".join(' ', $cgi->param($_))."\n";
+ }
+
+ # Output:
+ # Param 'par1': val1 val2
+ # Param 'par2': value
+
+=head1 EXAMPLE2
+
+ # Pragmas.
+ use strict;
+ use warnings;
+
+ # Modules.
+ use CGI::Pure;
+
+ # Object.
+ my $cgi = CGI::Pure->new;
+ $cgi->param('par1', 'val1', 'val2');
+ $cgi->param('par2', 'val3');
+ $cgi->append_param('par2', 'val4');
+
+ foreach ($cgi->param) {
+   print "Param '$_': ".join(' ', $cgi->param($_))."\n";
+ }
+
+ # Output:
+ # Param 'par2': val3 val4
+ # Param 'par1': val1 val2
 
 =head1 REQUIREMENTS
 
