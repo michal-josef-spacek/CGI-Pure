@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.41 2008-06-13 23:39:37 skim Exp $
+# $Id: Pure.pm,v 1.42 2008-06-22 11:19:32 skim Exp $
 
 # Pragmas.
 use strict;
@@ -81,24 +81,22 @@ sub param($;$@) {
 }
 
 #------------------------------------------------------------------------------
-sub append_param($;$@) {
+sub append_param($$;@) {
 #------------------------------------------------------------------------------
 # Append param value.
 
 	my ($self, $param, @values) = @_;
-	return () unless defined $param;
 	$self->_add_param($param, ((defined $values[0] and ref $values[0]) 
 		? $values[0] : [@values]));
 	return $self->param($param);
 }
 
 #------------------------------------------------------------------------------
-sub delete_param($;$) {
+sub delete_param($$) {
 #------------------------------------------------------------------------------
 # Delete param.
 
 	my ($self, $param) = @_;
-	return () unless defined $param;
 	return undef unless defined $self->{'.parameters'}->{$param};
 	delete $self->{'.parameters'}->{$param};
 	return 1;
@@ -550,41 +548,57 @@ CGI::Pure - Common Gateway Interface Class.
 
 =item * B<disable_upload>
 
- TODO
+ Disables file upload.
+ Default value is 1.
 
 =item * B<init>
 
- TODO
+ Initialization variable.
+ May be:
+ - CGI::Pure object.
+ - Hash with params.
+ - Query string.
+ Default is undef.
 
 =item * B<post_max>
 
- TODO
+ Maximal post length.
+ -1 means no limit.
+ Default value is 102400kB
 
 =item * B<save_query_data>
 
- TODO
+ Flag, that means saving query data.
+ When is enable, is possible use query_data method.
+ Default value is 0.
 
 =back
 
-=item B<param()>
+=item B<param([$param], [@values])>
 
-TODO
+ Returns or sets parameters in CGI.
+ params() returns all parameters.
+ params('param') returns parameter 'param' value.
+ params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2' values.
 
-=item B<append_param()>
+=item B<append_param($param, [@values])>
 
-TODO
+ Append param value.
+ Return all values for param.
 
-=item B<delete_param()>
+=item B<delete_param($param)>
 
-TODO
+ Delete param.
+ Returns undef, when param doesn't exist.
+ Return 1, when param was deleted.
 
 =item B<delete_all_params()>
 
-TODO
+ Delete all params.
 
 =item B<query_string()>
 
-TODO
+ Return actual query string.
 
 =item B<upload()>
 
@@ -596,7 +610,8 @@ TODO
 
 =item B<query_data()>
 
-TODO
+ Gets query data from server.
+ Is possible only for enabled 'save_data' flag.
 
 =back
 
