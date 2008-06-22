@@ -1,4 +1,4 @@
-$Id: TODO,v 1.16 2008-06-22 11:20:24 skim Exp $
+$Id: TODO,v 1.17 2008-06-22 12:17:43 skim Exp $
 
 TODO
 ====
@@ -21,8 +21,6 @@ TODO
     Viz priklady na zabirani pameti v cvsprac/perl/CGI::Simple vs CGI::Pure.
 11. Pokud nechci pouzivat FCGI verzi, tak jak udelat prereq a testy?
 12. Priklady z CGI::Minimal?
-13. Parsovani query by melo jit i pres ';' namisto '&'. Viz standard. 
-    Pouzit CGI::Deurl::XS ?
 14.
 
 Applied
@@ -34,3 +32,7 @@ OK [20051223] skim
    Ted se muselo psat my $obj = CGI::Pure->new(undef, 'param' => 'param');
    Chce predelat tak, aby se psalo 'init' => $init a jinak nic.
 OK [20060104] skim
+
+13. Parsovani query by melo jit i pres ';' namisto '&'. Viz standard. 
+    Pouzit CGI::Deurl::XS ?
+OK [20080622] skim
