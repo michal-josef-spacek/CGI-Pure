@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure;
 #------------------------------------------------------------------------------
-# $Id: Pure.pm,v 1.43 2008-06-22 11:19:50 skim Exp $
+# $Id: Pure.pm,v 1.44 2008-06-22 11:23:34 skim Exp $
 
 # Pragmas.
 use strict;
@@ -577,7 +577,7 @@ CGI::Pure - Common Gateway Interface Class.
 =item B<param([$param], [@values])>
 
  Returns or sets parameters in CGI.
- params() returns all parameters.
+ params() returns all parameters name.
  params('param') returns parameter 'param' value.
  params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2' values.
 
