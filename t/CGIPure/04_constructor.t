@@ -1,5 +1,3 @@
-# $Id: 04_constructor.t,v 1.4 2006-02-08 22:04:37 skim Exp $
-
 print "Testing: new('init' => {'foo' => '1', 'bar' => [2, 3, 4]}) ".
 	"hash constructor.\n" if $debug;
 my $obj = $class->new('init' => {'foo' => '1', 'bar' => [2, 3, 4]});

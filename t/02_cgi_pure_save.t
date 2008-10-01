@@ -1,5 +1,4 @@
 #!/usr/bin/env perl
-# $Id: 02_cgi_pure_save.t,v 1.4 2005-08-21 09:44:09 skim Exp $
 
 # Pragmas.
 use strict;

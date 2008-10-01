@@ -1,5 +1,3 @@
-# $Id: 02_simple_constructor.t,v 1.6 2005-12-13 22:56:03 skim Exp $
-
 # Modules.
 use CGI::Pure;
 

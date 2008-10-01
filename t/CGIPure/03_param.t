@@ -1,5 +1,3 @@
-# $Id: 03_param.t,v 1.4 2008-01-01 11:39:31 skim Exp $
-
 print "Testing: param() empty method.\n" if $debug;
 my $obj = $class->new;
 my $param = $obj->param;

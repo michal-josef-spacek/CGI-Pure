@@ -1,5 +1,3 @@
-# $Id: 03_save.t,v 1.5 2006-02-08 22:04:38 skim Exp $
-
 # Tests directory.
 my $test_dir = "$ENV{'PWD'}/t/CGIPureSave";
 
