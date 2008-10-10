@@ -649,10 +649,10 @@ CGI::Pure - Common Gateway Interface Class.
  # Object.
  my $query_string = 'par1=val1;par1=val2;par2=value';
  my $cgi = CGI::Pure->new(
-   'init' => $query_string,
+         'init' => $query_string,
  );
  foreach ($cgi->param) {
-   print "Param '$_': ".join(' ', $cgi->param($_))."\n";
+         print "Param '$_': ".join(' ', $cgi->param($_))."\n";
  }
 
  # Output:
