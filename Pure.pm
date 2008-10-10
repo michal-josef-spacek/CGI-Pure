@@ -548,13 +548,13 @@ CGI::Pure - Common Gateway Interface Class.
 
 =head1 METHODS
 
-=over 4
+=over 8
 
 =item B<new(%parameters)>
 
  Constructor
 
-=over 4
+=over 8
 
 =item * B<disable_upload>
 
