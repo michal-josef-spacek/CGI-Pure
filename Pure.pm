@@ -675,7 +675,7 @@ CGI::Pure - Common Gateway Interface Class.
  $cgi->append_param('par2', 'val4');
 
  foreach ($cgi->param) {
-   print "Param '$_': ".join(' ', $cgi->param($_))."\n";
+         print "Param '$_': ".join(' ', $cgi->param($_))."\n";
  }
 
  # Output:
