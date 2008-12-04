@@ -74,6 +74,17 @@ sub append_param {
 }
 
 #------------------------------------------------------------------------------
+sub clone {
+#------------------------------------------------------------------------------
+# Clone class to my class.
+
+	my ($self, $class) = @_;
+	foreach my $param ($class->param) {
+		$self->param($param, $class->param($param));
+	}
+}
+
+#------------------------------------------------------------------------------
 sub delete_param {
 #------------------------------------------------------------------------------
 # Delete param.
@@ -242,22 +253,8 @@ sub _initialize {
 		}
 
 	# Inicialize from CGI::Pure object.
-	} elsif (ref $init eq 'CGI::Pure') {
-		eval { require Data::Dumper };
-		if ($@) {
-			err "Can't clone CGI::Pure object: $@";
-		}
-
-		# Avoid problems with strict when Data::Dumper returns $VAR1.
-		my $VAR1;
-
-		# Clone.
-		my $clone = eval { Data::Dumper::Dumper($init) };
-		if ($@) {
-			err "Can't clone CGI::Pure object: $@.";
-		} else {
-			$_[0] = $clone;
-		}
+	} elsif (UNIVERSAL::isa($init, 'CGI::Pure')) {
+		$self->clone($init);
 
 	# Initialize from a query string.
 	} else {
@@ -642,6 +639,10 @@ CGI::Pure - Common Gateway Interface Class.
 
  Append param value.
  Return all values for param.
+
+=item B<clone($class)>
+
+ Clone class to my class.
 
 =item B<delete_param($param)>
 
