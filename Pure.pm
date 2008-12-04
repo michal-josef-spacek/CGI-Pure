@@ -262,7 +262,7 @@ sub _initialize {
 		}
 
 	# Inicialize from CGI::Pure object.
-	} elsif (eval { $init->isa($init, 'CGI::Pure') }) {
+	} elsif (eval { $init->isa('CGI::Pure') }) {
 		$self->clone($init);
 
 	# Initialize from a query string.
