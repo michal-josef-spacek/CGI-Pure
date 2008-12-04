@@ -413,15 +413,16 @@ sub _parse_multipart {
 
 		BOUNDARY:
 		while ($data =~ m/^$boundary$CRLF/sm) {
+			my $header;
 
 			# Get header, delimited by first two CRLFs we see.
-			next READ unless $data
-				=~ m/^
-					([\040-\176$CRLF]+?
+			next READ if $data 
+				!~ m/^(
+					[\040-\176$CRLF]+?
 					$CRLF
-					$CRLF)
-				/osmx;
-			my $header = $1;
+					$CRLF
+				)/osmx;
+			$header = $1;
 
 			# Unhold header per RFC822.
 			(my $unfold = $1) =~ s/$CRLF\s+/ /ogsm;
