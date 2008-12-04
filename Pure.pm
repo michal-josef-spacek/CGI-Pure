@@ -13,9 +13,9 @@ use URI::Escape qw(uri_escape uri_unescape);
 use Readonly;
 
 # Constants.
-Readonly my $EMPTY => {};
-Readonly my $POST_MAX = 102_400;
-Readonly my $BLOCK_SIZE = 4_096;
+Readonly::Scalar my $EMPTY => {};
+Readonly::Scalar my $POST_MAX => 102_400;
+Readonly::Scalar my $BLOCK_SIZE => 4_096;
 
 # Version.
 our $VERSION = 0.03;
@@ -181,7 +181,8 @@ sub upload {
 
 		return $fh unless $writefile;
 		my $buffer;
-		if (! open(my $out, ">", $writefile)) {
+		my $out;
+		if (! open($out, ">", $writefile)) {
 			err "500 Can't write to $writefile: $!.";
 		}
 		binmode $out;
