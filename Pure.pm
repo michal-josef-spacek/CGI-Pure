@@ -416,7 +416,7 @@ sub _parse_multipart {
 			my $header;
 
 			# Get header, delimited by first two CRLFs we see.
-			next READ if $data 
+			next READ if $data
 				!~ m/^(
 					[\040-\176$CRLF]+?
 					$CRLF
