@@ -10,6 +10,12 @@ use warnings;
 use CGI::Deurl::XS qw(parse_query_string);
 use Error::Simple::Multiple;
 use URI::Escape qw(uri_escape uri_unescape);
+use Readonly;
+
+# Constants.
+Readonly my $EMPTY => {};
+Readonly my $POST_MAX = 102_400;
+Readonly my $BLOCK_SIZE = 4_096;
 
 # Version.
 our $VERSION = 0.03;
@@ -32,7 +38,7 @@ sub new {
 	$self->{'par_sep'} = '&';
 
 	# Use a post max of 100K, set to -1 for no limits.
-	$self->{'post_max'} = 102_400;
+	$self->{'post_max'} = $POST_MAX;
 
 	# Save query data from server.
 	$self->{'save_query_data'} = 0;
@@ -82,6 +88,7 @@ sub clone {
 	foreach my $param ($class->param) {
 		$self->param($param, $class->param($param));
 	}
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -156,7 +163,7 @@ sub upload {
 # Upload file from tmp.
 
 	my ($self, $filename, $writefile) = @_;
-	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
+	unless ($ENV{'CONTENT_TYPE'} =~ m/^multipart\/form-data/ismx) {
 		err 'File uploads only work if you specify '.
 			'enctype="multipart/form-data" in your form.';
 	}
@@ -174,13 +181,13 @@ sub upload {
 
 		return $fh unless $writefile;
 		my $buffer;
-		unless (open(OUT, ">", $writefile)) {
+		if (! open(my $out, ">", $writefile)) {
 			err "500 Can't write to $writefile: $!.";
 		}
-		binmode OUT;
+		binmode $out;
 		binmode $fh;
-		print OUT $buffer while read($fh, $buffer, 4096);
-		close OUT;
+		print $out $buffer while read($fh, $buffer, $BLOCK_SIZE);
+		close $out;
 		$self->{'.filehandles'}->{$filename} = undef;
 		undef $fh;
 	} else {
@@ -232,7 +239,7 @@ sub _global_variables {
 
 	my $self = shift;
 	$self->{'.parameters'} = {};
-	$self->{'.query_data'} = '';
+	$self->{'.query_data'} = $EMPTY;
 	return;
 }
 
@@ -254,7 +261,7 @@ sub _initialize {
 		}
 
 	# Inicialize from CGI::Pure object.
-	} elsif (UNIVERSAL::isa($init, 'CGI::Pure')) {
+	} elsif (eval { $init->isa($init, 'CGI::Pure') }) {
 		$self->clone($init);
 
 	# Initialize from a query string.
@@ -316,7 +323,7 @@ sub _common_parse {
 
 	# GET/HEAD method.
 	} elsif ($method eq 'GET' || $method eq 'HEAD') {
-		$data = $ENV{'QUERY_STRING'} || '';
+		$data = $ENV{'QUERY_STRING'} || $EMPTY;
 		$self->{'.query_data'} .= $data if $self->{'save_query_data'};
 	}
 
@@ -388,12 +395,12 @@ sub _parse_multipart {
 
 	$boundary = quotemeta $boundary;
 	my $got_data_length = 0;
-	my $data = '';
+	my $data = $EMPTY;
 	my $read;
 	my $CRLF = $self->_crlf;
 
 	READ:
-	while (read(STDIN, $read, 4096)) {
+	while (read(STDIN, $read, $BLOCK_SIZE)) {
 
 		# Adding post data.
 		$self->{'.query_data'} .= $read if $self->{'save_query_data'};
@@ -495,8 +502,10 @@ sub _save_tmpfile {
 	binmode $fh if $fh;
 	while (1) {
 		my $buffer = $data;
-		read(STDIN, $data, 4096);
-		if (! $data) { $data = ''; }
+		read(STDIN, $data, $BLOCK_SIZE);
+		if (! $data) {
+			$data = $EMPTY;
+		}
 		$got_data_length += length $data;
 		if ("$buffer$data" =~ m/$boundary/sm) {
 			$data = $buffer.$data;
