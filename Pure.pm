@@ -9,6 +9,7 @@ use warnings;
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
 use Error::Simple::Multiple;
+use List::MoreUtils qw(none);
 use Readonly;
 use URI::Escape qw(uri_escape uri_unescape);
 
@@ -16,6 +17,7 @@ use URI::Escape qw(uri_escape uri_unescape);
 Readonly::Scalar my $EMPTY => {};
 Readonly::Scalar my $POST_MAX => 102_400;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
+Readonly::Array my @PAR_SEP => ('&', ';');
 
 # Version.
 our $VERSION = 0.03;
@@ -52,7 +54,7 @@ sub new {
         }
 
 	# Check to parameter separator.
-	if (! grep { $_ eq $self->{'par_sep'} } ('&', ';')) {
+	if (none { $_ eq $self->{'par_sep'} } @PAR_SEP) {
 		err "Bad parameter separator '$self->{'par_sep'}'.";
 	}
 
