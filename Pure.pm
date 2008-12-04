@@ -12,7 +12,7 @@ use Error::Simple::Multiple;
 use URI::Escape qw(uri_escape uri_unescape);
 
 # Version.
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 #------------------------------------------------------------------------------
 sub new {
