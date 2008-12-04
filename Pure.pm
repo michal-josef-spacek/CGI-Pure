@@ -492,17 +492,19 @@ sub _save_tmpfile {
 	my $fh;
 	my $CRLF = $self->_crlf;
 	my $file_size = 0;
-
 	if ($self->{'disable_upload'}) {
 		err '405 Not Allowed - File uploads are disabled.';
 	} elsif ($filename) {
 		eval { require IO::File };
-		err "500 IO::File is not available $@." if $@;
-		$fh = new_tmpfile IO::File;
-		err "500 IO::File can't create new temp_file." unless $fh;
+		if ($@) {
+			err "500 IO::File is not available $@.";
+		}
+		$fh = new_tmpfile(IO::File);
+		if (! $fh) {
+			err "500 IO::File can't create new temp_file.";
+		}
 	}
-
-	binmode $fh if $fh;
+	binmode $fh;
 	while (1) {
 		my $buffer = $data;
 		read(STDIN, $data, $BLOCK_SIZE);
@@ -516,14 +518,14 @@ sub _save_tmpfile {
 		}
 
 		# BUG: Fixed hanging bug if browser terminates upload part way.
-		unless ($data) {
+		if (! $data) {
 			undef $fh;
 			err '400 Malformed multipart, no terminating '.
 				'boundary.';
 		}
 
 		# We do not have partial boundary so print to file if valid $fh.
-		print $fh $buffer if $fh;
+		print $fh $buffer;
 		$file_size += length $buffer;
 	}
 	$data =~ s/^
@@ -532,9 +534,12 @@ sub _save_tmpfile {
 		(?=$boundary)
 	//smx;
 
-	# Print remainder of file if valie $fh.
-	print $fh $1 if $fh;
-	$file_size += length $1;
+	# Print remainder of file if value $fh.
+	if ($1) {
+		print $fh $1;
+		$file_size += length $1;
+	}
+
 	return $got_data_length, $data, $fh, $file_size;
 }
 
