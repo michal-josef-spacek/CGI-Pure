@@ -197,13 +197,14 @@ sub upload_info {
 # Return informations from uploaded files.
 
 	my ($self, $filename, $info) = @_;
-	unless ($ENV{'CONTENT_TYPE'} =~ m|^multipart/form-data|i) {
+	if ($ENV{'CONTENT_TYPE'} !~ m/^multipart\/form-data/ismx) {
 		err 'File uploads only work if you '.
 			'specify enctype="multipart/form-data" in your '.
 			'form.';
 	}
 	return keys %{$self->{'.tmpfiles'}} unless $filename;
-	return $self->{'.tmpfiles'}->{$filename}->{'mime'} if $info =~ /mime/i;
+	return $self->{'.tmpfiles'}->{$filename}->{'mime'}
+		if $info =~ /mime/ism;
 	return $self->{'.tmpfiles'}->{$filename}->{'size'};
 }
 
