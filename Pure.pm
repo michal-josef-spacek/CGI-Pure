@@ -4,6 +4,7 @@ package CGI::Pure;
 
 # Pragmas.
 use strict;
+use warnings;
 
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
@@ -18,7 +19,7 @@ sub new {
 #------------------------------------------------------------------------------
 # Constructor.
 
-	my $class = shift;
+	my ($class, @params) = @_;
 	my $self = bless {}, $class;
 
 	# Disable upload.
@@ -37,7 +38,7 @@ sub new {
 	$self->{'save_query_data'} = 0;
 
 	# Process params.
-        while (@_) {
+        while (@params) {
                 my $key = shift;
                 my $val = shift;
                 err "Unknown parameter '$key'." unless exists $self->{$key};
@@ -162,7 +163,7 @@ sub upload {
 
 		return $fh unless $writefile;
 		my $buffer;
-		unless (open(OUT, ">$writefile")) {
+		unless (open(OUT, ">", $writefile)) {
 			err "500 Can't write to $writefile: $!.";
 		}
 		binmode OUT;
@@ -342,6 +343,7 @@ sub _add_param {
 	foreach my $value (@values) {
 		push @{$self->{'.parameters'}->{$param}}, $value;
 	}
+	return;
 }
 
 #------------------------------------------------------------------------------
