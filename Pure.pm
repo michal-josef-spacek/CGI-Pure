@@ -9,8 +9,8 @@ use warnings;
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
 use Error::Simple::Multiple;
-use URI::Escape qw(uri_escape uri_unescape);
 use Readonly;
+use URI::Escape qw(uri_escape uri_unescape);
 
 # Constants.
 Readonly::Scalar my $EMPTY => {};
