@@ -91,6 +91,7 @@ sub delete_all_params($) {
 	my $self = shift;
 	delete $self->{'.parameters'};
 	$self->{'.parameters'} = {};	
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -175,6 +176,7 @@ sub upload($$;$) {
 			"Are uploads enabled (disable_upload = 0)? ".
 			"Is post_max big enough?";
 	}
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -218,6 +220,7 @@ sub _global_variables($) {
 	my $self = shift;
 	$self->{'.parameters'} = {};
 	$self->{'.query_data'} = '';
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -259,6 +262,7 @@ sub _initialize($;$) {
 	} else {
 		$self->_parse_params($init);
 	}
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -321,6 +325,7 @@ sub _common_parse($) {
 	if ($data) {
 		$self->_parse_params($data);
 	}
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -352,6 +357,7 @@ sub _parse_params($;$) {
 	foreach (keys %{$pairs}) {
 		$self->_add_param($_, $pairs->{$_});
 	}
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -525,6 +531,8 @@ sub _uri_unescape($$) {
 
 1;
 
+__END__
+
 =pod
 
 =encoding utf8
@@ -682,7 +690,7 @@ CGI::Pure - Common Gateway Interface Class.
  # Param 'par2': val3 val4
  # Param 'par1': val1 val2
 
-=head1 REQUIREMENTS
+=head1 DEPENDENCIES
 
 L<CGI::Deurl::XS(3pm)>,
 L<Error::Simple::Multiple(3pm)>,
