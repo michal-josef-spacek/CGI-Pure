@@ -51,7 +51,7 @@ sub new($%) {
 
 	# Global object variables.
 	$self->_global_variables;
-	
+
 	# Initialization.
 	my $init = $self->{'init'};
 	delete $self->{'init'};
@@ -67,7 +67,7 @@ sub append_param($$;@) {
 # Append param value.
 
 	my ($self, $param, @values) = @_;
-	$self->_add_param($param, ((defined $values[0] and ref $values[0]) 
+	$self->_add_param($param, ((defined $values[0] and ref $values[0])
 		? $values[0] : [@values]));
 	return $self->param($param);
 }
@@ -90,7 +90,7 @@ sub delete_all_params($) {
 
 	my $self = shift;
 	delete $self->{'.parameters'};
-	$self->{'.parameters'} = {};	
+	$self->{'.parameters'} = {};
 	return;
 }
 
@@ -101,7 +101,7 @@ sub param($;$@) {
 
 	my ($self, $param, @values) = @_;
 
-	# Return list of all params.	
+	# Return list of all params.
 	unless (defined $param) {
 		return keys %{$self->{'.parameters'}};
 	}
@@ -112,7 +112,7 @@ sub param($;$@) {
 
 	# Values exists, than sets them.
 	} else {
-		$self->_add_param($param, (ref $values[0] eq 'ARRAY' 
+		$self->_add_param($param, (ref $values[0] eq 'ARRAY'
 			? $values[0] : [@values]), 'overwrite');
 	}
 
@@ -151,7 +151,7 @@ sub upload($$;$) {
 	unless ($filename) {;
 		err "No filename submitted for upload ".
 			"to '$writefile'." if $writefile;
-		return $self->{'.filehandles'} 
+		return $self->{'.filehandles'}
 			? keys %{$self->{'.filehandles'}} : ();
 	}
 	my $fh = $self->{'.filehandles'}->{$filename};
@@ -234,7 +234,7 @@ sub _initialize($;$) {
 	if (! defined $init) {
 		$self->_common_parse;
 
-	# Initialize from param hash.	
+	# Initialize from param hash.
 	} elsif (ref $init eq 'HASH') {
 		foreach my $param (keys %{$init}) {
 			$self->_add_param($param, $init->{$param});
@@ -314,8 +314,8 @@ sub _common_parse($) {
 			err "500 Bad read! wanted $length, got ".
 				(length $data).'.';
 		}
-	
-	# GET/HEAD method.	
+
+	# GET/HEAD method.
 	} elsif ($method eq 'GET' || $method eq 'HEAD') {
 		$data = $ENV{'QUERY_STRING'} || '';
 		$self->{'.query_data'} .= $data if $self->{'save_query_data'};
@@ -336,12 +336,12 @@ sub _add_param($;$$$) {
 	my ($self, $param, $value, $overwrite) = @_;
 	return () unless defined $param and defined $value;
 	@{$self->{'.parameters'}->{$param}} = () if $overwrite;
-	@{$self->{'.parameters'}->{$param}} = () 
+	@{$self->{'.parameters'}->{$param}} = ()
 		unless exists $self->{'.parameters'}->{$param};
 	my @values = ref $value eq 'ARRAY' ? @{$value} : ($value);
 	foreach my $value (@values) {
 		push @{$self->{'.parameters'}->{$param}}, $value;
-	}	
+	}
 }
 
 #------------------------------------------------------------------------------
@@ -350,7 +350,7 @@ sub _parse_params($;$) {
 # Parse params from data.
 
 	my ($self, $data) = @_;
-	return () unless defined $data;	
+	return () unless defined $data;
 
 	# Parse params.
 	my $pairs = parse_query_string($data);
@@ -381,7 +381,7 @@ sub _parse_multipart($) {
 	my $data = '';
 	my $read;
 	my $CRLF = $self->_crlf;
-	
+
 	READ:
 	while (read(STDIN, $read, 4096)) {
 
@@ -393,7 +393,7 @@ sub _parse_multipart($) {
 
 		BOUNDARY:
 		while ($data =~ m/^$boundary$CRLF/) {
-			
+
 			# Get header, delimited by first two CRLFs we see.
 			next READ unless $data
 				=~ m/^([\040-\176$CRLF]+?$CRLF$CRLF)/o;
@@ -422,8 +422,8 @@ sub _parse_multipart($) {
 				# Filehandle.
 				$self->{'.filehandles'}->{$filename} = $fh
 					if $fh;
-			
-				# Information about file.	
+
+				# Information about file.
 				$self->{'.tmpfiles'}->{$filename}
 					= {'size' => $size, 'mime' => $mime }
 					if $size;
@@ -537,7 +537,7 @@ __END__
 
 =encoding utf8
 
-=head1 NAME 
+=head1 NAME
 
 CGI::Pure - Common Gateway Interface Class.
 
