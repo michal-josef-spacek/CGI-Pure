@@ -39,8 +39,8 @@ sub new {
 
 	# Process params.
         while (@params) {
-                my $key = shift;
-                my $val = shift;
+                my $key = shift @params;
+                my $val = shift @params;
                 err "Unknown parameter '$key'." unless exists $self->{$key};
                 $self->{$key} = $val;
         }
@@ -79,7 +79,7 @@ sub delete_param {
 # Delete param.
 
 	my ($self, $param) = @_;
-	return undef unless defined $self->{'.parameters'}->{$param};
+	return unless defined $self->{'.parameters'}->{$param};
 	delete $self->{'.parameters'}->{$param};
 	return 1;
 }
@@ -243,7 +243,7 @@ sub _initialize {
 
 	# Inicialize from CGI::Pure object.
 	} elsif (ref $init eq 'CGI::Pure') {
-		eval (require Data::Dumper);
+		eval { require Data::Dumper };
 		if ($@) {
 			err "Can't clone CGI::Pure object: $@";
 		}
@@ -252,7 +252,7 @@ sub _initialize {
 		my $VAR1;
 
 		# Clone.
-		my $clone = eval(Data::Dumper::Dumper($init));
+		my $clone = eval { Data::Dumper::Dumper($init) };
 		if ($@) {
 			err "Can't clone CGI::Pure object: $@.";
 		} else {
@@ -280,7 +280,7 @@ sub _common_parse {
 	my $method = $ENV{'REQUEST_METHOD'} || 'No REQUEST_METHOD received';
 
 	# Multipart form data.
-	if ($length && $type =~ m|^multipart/form-data|i) {
+	if ($length && $type =~ m/^multipart\/form-data/imsx) {
 
 		# Get data_length, store data to internal structure.
 		my $got_data_length = $self->_parse_multipart;
@@ -368,7 +368,11 @@ sub _parse_multipart {
 # Parse multipart data.
 
 	my $self = shift;
-	my ($boundary) = $ENV{'CONTENT_TYPE'} =~ /boundary=\"?([^\";,]+)\"?/;
+	my ($boundary) = $ENV{'CONTENT_TYPE'}
+		=~ /
+			boundary=
+			\"?([^\";,]+)\"?
+		/xms;
 	unless ($boundary) {
 		err '400 No boundary supplied for multipart/form-data.';
 	}
@@ -376,7 +380,13 @@ sub _parse_multipart {
 	# BUG: IE 3.01 on the Macintosh uses just the boundary, forgetting
 	# the --
 	$boundary = '--'.$boundary
-		unless $ENV{'HTTP_USER_AGENT'} =~ m/MSIE\s+3\.0[12];\s*Mac/i;
+		unless $ENV{'HTTP_USER_AGENT'}
+		=~ m/
+			MSIE\s+
+			3\.0[12];
+			\s*
+			Mac
+		/ixms;
 
 	$boundary = quotemeta $boundary;
 	my $got_data_length = 0;
@@ -394,26 +404,45 @@ sub _parse_multipart {
 		$got_data_length += length $read;
 
 		BOUNDARY:
-		while ($data =~ m/^$boundary$CRLF/) {
+		while ($data =~ m/^$boundary$CRLF/sm) {
 
 			# Get header, delimited by first two CRLFs we see.
 			next READ unless $data
-				=~ m/^([\040-\176$CRLF]+?$CRLF$CRLF)/o;
+				=~ m/^
+					([\040-\176$CRLF]+?
+					$CRLF
+					$CRLF)
+				/osmx;
 			my $header = $1;
 
 			# Unhold header per RFC822.
-			(my $unfold = $1) =~ s/$CRLF\s+/ /og;
+			(my $unfold = $1) =~ s/$CRLF\s+/ /ogsm;
 
 			my ($param) = $unfold
-				=~ m/form-data;\s+name="?([^\";]*)"?/;
+				=~ m/
+					form-data;
+					\s+
+					name=
+					"?([^\";]*)"?
+				/xms;
 			my ($filename) = $unfold
-				=~ m/name="?\Q$param\E"?;\s+filename="?([^\"]*)"?/;
+				=~ m/
+					name=
+					"?\Q$param\E"?;
+					\s+
+					filename=
+					"?([^\"]*)"?
+				/xms;
 			if (defined $filename) {
 				my ($mime) = $unfold
-					=~ m/Content-Type:\s+([-\w\/]+)/io;
+					=~ m/
+						Content-Type:
+						\s+
+						([-\w\/]+)
+					/iosxm;
 
 				# Trim off header.
-				$data =~ s/^\Q$header\E//;
+				$data =~ s/^\Q$header\E//sm;
 
 				($got_data_length, $data, my $fh, my $size)
 					= $self->_save_tmpfile($boundary,
@@ -432,7 +461,12 @@ sub _parse_multipart {
 				next BOUNDARY;
 			}
 			next READ unless $data
-				=~ s/^\Q$header\E(.*?)$CRLF(?=$boundary)//s;
+				=~ s/^
+					\Q$header\E
+					(.*?)
+					$CRLF
+					(?=$boundary)
+				//sxm;
 			$self->_add_param($param, $1);
 		}
 	}
@@ -466,7 +500,7 @@ sub _save_tmpfile {
 		read(STDIN, $data, 4096);
 		if (! $data) { $data = ''; }
 		$got_data_length += length $data;
-		if ("$buffer$data" =~ m/$boundary/) {
+		if ("$buffer$data" =~ m/$boundary/sm) {
 			$data = $buffer.$data;
 			last;
 		}
@@ -482,7 +516,11 @@ sub _save_tmpfile {
 		print $fh $buffer if $fh;
 		$file_size += length $buffer;
 	}
-	$data =~ s/^(.*?)$CRLF(?=$boundary)//s;
+	$data =~ s/^
+		(.*?)
+		$CRLF
+		(?=$boundary)
+	//smx;
 
 	# Print remainder of file if valie $fh.
 	print $fh $1 if $fh;
@@ -503,7 +541,7 @@ sub _crlf {
 	# If not defined.
 	unless ($self->{'.crlf'}) {
 		my $OS = $^O;
-		$self->{'.crlf'} = ($OS =~ m/VMS/i) ? "\n" : "\r\n";
+		$self->{'.crlf'} = ($OS =~ m/VMS/ism) ? "\n" : "\r\n";
 	}
 
 	# Return sequence.
@@ -517,7 +555,7 @@ sub _uri_escape {
 
 	my ($self, $string) = @_;
 	$string = uri_escape($string);
-	$string =~ s/\ /\+/g;
+	$string =~ s/\ /\+/gsm;
 	return $string;
 }
 
@@ -527,7 +565,7 @@ sub _uri_unescape {
 # Unescapes uri.
 
 	my ($self, $string) = @_;
-	$string =~ s/\+/\ /g;
+	$string =~ s/\+/\ /gsm;
 	return uri_unescape($string);
 }
 
