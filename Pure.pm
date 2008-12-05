@@ -14,7 +14,7 @@ use Readonly;
 use URI::Escape qw(uri_escape uri_unescape);
 
 # Constants.
-Readonly::Scalar my $EMPTY => {};
+Readonly::Scalar my $EMPTY => q{};
 Readonly::Scalar my $POST_MAX => 102_400;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => ('&', ';');
