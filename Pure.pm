@@ -170,7 +170,7 @@ sub upload {
 			'enctype="multipart/form-data" in your form.';
 	}
 	unless ($filename) {;
-		err "No filename submitted for upload ".
+		err 'No filename submitted for upload '.
 			"to '$writefile'." if $writefile;
 		return $self->{'.filehandles'}
 			? keys %{$self->{'.filehandles'}} : ();
@@ -184,7 +184,7 @@ sub upload {
 		return $fh unless $writefile;
 		my $buffer;
 		my $out;
-		if (! open($out, ">", $writefile)) {
+		if (! open($out, '>', $writefile)) {
 			err "500 Can't write to $writefile: $!.";
 		}
 		binmode $out;
@@ -195,8 +195,8 @@ sub upload {
 		undef $fh;
 	} else {
 		err "No filehandle for '$filename'. ".
-			"Are uploads enabled (disable_upload = 0)? ".
-			"Is post_max big enough?";
+			'Are uploads enabled (disable_upload = 0)? '.
+			'Is post_max big enough?';
 	}
 	return;
 }
@@ -227,7 +227,7 @@ sub query_data {
 	if ($self->{'save_query_data'}) {
 		return $self->{'.query_data'};
 	} else {
-		return "Not saved query data.";
+		return 'Not saved query data.';
 	}
 }
 
@@ -306,9 +306,9 @@ sub _common_parse {
                 if ($self->{'post_max'} != -1
                         and $length > $self->{'post_max'}) {
 
-                        err "413 Request entity too large: ".
+                        err '413 Request entity too large: '.
                                 "$length bytes on STDIN exceeds ".
-                                "post_max !";
+                                'post_max !';
 
 		# Get data.
                 } elsif ($length) {
@@ -502,7 +502,7 @@ sub _save_tmpfile {
 		}
 		$fh = new_tmpfile IO::File;
 		if (! $fh) {
-			err "500 IO::File can't create new temp_file.";
+			err '500 IO::File can\'t create new temp_file.';
 		}
 	}
 	binmode $fh;
