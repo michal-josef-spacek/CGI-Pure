@@ -500,7 +500,7 @@ sub _save_tmpfile {
 		if ($@) {
 			err "500 IO::File is not available $@.";
 		}
-		$fh = new_tmpfile(IO::File);
+		$fh = new_tmpfile IO::File;
 		if (! $fh) {
 			err "500 IO::File can't create new temp_file.";
 		}
