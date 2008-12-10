@@ -8,6 +8,7 @@ use warnings;
 
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
+use English qw(-no_match_vars);
 use Error::Simple::Multiple;
 use List::MoreUtils qw(none);
 use Readonly;
@@ -16,6 +17,7 @@ use URI::Escape qw(uri_escape uri_unescape);
 # Constants.
 Readonly::Scalar my $EMPTY => q{};
 Readonly::Scalar my $POST_MAX => 102_400;
+Readonly::Scalar my $POST_MAX_NO_LIMIT => -1;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => ('&', ';');
 
@@ -39,7 +41,8 @@ sub new {
 	# Parameter separator.
 	$self->{'par_sep'} = '&';
 
-	# Use a post max of 100K, set to -1 for no limits.
+	# Use a post max of 100K ($POST_MAX), 
+	# set to -1 ($POST_MAX_NO_LIMIT) for no limits.
 	$self->{'post_max'} = $POST_MAX;
 
 	# Save query data from server.
@@ -49,7 +52,7 @@ sub new {
         while (@params) {
                 my $key = shift @params;
                 my $val = shift @params;
-                err "Unknown parameter '$key'." unless exists $self->{$key};
+                err "Unknown parameter '$key'." if ! exists $self->{$key};
                 $self->{$key} = $val;
         }
 
@@ -99,7 +102,7 @@ sub delete_param {
 # Delete param.
 
 	my ($self, $param) = @_;
-	return unless defined $self->{'.parameters'}->{$param};
+	return if ! defined $self->{'.parameters'}->{$param};
 	delete $self->{'.parameters'}->{$param};
 	return 1;
 }
@@ -123,13 +126,13 @@ sub param {
 	my ($self, $param, @values) = @_;
 
 	# Return list of all params.
-	unless (defined $param) {
+	if (! defined $param) {
 		return keys %{$self->{'.parameters'}};
 	}
 
 	# Return values for $param.
-	unless (@values) {
-		return () unless exists $self->{'.parameters'}->{$param};
+	if (! @values) {
+		return () if ! exists $self->{'.parameters'}->{$param};
 
 	# Values exists, than sets them.
 	} else {
@@ -151,7 +154,7 @@ sub query_string {
 	my @pairs;
 	foreach my $param ($self->param) {
 		foreach my $value ($self->param($param)) {
-			next unless defined $value;
+			next if ! defined $value;
 			push @pairs, $self->_uri_escape($param).'='.
 				$self->_uri_escape($value);
 		}
@@ -165,11 +168,11 @@ sub upload {
 # Upload file from tmp.
 
 	my ($self, $filename, $writefile) = @_;
-	unless ($ENV{'CONTENT_TYPE'} =~ m/^multipart\/form-data/ismx) {
+	if ($ENV{'CONTENT_TYPE'} !~ m/^multipart\/form-data/ismx) {
 		err 'File uploads only work if you specify '.
 			'enctype="multipart/form-data" in your form.';
 	}
-	unless ($filename) {;
+	if (! $filename) {;
 		err 'No filename submitted for upload '.
 			"to '$writefile'." if $writefile;
 		return $self->{'.filehandles'}
@@ -181,16 +184,20 @@ sub upload {
 		# Get ready for reading.
 		seek $fh, 0, 0;
 
-		return $fh unless $writefile;
+		return $fh if ! $writefile;
+		binmode $fh;
 		my $buffer;
 		my $out;
 		if (! open($out, '>', $writefile)) {
-			err "500 Can't write to $writefile: $!.";
+			err "Cannot write file '$writefile': $!.";
 		}
 		binmode $out;
-		binmode $fh;
-		print $out $buffer while read($fh, $buffer, $BLOCK_SIZE);
-		close $out;
+		while (read($fh, $buffer, $BLOCK_SIZE)) {
+			print {$out} $buffer;
+		}
+		if (! close $out) {
+			err "Cannot close file '$writefile': $!.";
+		}
 		$self->{'.filehandles'}->{$filename} = undef;
 		undef $fh;
 	} else {
@@ -212,7 +219,7 @@ sub upload_info {
 			'specify enctype="multipart/form-data" in your '.
 			'form.';
 	}
-	return keys %{$self->{'.tmpfiles'}} unless $filename;
+	return keys %{$self->{'.tmpfiles'}} if ! $filename;
 	return $self->{'.tmpfiles'}->{$filename}->{'mime'}
 		if $info =~ /mime/ism;
 	return $self->{'.tmpfiles'}->{$filename}->{'size'};
@@ -294,8 +301,10 @@ sub _common_parse {
 		my $got_data_length = $self->_parse_multipart;
 
 		# Bad data length vs content_length.
-		err "500 Bad read! wanted $length, got $got_data_length."
-			unless $length == $got_data_length;
+		if ($length != $got_data_length) {
+			err "500 Bad read! wanted $length, got ".
+				"$got_data_length.";
+		}
 
 		return;
 
@@ -303,7 +312,7 @@ sub _common_parse {
 	} elsif ($method eq 'POST') {
 
 		# Maximal post length is above my length.
-                if ($self->{'post_max'} != -1
+                if ($self->{'post_max'} != $POST_MAX_NO_LIMIT
                         and $length > $self->{'post_max'}) {
 
                         err '413 Request entity too large: '.
@@ -312,14 +321,16 @@ sub _common_parse {
 
 		# Get data.
                 } elsif ($length) {
-			read(STDIN, $data, $length) if $length > 0;
+			read(STDIN, $data, $length);
 		}
 
 		# Save data for post.
-		$self->{'.query_data'} = $data if $self->{'save_query_data'};
+		if ($self->{'save_query_data'}) {
+			$self->{'.query_data'} = $data;
+		}
 
 		# Bad length of data.
-		unless ($length == length $data) {
+		if ($length != length $data) {
 			err "500 Bad read! wanted $length, got ".
 				(length $data).'.';
 		}
@@ -327,7 +338,9 @@ sub _common_parse {
 	# GET/HEAD method.
 	} elsif ($method eq 'GET' || $method eq 'HEAD') {
 		$data = $ENV{'QUERY_STRING'} || $EMPTY;
-		$self->{'.query_data'} .= $data if $self->{'save_query_data'};
+		if ($self->{'save_query_data'}) {
+			$self->{'.query_data'} .= $data;
+		}
 	}
 
 	# Parse params.
@@ -343,10 +356,12 @@ sub _add_param {
 # Adding param.
 
 	my ($self, $param, $value, $overwrite) = @_;
-	return () unless defined $param and defined $value;
-	@{$self->{'.parameters'}->{$param}} = () if $overwrite;
-	@{$self->{'.parameters'}->{$param}} = ()
-		unless exists $self->{'.parameters'}->{$param};
+	return () if ! defined $param;
+	if ($overwrite
+		|| ! exists $self->{'.parameters'}->{$param}) {
+
+		$self->{'.parameters'}->{$param} = [];
+	}
 	my @values = ref $value eq 'ARRAY' ? @{$value} : ($value);
 	foreach my $value (@values) {
 		push @{$self->{'.parameters'}->{$param}}, $value;
@@ -360,7 +375,7 @@ sub _parse_params {
 # Parse params from data.
 
 	my ($self, $data) = @_;
-	return () unless defined $data;
+	return () if ! defined $data;
 
 	# Parse params.
 	my $pairs = parse_query_string($data);
@@ -381,15 +396,14 @@ sub _parse_multipart {
 			boundary=
 			\"?([^\";,]+)\"?
 		/xms;
-	unless ($boundary) {
+	if (! $boundary) {
 		err '400 No boundary supplied for multipart/form-data.';
 	}
 
 	# BUG: IE 3.01 on the Macintosh uses just the boundary, forgetting
 	# the --
 	$boundary = '--'.$boundary
-		unless $ENV{'HTTP_USER_AGENT'}
-		=~ m/
+		if ! $ENV{'HTTP_USER_AGENT'} =~ m/
 			MSIE\s+
 			3\.0[12];
 			\s*
@@ -406,7 +420,9 @@ sub _parse_multipart {
 	while (read(STDIN, $read, $BLOCK_SIZE)) {
 
 		# Adding post data.
-		$self->{'.query_data'} .= $read if $self->{'save_query_data'};
+		if ($self->{'save_query_data'}) {
+			$self->{'.query_data'} .= $read;
+		}
 
 		$data .= $read;
 		$got_data_length += length $read;
@@ -416,26 +432,26 @@ sub _parse_multipart {
 			my $header;
 
 			# Get header, delimited by first two CRLFs we see.
-			next READ if $data
-				!~ m/^(
+			if ($data !~ m/^(
 					[\040-\176$CRLF]+?
 					$CRLF
 					$CRLF
-				)/osmx;
+				)/mosx) {
+
+				next READ;
+			}
 			$header = $1;
 
 			# Unhold header per RFC822.
 			(my $unfold = $1) =~ s/$CRLF\s+/ /ogsm;
 
-			my ($param) = $unfold
-				=~ m/
+			my ($param) = $unfold =~ m/
 					form-data;
 					\s+
 					name=
 					"?([^\";]*)"?
 				/xms;
-			my ($filename) = $unfold
-				=~ m/
+			my ($filename) = $unfold =~ m/
 					name=
 					"?\Q$param\E"?;
 					\s+
@@ -443,8 +459,7 @@ sub _parse_multipart {
 					"?([^\"]*)"?
 				/xms;
 			if (defined $filename) {
-				my ($mime) = $unfold
-					=~ m/
+				my ($mime) = $unfold =~ m/
 						Content-Type:
 						\s+
 						([-\w\/]+)
@@ -464,18 +479,23 @@ sub _parse_multipart {
 					if $fh;
 
 				# Information about file.
-				$self->{'.tmpfiles'}->{$filename}
-					= {'size' => $size, 'mime' => $mime }
-					if $size;
+				if ($size) {
+					$self->{'.tmpfiles'}->{$filename} = {
+						'size' => $size,
+						'mime' => $mime,
+					};
+				}
 				next BOUNDARY;
 			}
-			next READ unless $data
-				=~ s/^
+			if ($data !~ s/^
 					\Q$header\E
 					(.*?)
 					$CRLF
 					(?=$boundary)
-				//sxm;
+				//sxm) {
+
+				next READ;
+			}
 			$self->_add_param($param, $1);
 		}
 	}
@@ -496,9 +516,11 @@ sub _save_tmpfile {
 	if ($self->{'disable_upload'}) {
 		err '405 Not Allowed - File uploads are disabled.';
 	} elsif ($filename) {
-		eval { require IO::File };
-		if ($@) {
-			err "500 IO::File is not available $@.";
+		eval {
+			require IO::File;
+		};
+		if ($EVAL_ERROR) {
+			err "500 IO::File is not available $EVAL_ERROR.";
 		}
 		$fh = new_tmpfile IO::File;
 		if (! $fh) {
@@ -513,7 +535,7 @@ sub _save_tmpfile {
 			$data = $EMPTY;
 		}
 		$got_data_length += length $data;
-		if ("$buffer$data" =~ m/$boundary/sm) {
+		if ("$buffer$data" =~ m/$boundary/ms) {
 			$data = $buffer.$data;
 			last;
 		}
@@ -526,7 +548,7 @@ sub _save_tmpfile {
 		}
 
 		# We do not have partial boundary so print to file if valid $fh.
-		print $fh $buffer;
+		print {$fh} $buffer;
 		$file_size += length $buffer;
 	}
 	$data =~ s/^
@@ -537,7 +559,7 @@ sub _save_tmpfile {
 
 	# Print remainder of file if value $fh.
 	if ($1) {
-		print $fh $1;
+		print {$fh} $1;
 		$file_size += length $1;
 	}
 
@@ -555,9 +577,8 @@ sub _crlf {
 	$self->{'.crlf'} = $CRLF if $CRLF;
 
 	# If not defined.
-	unless ($self->{'.crlf'}) {
-		my $OS = $^O;
-		$self->{'.crlf'} = ($OS =~ m/VMS/ism) ? "\n" : "\r\n";
+	if (! $self->{'.crlf'}) {
+		$self->{'.crlf'} = ($OSNAME =~ m/VMS/ism) ? "\n" : "\r\n";
 	}
 
 	# Return sequence.
@@ -765,6 +786,10 @@ L<CGI::Pure::Save(3pm)>.
 =head1 AUTHOR
 
 Michal Špaček L<tupinek@gmail.com>
+
+=head1 LICENSE AND COPYRIGHT
+
+ BSD license.
 
 =head1 VERSION
 
