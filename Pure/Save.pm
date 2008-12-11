@@ -1,14 +1,19 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::Save;
 #------------------------------------------------------------------------------
-# Saving and loading query params from file.
 
 # Pragmas.
 use strict;
+use warnings;
 
 # Modules.
-use Error::Simple::Multiple;
+use English qw(-no_match_vars);
+use Error::Simple::Multiple qw(err);
+use Readonly;
 use URI::Escape;
+
+# Constants.
+Readonly::Scalar my $EMPTY => q{};
 
 # Version.
 our $VERSION = 0.01;
@@ -18,23 +23,23 @@ sub new {
 #------------------------------------------------------------------------------
 # Constructor.
 
-	my $class = shift;
+	my ($class, @params) = @_;
 	my $self = bless {}, $class;
 
 	# CGI::Pure object.
-	$self->{'cgi_pure'} = '';
+	$self->{'cgi_pure'} = $EMPTY;
 
 	# Process params.
-        while (@_) {
-                my $key = shift;
-                my $val = shift;
-                err "Unknown parameter '$key'." unless exists $self->{$key};
+        while (@params) {
+                my $key = shift @params;
+                my $val = shift @params;
+                err "Unknown parameter '$key'." if ! exists $self->{$key};
                 $self->{$key} = $val;
         }
 
 	# CGI::Pure object not exist.
-	unless ($self->{'cgi_pure'} && $self->{'cgi_pure'}->isa('CGI::Pure')) {
-		err "CGI::Pure object doesn't define.";
+	if (! $self->{'cgi_pure'} || ! $self->{'cgi_pure'}->isa('CGI::Pure')) {
+		err 'CGI::Pure object doesn\'t define.';
 	}
 
 	# Object.
@@ -47,17 +52,17 @@ sub load {
 # Load parameters from file.
 
 	my ($self, $fh) = @_;
-	unless ($fh && fileno $fh) {
+	if (! $fh || ! fileno $fh) {
 		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
-		return undef;
+		return;
 	}
-	local $/ = "\n";
+	local $INPUT_RECORD_SEPARATOR = "\n";
 	while (my $pair = <$fh>) {
 		chomp $pair;
 		return 1 if $pair eq '=';
 		$self->{'cgi_pure'}->_parse_params($pair);
 	}
-	return undef;
+	return;
 }
 
 #------------------------------------------------------------------------------
@@ -66,18 +71,19 @@ sub save {
 # Save parameters to file.
 
 	my ($self, $fh) = @_;
-	local ($,, $\) = ('', '');
-	unless ($fh && fileno $fh) {
+	local $OUTPUT_FIELD_SEPARATOR = $EMPTY;
+	local $OUTPUT_RECORD_SEPARATOR = $EMPTY;
+	if (! $fh || ! fileno $fh) {
 		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
-		return undef;
+		return;
 	}
-	foreach my $param ($self->{'cgi_pure'}->param()) {
+	foreach my $param ($self->{'cgi_pure'}->param) {
 		foreach my $value ($self->{'cgi_pure'}->param($param)) {
-			print $fh uri_escape($param), '=',
+			print {$fh} uri_escape($param), '=',
 				uri_escape($value), "\n";
 		}
 	}
-	print $fh "=\n";
+	print {$fh} "=\n";
 	return 1;
 }
 
