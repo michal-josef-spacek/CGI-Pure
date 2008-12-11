@@ -47,12 +47,13 @@ sub new {
 	my ($class, %params) = @_;
 	if (! exists $params{'init'}) {
 		if ($EXT_REQUEST) {
-			return if ! $EXT_REQUEST->Accept >= 0;
+			return if $EXT_REQUEST->Accept < 0;
 		} else {
-			return if ! FCGI::accept >= 0;
+			return if FCGI::accept < 0;
 		}
 	}
-	return $class = $class->SUPER::new(%params);
+	my $self = $class->SUPER::new(%params);
+	return $self;
 }
 
 1;
