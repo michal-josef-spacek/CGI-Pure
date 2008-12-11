@@ -9,7 +9,7 @@ use warnings;
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
 use English qw(-no_match_vars);
-use Error::Simple::Multiple;
+use Error::Simple::Multiple qw(err);
 use List::MoreUtils qw(none);
 use Readonly;
 use URI::Escape qw(uri_escape uri_unescape);
@@ -41,7 +41,7 @@ sub new {
 	# Parameter separator.
 	$self->{'par_sep'} = '&';
 
-	# Use a post max of 100K ($POST_MAX), 
+	# Use a post max of 100K ($POST_MAX),
 	# set to -1 ($POST_MAX_NO_LIMIT) for no limits.
 	$self->{'post_max'} = $POST_MAX;
 
