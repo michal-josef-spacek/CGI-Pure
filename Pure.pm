@@ -415,7 +415,6 @@ sub _parse_multipart {
 	my $data = $EMPTY;
 	my $read;
 	my $CRLF = $self->_crlf;
-	$CRLF = "\n";
 
 	READ:
 	while (read(STDIN, $read, $BLOCK_SIZE)) {
