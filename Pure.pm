@@ -448,15 +448,12 @@ sub _parse_multipart {
 			my ($param) = $unfold =~ m/
 					form-data;
 					\s+
-					name=
-					"?([^\";]*)"?
+					name="?([^\";]*)"?
 				/xms;
 			my ($filename) = $unfold =~ m/
-					name=
-					"?\Q$param\E"?;
+					name="?\Q$param\E"?;
 					\s+
-					filename=
-					"?([^\"]*)"?
+					filename="?([^\"]*)"?
 				/xms;
 			if (defined $filename) {
 				my ($mime) = $unfold =~ m/
