@@ -415,6 +415,7 @@ sub _parse_multipart {
 	my $data = $EMPTY;
 	my $read;
 	my $CRLF = $self->_crlf;
+	$CRLF = "\n";
 
 	READ:
 	while (read(STDIN, $read, $BLOCK_SIZE)) {
@@ -432,18 +433,22 @@ sub _parse_multipart {
 			my $header;
 
 			# Get header, delimited by first two CRLFs we see.
-			if ($data !~ m/^(
-					[\040-\176$CRLF]+?
-					$CRLF
-					$CRLF
-				)/mosx) {
-
+			if ($data !~ m/^([\040-\176$CRLF]+?$CRLF$CRLF)/ms) {
 				next READ;
 			}
+# XXX Proc tohle nemuze byt? /x tam dela nejake potize.
+#			if ($data !~ m/^(
+#					[\040-\176$CRLF]+?
+#					$CRLF
+#					$CRLF
+#				)/msx) {
+#
+#				next READ;
+#			}
 			$header = $1;
 
 			# Unhold header per RFC822.
-			(my $unfold = $1) =~ s/$CRLF\s+/ /ogsm;
+			(my $unfold = $1) =~ s/$CRLF\s+/\ /gsm;
 
 			my ($param) = $unfold =~ m/
 					form-data;
@@ -460,7 +465,7 @@ sub _parse_multipart {
 						Content-Type:
 						\s+
 						([-\w\/]+)
-					/iosxm;
+					/isxm;
 
 				# Trim off header.
 				$data =~ s/^\Q$header\E//sm;
@@ -484,15 +489,19 @@ sub _parse_multipart {
 				}
 				next BOUNDARY;
 			}
-			if ($data !~ s/^
-					\Q$header\E
-					(.*?)
-					$CRLF
-					(?=$boundary)
-				//sxm) {
-
+			if ($data !~ s/^\Q$header\E(.*?)$CRLF(?=$boundary)//s) {
 				next READ;
 			}
+# XXX /x
+#			if ($data !~ s/^
+#					\Q$header\E
+#					(.*?)
+#					$CRLF
+#					(?=$boundary)
+#				//sxm) {
+#
+#				next READ;
+#			}
 			$self->_add_param($param, $1);
 		}
 	}
