@@ -20,7 +20,9 @@ TODO
 11. Pokud nechci pouzivat FCGI verzi, tak jak udelat prereq a testy?
 12. Priklady z CGI::Minimal?
 15. Dokumentace pro CGI::Pure::Fast.
-16.
+16. Testy pro multipart. Predelat testy, aby se testovaly samostatne ruzne
+    get/post/etc.
+17.
 
 Applied
 =======
