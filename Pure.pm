@@ -15,7 +15,7 @@ use Readonly;
 use URI::Escape qw(uri_escape uri_unescape);
 
 # Constants.
-Readonly::Scalar my $EMPTY => q{};
+Readonly::Scalar my $EMPTY_STR => q{};
 Readonly::Scalar my $POST_MAX => 102_400;
 Readonly::Scalar my $POST_MAX_NO_LIMIT => -1;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
@@ -249,7 +249,7 @@ sub _global_variables {
 
 	my $self = shift;
 	$self->{'.parameters'} = {};
-	$self->{'.query_data'} = $EMPTY;
+	$self->{'.query_data'} = $EMPTY_STR;
 	return;
 }
 
@@ -337,7 +337,7 @@ sub _common_parse {
 
 	# GET/HEAD method.
 	} elsif ($method eq 'GET' || $method eq 'HEAD') {
-		$data = $ENV{'QUERY_STRING'} || $EMPTY;
+		$data = $ENV{'QUERY_STRING'} || $EMPTY_STR;
 		if ($self->{'save_query_data'}) {
 			$self->{'.query_data'} .= $data;
 		}
@@ -412,7 +412,7 @@ sub _parse_multipart {
 
 	$boundary = quotemeta $boundary;
 	my $got_data_length = 0;
-	my $data = $EMPTY;
+	my $data = $EMPTY_STR;
 	my $read;
 	my $CRLF = $self->_crlf;
 
@@ -537,7 +537,7 @@ sub _save_tmpfile {
 		my $buffer = $data;
 		read(STDIN, $data, $BLOCK_SIZE);
 		if (! $data) {
-			$data = $EMPTY;
+			$data = $EMPTY_STR;
 		}
 		$got_data_length += length $data;
 		if ("$buffer$data" =~ m/$boundary/ms) {

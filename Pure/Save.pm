@@ -13,7 +13,7 @@ use Readonly;
 use URI::Escape;
 
 # Constants.
-Readonly::Scalar my $EMPTY => q{};
+Readonly::Scalar my $EMPTY_STR => q{};
 
 # Version.
 our $VERSION = 0.01;
@@ -27,7 +27,7 @@ sub new {
 	my $self = bless {}, $class;
 
 	# CGI::Pure object.
-	$self->{'cgi_pure'} = $EMPTY;
+	$self->{'cgi_pure'} = $EMPTY_STR;
 
 	# Process params.
         while (@params) {
@@ -71,8 +71,8 @@ sub save {
 # Save parameters to file.
 
 	my ($self, $fh) = @_;
-	local $OUTPUT_FIELD_SEPARATOR = $EMPTY;
-	local $OUTPUT_RECORD_SEPARATOR = $EMPTY;
+	local $OUTPUT_FIELD_SEPARATOR = $EMPTY_STR;
+	local $OUTPUT_RECORD_SEPARATOR = $EMPTY_STR;
 	if (! $fh || ! fileno $fh) {
 		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
 		return;
