@@ -22,7 +22,9 @@ TODO
 15. Dokumentace pro CGI::Pure::Fast.
 16. Testy pro multipart. Predelat testy, aby se testovaly samostatne ruzne
     get/post/etc.
-17.
+17. Co kdyz poslu postem soubor s utf8 nazvem? Zkousel jsem a vyhodi to chybu na
+    quotemeta na radku 457.
+18.
 
 Applied
 =======
