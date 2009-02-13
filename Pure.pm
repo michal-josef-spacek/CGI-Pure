@@ -794,7 +794,7 @@ Michal Špaček L<tupinek@gmail.com>
 
 =head1 LICENSE AND COPYRIGHT
 
- BSD license.
+BSD license.
 
 =head1 VERSION
 
