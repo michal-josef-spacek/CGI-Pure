@@ -7,7 +7,7 @@ WriteMakefile(
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
 		'CGI::Deurl::XS' => 0,
-		'Error::Simple::Multiple' => 0.04,
+		'Error::Simple::Multiple' => 0.05,
 		'FCGI' => 0,
 		'Readonly' => 0,
 		'URI::Escape' => 3.22,
