@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 package CGI::Pure::ModPerl;
 #------------------------------------------------------------------------------
-# Version CGI::Pure for mod_perl.
+# TODO Predelat na ModPerl1 a upravit podle ModPerl2.
 
 # Pragmas.
 use base qw(CGI::Pure);
