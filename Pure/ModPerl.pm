@@ -4,16 +4,15 @@ package CGI::Pure::ModPerl;
 # Version CGI::Pure for mod_perl.
 
 # Pragmas.
+use base qw(CGI::Pure);
 use strict;
+use warnings;
 
 # Modules.
 use CGI::Pure;
 
 # Version.
 our $VERSION = 0.01;
-
-# Inheritance.
-our @ISA = ('CGI::Pure');
 
 #------------------------------------------------------------------------------
 sub new {
@@ -40,7 +39,7 @@ sub _initialize_mod_perl {
         if (defined $mod_perl::VERSION) {
 
 		# Apache request.
-                my $r = Apache->request();
+                my $r = Apache->request;
 
 		# mod_perl version 2.
                 if ($mod_perl::VERSION >= 1.99) {
@@ -54,8 +53,9 @@ sub _initialize_mod_perl {
                         require APR::Pool;
 
                         if (defined $r) {
-                                $r->subprocess_env()
-                                        unless exists $ENV{'REQUEST_METHOD'};
+				if (! exists $ENV{'REQUEST_METHOD'}) {
+	                                $r->subprocess_env;
+				}
 
 				# TODO CGI::Simple doesn't exist.
                                 $r->pool->cleanup_register(
@@ -72,18 +72,17 @@ sub _initialize_mod_perl {
                         require Apache;
 
 			# TODO CGI::Simple doesn't exist.
-                        $r->register_cleanup(
-                                \&CGI::Simple::_initialize_globals)
-                                if defined $r;
+			if (defined $r) {
+	                        $r->register_cleanup(\&CGI::Simple::_initialize_globals);
+			}
                 }
         }
 }
 
 #------------------------------------------------------------------------------
-sub _mod_perl {
+sub _is_mod_perl {
 #------------------------------------------------------------------------------
 # Is there mod_perl?
-# XXX From CGI::Simple.
 
         return (exists $ENV{'MOD_PERL'}
                 || ($ENV{'GATEWAY_INTERFACE'}
