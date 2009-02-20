@@ -49,12 +49,14 @@ sub new {
 	$self->{'save_query_data'} = 0;
 
 	# Process params.
-        while (@params) {
-                my $key = shift @params;
-                my $val = shift @params;
-                err "Unknown parameter '$key'." if ! exists $self->{$key};
-                $self->{$key} = $val;
-        }
+	while (@params) {
+		my $key = shift @params;
+		my $val = shift @params;
+		if (! exists $self->{$key}) {
+			err "Unknown parameter '$key'.";
+		}
+		$self->{$key} = $val;
+	}
 
 	# Check to parameter separator.
 	if (none { $_ eq $self->{'par_sep'} } @PAR_SEP) {
@@ -271,6 +273,7 @@ sub _initialize {
 		}
 
 	# Inicialize from CGI::Pure object.
+	# XXX Mod_perl?
 	} elsif (eval { $init->isa('CGI::Pure') }) {
 		$self->clone($init);
 
@@ -278,6 +281,7 @@ sub _initialize {
 	} else {
 		$self->_parse_params($init);
 	}
+
 	return;
 }
 
@@ -312,12 +316,12 @@ sub _common_parse {
 	} elsif ($method eq 'POST') {
 
 		# Maximal post length is above my length.
-                if ($self->{'post_max'} != $POST_MAX_NO_LIMIT
-                        and $length > $self->{'post_max'}) {
+		if ($self->{'post_max'} != $POST_MAX_NO_LIMIT
+			and $length > $self->{'post_max'}) {
 
-                        err '413 Request entity too large: '.
-                                "$length bytes on STDIN exceeds ".
-                                'post_max !';
+			err '413 Request entity too large: '.
+				"$length bytes on STDIN exceeds ".
+				'post_max !';
 
 		# Get data.
                 } elsif ($length) {
