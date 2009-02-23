@@ -749,8 +749,8 @@ CGI::Pure - Common Gateway Interface Class.
  my $cgi = CGI::Pure->new(
          'init' => $query_string,
  );
- foreach ($cgi->param) {
-         print "Param '$_': ".join(' ', $cgi->param($_))."\n";
+ foreach my $param_key ($cgi->param) {
+         print "Param '$param_key': ".join(' ', $cgi->param($param_key))."\n";
  }
 
  # Output:
@@ -772,8 +772,8 @@ CGI::Pure - Common Gateway Interface Class.
  $cgi->param('par2', 'val3');
  $cgi->append_param('par2', 'val4');
 
- foreach ($cgi->param) {
-         print "Param '$_': ".join(' ', $cgi->param($_))."\n";
+ foreach my $param_key ($cgi->param) {
+         print "Param '$param_key': ".join(' ', $cgi->param($param_key))."\n";
  }
 
  # Output:
