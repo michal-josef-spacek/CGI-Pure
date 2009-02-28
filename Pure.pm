@@ -104,7 +104,9 @@ sub delete_param {
 # Delete param.
 
 	my ($self, $param) = @_;
-	return if ! defined $self->{'.parameters'}->{$param};
+	if (! defined $self->{'.parameters'}->{$param}) {
+		return;
+	}
 	delete $self->{'.parameters'}->{$param};
 	return 1;
 }
@@ -134,7 +136,9 @@ sub param {
 
 	# Return values for $param.
 	if (! @values) {
-		return () if ! exists $self->{'.parameters'}->{$param};
+		if (! exists $self->{'.parameters'}->{$param}) {
+			return ();
+		}
 
 	# Values exists, than sets them.
 	} else {
@@ -169,7 +173,9 @@ sub query_string {
 	my @pairs;
 	foreach my $param ($self->param) {
 		foreach my $value ($self->param($param)) {
-			next if ! defined $value;
+			if (! defined $value) {
+				next;
+			}
 			push @pairs, $self->_uri_escape($param).q{=}.
 				$self->_uri_escape($value);
 		}
@@ -254,7 +260,9 @@ sub _add_param {
 # Adding param.
 
 	my ($self, $param, $value, $overwrite) = @_;
-	return () if ! defined $param;
+	if (! defined $param) {
+		return ();
+	}
 	if ($overwrite
 		|| ! exists $self->{'.parameters'}->{$param}) {
 
@@ -443,7 +451,7 @@ sub _parse_multipart {
 		$got_data_length += length $read;
 
 		BOUNDARY:
-		while ($data =~ m/^$boundary$CRLF/sm) {
+		while ($data =~ m/^$boundary$CRLF/ms) {
 			my $header;
 
 			# Get header, delimited by first two CRLFs we see.
@@ -462,27 +470,27 @@ sub _parse_multipart {
 			$header = $1;
 
 			# Unhold header per RFC822.
-			(my $unfold = $1) =~ s/$CRLF\s+/\ /gsm;
+			(my $unfold = $1) =~ s/$CRLF\s+/\ /gms;
 
 			my ($param) = $unfold =~ m/
 					form-data;
 					\s+
 					name="?([^\";]*)"?
-				/xms;
+				/msx;
 			my ($filename) = $unfold =~ m/
 					name="?\Q$param\E"?;
 					\s+
 					filename="?([^\"]*)"?
-				/xms;
+				/msx;
 			if (defined $filename) {
 				my ($mime) = $unfold =~ m/
 						Content-Type:
 						\s+
 						([-\w\/]+)
-					/isxm;
+					/imsx;
 
 				# Trim off header.
-				$data =~ s/^\Q$header\E//sm;
+				$data =~ s/^\Q$header\E//ms;
 
 				($got_data_length, $data, my $fh, my $size)
 					= $self->_save_tmpfile($boundary,
@@ -532,12 +540,14 @@ sub _parse_params {
 # Parse params from data.
 
 	my ($self, $data) = @_;
-	return () if ! defined $data;
+	if (! defined $data) {
+		return ();
+	}
 
 	# Parse params.
-	my $pairs = parse_query_string($data);
-	foreach (keys %{$pairs}) {
-		$self->_add_param($_, $pairs->{$_});
+	my $pairs_hr = parse_query_string($data);
+	foreach my $key (keys %{$pairs_hr}) {
+		$self->_add_param($key, $pairs_hr->{$key});
 	}
 	return;
 }
