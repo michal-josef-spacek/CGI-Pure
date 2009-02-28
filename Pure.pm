@@ -148,6 +148,19 @@ sub param {
 }
 
 #------------------------------------------------------------------------------
+sub query_data {
+#------------------------------------------------------------------------------
+# Gets query data from server.
+
+	my $self = shift;
+	if ($self->{'save_query_data'}) {
+		return $self->{'.query_data'};
+	} else {
+		return 'Not saved query data.';
+	}
+}
+
+#------------------------------------------------------------------------------
 sub query_string {
 #------------------------------------------------------------------------------
 # Return actual query string.
@@ -228,60 +241,25 @@ sub upload_info {
 }
 
 #------------------------------------------------------------------------------
-sub query_data {
-#------------------------------------------------------------------------------
-# Gets query data from server.
-
-	my $self = shift;
-	if ($self->{'save_query_data'}) {
-		return $self->{'.query_data'};
-	} else {
-		return 'Not saved query data.';
-	}
-}
-
-#------------------------------------------------------------------------------
 # Private methods.
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
-sub _global_variables {
+sub _add_param {
 #------------------------------------------------------------------------------
-# Sets global object variables.
+# Adding param.
 
-	my $self = shift;
-	$self->{'.parameters'} = {};
-	$self->{'.query_data'} = $EMPTY_STR;
-	return;
-}
+	my ($self, $param, $value, $overwrite) = @_;
+	return () if ! defined $param;
+	if ($overwrite
+		|| ! exists $self->{'.parameters'}->{$param}) {
 
-#------------------------------------------------------------------------------
-sub _initialize {
-#------------------------------------------------------------------------------
-# Initializating CGI::Pure with something input methods.
-
-	my ($self, $init) = @_;
-
-	# Initialize from QUERY_STRING, STDIN or @ARGV.
-	if (! defined $init) {
-		$self->_common_parse;
-
-	# Initialize from param hash.
-	} elsif (ref $init eq 'HASH') {
-		foreach my $param (keys %{$init}) {
-			$self->_add_param($param, $init->{$param});
-		}
-
-	# Inicialize from CGI::Pure object.
-	# XXX Mod_perl?
-	} elsif (eval { $init->isa('CGI::Pure') }) {
-		$self->clone($init);
-
-	# Initialize from a query string.
-	} else {
-		$self->_parse_params($init);
+		$self->{'.parameters'}->{$param} = [];
 	}
-
+	my @values = ref $value eq 'ARRAY' ? @{$value} : ($value);
+	foreach my $value (@values) {
+		push @{$self->{'.parameters'}->{$param}}, $value;
+	}
 	return;
 }
 
@@ -355,37 +333,62 @@ sub _common_parse {
 }
 
 #------------------------------------------------------------------------------
-sub _add_param {
+sub _crlf {
 #------------------------------------------------------------------------------
-# Adding param.
+# Define the CRLF sequence.
 
-	my ($self, $param, $value, $overwrite) = @_;
-	return () if ! defined $param;
-	if ($overwrite
-		|| ! exists $self->{'.parameters'}->{$param}) {
+	my ($self, $CRLF) = @_;
 
-		$self->{'.parameters'}->{$param} = [];
+	# Allow value to be set manually.
+	$self->{'.crlf'} = $CRLF if $CRLF;
+
+	# If not defined.
+	if (! $self->{'.crlf'}) {
+		$self->{'.crlf'} = ($OSNAME =~ m/VMS/ism) ? "\n" : "\r\n";
 	}
-	my @values = ref $value eq 'ARRAY' ? @{$value} : ($value);
-	foreach my $value (@values) {
-		push @{$self->{'.parameters'}->{$param}}, $value;
-	}
+
+	# Return sequence.
+	return $self->{'.crlf'};
+}
+
+#------------------------------------------------------------------------------
+sub _global_variables {
+#------------------------------------------------------------------------------
+# Sets global object variables.
+
+	my $self = shift;
+	$self->{'.parameters'} = {};
+	$self->{'.query_data'} = $EMPTY_STR;
 	return;
 }
 
 #------------------------------------------------------------------------------
-sub _parse_params {
+sub _initialize {
 #------------------------------------------------------------------------------
-# Parse params from data.
+# Initializating CGI::Pure with something input methods.
 
-	my ($self, $data) = @_;
-	return () if ! defined $data;
+	my ($self, $init) = @_;
 
-	# Parse params.
-	my $pairs = parse_query_string($data);
-	foreach (keys %{$pairs}) {
-		$self->_add_param($_, $pairs->{$_});
+	# Initialize from QUERY_STRING, STDIN or @ARGV.
+	if (! defined $init) {
+		$self->_common_parse;
+
+	# Initialize from param hash.
+	} elsif (ref $init eq 'HASH') {
+		foreach my $param (keys %{$init}) {
+			$self->_add_param($param, $init->{$param});
+		}
+
+	# Inicialize from CGI::Pure object.
+	# XXX Mod_perl?
+	} elsif (eval { $init->isa('CGI::Pure') }) {
+		$self->clone($init);
+
+	# Initialize from a query string.
+	} else {
+		$self->_parse_params($init);
 	}
+
 	return;
 }
 
@@ -514,6 +517,22 @@ sub _parse_multipart {
 }
 
 #------------------------------------------------------------------------------
+sub _parse_params {
+#------------------------------------------------------------------------------
+# Parse params from data.
+
+	my ($self, $data) = @_;
+	return () if ! defined $data;
+
+	# Parse params.
+	my $pairs = parse_query_string($data);
+	foreach (keys %{$pairs}) {
+		$self->_add_param($_, $pairs->{$_});
+	}
+	return;
+}
+
+#------------------------------------------------------------------------------
 sub _save_tmpfile {
 #------------------------------------------------------------------------------
 # Save file from multiform.
@@ -573,25 +592,6 @@ sub _save_tmpfile {
 	}
 
 	return $got_data_length, $data, $fh, $file_size;
-}
-
-#------------------------------------------------------------------------------
-sub _crlf {
-#------------------------------------------------------------------------------
-# Define the CRLF sequence.
-
-	my ($self, $CRLF) = @_;
-
-	# Allow value to be set manually.
-	$self->{'.crlf'} = $CRLF if $CRLF;
-
-	# If not defined.
-	if (! $self->{'.crlf'}) {
-		$self->{'.crlf'} = ($OSNAME =~ m/VMS/ism) ? "\n" : "\r\n";
-	}
-
-	# Return sequence.
-	return $self->{'.crlf'};
 }
 
 #------------------------------------------------------------------------------
@@ -710,6 +710,11 @@ CGI::Pure - Common Gateway Interface Class.
  params('param') returns parameter 'param' value.
  params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2' values.
 
+=item B<query_data()>
+
+ Gets query data from server.
+ There is possible only for enabled 'save_data' flag.
+
 =item B<query_string()>
 
  Return actual query string.
@@ -727,11 +732,6 @@ CGI::Pure - Common Gateway Interface Class.
  upload_info() returns array of uploaded files.
  upload_info('filename') returns size of uploaded 'filename' file.
  upload_info('filename', 'mime') returns mime type of uploaded 'filename' file.
-
-=item B<query_data()>
-
- Gets query data from server.
- There is possible only for enabled 'save_data' flag.
 
 =back
 
