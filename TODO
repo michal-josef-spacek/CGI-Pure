@@ -27,7 +27,9 @@ TODO
 18. Dodelat CGI::Pure::ModPerl1.
 19. Poresit Makefile.PL pro ruzne mod_perl. Pripadne to vyhodit s CGI::Pure a
     dat samostatne.
-20.
+20. Kdyz jsou hodnoty parametru v utf8, tak co s tim? 
+    Asi idealni obecny callback na parametry.
+21.
 
 Applied
 =======
