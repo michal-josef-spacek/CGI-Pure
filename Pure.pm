@@ -19,7 +19,7 @@ Readonly::Scalar my $EMPTY_STR => q{};
 Readonly::Scalar my $POST_MAX => 102_400;
 Readonly::Scalar my $POST_MAX_NO_LIMIT => -1;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
-Readonly::Array my @PAR_SEP => ('&', ';');
+Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
 # Version.
 our $VERSION = 0.03;
@@ -39,7 +39,7 @@ sub new {
 	$self->{'init'} = undef;
 
 	# Parameter separator.
-	$self->{'par_sep'} = '&';
+	$self->{'par_sep'} = q{&};
 
 	# Use a post max of 100K ($POST_MAX),
 	# set to -1 ($POST_MAX_NO_LIMIT) for no limits.
@@ -170,11 +170,11 @@ sub query_string {
 	foreach my $param ($self->param) {
 		foreach my $value ($self->param($param)) {
 			next if ! defined $value;
-			push @pairs, $self->_uri_escape($param).'='.
+			push @pairs, $self->_uri_escape($param).q{=}.
 				$self->_uri_escape($value);
 		}
 	}
-	return join($self->{'par_sep'}, @pairs);
+	return join $self->{'par_sep'}, @pairs;
 }
 
 #------------------------------------------------------------------------------
@@ -188,8 +188,10 @@ sub upload {
 			'enctype="multipart/form-data" in your form.';
 	}
 	if (! $filename) {;
-		err 'No filename submitted for upload '.
-			"to '$writefile'." if $writefile;
+		if ($writefile) {
+			err 'No filename submitted for upload to '.
+				"'$writefile'.";
+		}
 		return $self->{'.filehandles'}
 			? keys %{$self->{'.filehandles'}} : ();
 	}
@@ -199,15 +201,17 @@ sub upload {
 		# Get ready for reading.
 		seek $fh, 0, 0;
 
-		return $fh if ! $writefile;
+		if (! $writefile) {
+			return $fh;
+		}
 		binmode $fh;
 		my $buffer;
 		my $out;
-		if (! open($out, '>', $writefile)) {
+		if (! open $out, '>', $writefile) {
 			err "Cannot write file '$writefile': $!.";
 		}
 		binmode $out;
-		while (read($fh, $buffer, $BLOCK_SIZE)) {
+		while (read $fh, $buffer, $BLOCK_SIZE) {
 			print {$out} $buffer;
 		}
 		if (! close $out) {
@@ -303,7 +307,7 @@ sub _common_parse {
 
 		# Get data.
                 } elsif ($length) {
-			read(STDIN, $data, $length);
+			read STDIN, $data, $length;
 		}
 
 		# Save data for post.
@@ -314,7 +318,7 @@ sub _common_parse {
 		# Bad length of data.
 		if ($length != length $data) {
 			err "500 Bad read! wanted $length, got ".
-				(length $data).'.';
+				(length $data).q{.};
 		}
 
 	# GET/HEAD method.
@@ -340,7 +344,9 @@ sub _crlf {
 	my ($self, $CRLF) = @_;
 
 	# Allow value to be set manually.
-	$self->{'.crlf'} = $CRLF if $CRLF;
+	if ($CRLF) {
+		$self->{'.crlf'} = $CRLF;
+	}
 
 	# If not defined.
 	if (! $self->{'.crlf'}) {
@@ -402,20 +408,22 @@ sub _parse_multipart {
 		=~ /
 			boundary=
 			\"?([^\";,]+)\"?
-		/xms;
+		/msx;
 	if (! $boundary) {
 		err '400 No boundary supplied for multipart/form-data.';
 	}
 
 	# BUG: IE 3.01 on the Macintosh uses just the boundary, forgetting
 	# the --
-	$boundary = '--'.$boundary
-		if $ENV{'HTTP_USER_AGENT'} !~ m/
-			MSIE\s+
-			3\.0[12];
-			\s*
-			Mac
-		/ixms;
+	if ($ENV{'HTTP_USER_AGENT'} !~ m/
+		MSIE\s+
+		3\.0[12];
+		\s*
+		Mac
+		/imsx) {
+
+		$boundary = q{--}.$boundary;
+	}
 
 	$boundary = quotemeta $boundary;
 	my $got_data_length = 0;
@@ -424,7 +432,7 @@ sub _parse_multipart {
 	my $CRLF = $self->_crlf;
 
 	READ:
-	while (read(STDIN, $read, $BLOCK_SIZE)) {
+	while (read STDIN, $read, $BLOCK_SIZE) {
 
 		# Adding post data.
 		if ($self->{'save_query_data'}) {
@@ -483,8 +491,10 @@ sub _parse_multipart {
 				$self->_add_param($param, $filename);
 
 				# Filehandle.
-				$self->{'.filehandles'}->{$filename} = $fh
-					if $fh;
+				if ($fh) {
+					$self->{'.filehandles'}->{$filename}
+						= $fh;
+				}
 
 				# Information about file.
 				if ($size) {
@@ -504,7 +514,7 @@ sub _parse_multipart {
 #					(.*?)
 #					$CRLF
 #					(?=$boundary)
-#				//sxm) {
+#				//msx) {
 #
 #				next READ;
 #			}
@@ -558,7 +568,7 @@ sub _save_tmpfile {
 	binmode $fh;
 	while (1) {
 		my $buffer = $data;
-		read(STDIN, $data, $BLOCK_SIZE);
+		read STDIN, $data, $BLOCK_SIZE;
 		if (! $data) {
 			$data = $EMPTY_STR;
 		}
@@ -708,7 +718,8 @@ CGI::Pure - Common Gateway Interface Class.
  Returns or sets parameters in CGI.
  params() returns all parameters name.
  params('param') returns parameter 'param' value.
- params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2' values.
+ params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2'
+ values.
 
 =item B<query_data()>
 
@@ -724,7 +735,8 @@ CGI::Pure - Common Gateway Interface Class.
  Upload file from tmp.
  upload() returns array of uploaded filenames.
  upload($filename) returns handler to uploaded filename.
- upload($filename, $write_to) uploads temporary '$filename' file to '$write_to' file.
+ upload($filename, $write_to) uploads temporary '$filename' file to
+ '$write_to' file.
 
 =item B<upload_info($filename, [$info])>
 
