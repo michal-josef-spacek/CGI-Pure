@@ -802,6 +802,6 @@ BSD license.
 
 =head1 VERSION
 
-0.02
+0.03
 
 =cut
