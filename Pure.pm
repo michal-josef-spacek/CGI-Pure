@@ -8,11 +8,12 @@ use warnings;
 
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
+use Encode qw(decode_utf8);
 use English qw(-no_match_vars);
 use Error::Simple::Multiple qw(err);
 use List::MoreUtils qw(none);
 use Readonly;
-use URI::Escape qw(uri_escape uri_unescape);
+use URI::Escape qw(uri_escape uri_escape_utf8 uri_unescape);
 
 # Constants.
 Readonly::Scalar my $EMPTY_STR => q{};
@@ -41,15 +42,15 @@ sub new {
 	# Parameter separator.
 	$self->{'par_sep'} = q{&};
 
-	# Parameter callback for CGI::Deurl::XS.
-	$self->{'par_callback'} = undef;
-
 	# Use a post max of 100K ($POST_MAX),
 	# set to -1 ($POST_MAX_NO_LIMIT) for no limits.
 	$self->{'post_max'} = $POST_MAX;
 
 	# Save query data from server.
 	$self->{'save_query_data'} = 0;
+
+	# UTF8 CGI params.
+	$self->{'utf8'} = 1;
 
 	# Process params.
 	while (@params) {
@@ -553,10 +554,16 @@ sub _parse_params {
 
 		# Value processing.
 		my $value;
-		if (defined $self->{'par_callback'} 
-			&& ref $self->{'par_callback'} eq 'CODE') {
-
-			$value = $self->{'par_callback'}->($pairs_hr->{$key});
+		if ($self->{'utf8'}) {
+			if (ref $pairs_hr->{$key} eq 'ARRAY') {
+				my @decoded = ();
+				foreach my $val (@{$pairs_hr->{$key}}) {
+					push @decoded, decode_utf8($val);
+				}
+				$value = \@decoded;
+			} else {
+				$value = decode_utf8($pairs_hr->{$key});
+			}
 		} else {
 			$value = $pairs_hr->{$key};
 		}
@@ -635,7 +642,11 @@ sub _uri_escape {
 # Escapes uri.
 
 	my ($self, $string) = @_;
-	$string = uri_escape($string);
+	if ($self->{'utf8'}) {
+		$string = uri_escape_utf8($string);
+	} else {
+		$string = uri_escape($string);
+	}
 	$string =~ s/\ /\+/gsm;
 	return $string;
 }
@@ -705,11 +716,6 @@ CGI::Pure - Common Gateway Interface Class.
  Default value is '&'.
  Possible values are '&' or ';'.
 
-=item * B<par_callback>
-
- Parameter callback for decoding from URL parsing.
- Default value is undef.
-
 =item * B<post_max>
 
  Maximal post length.
@@ -721,6 +727,11 @@ CGI::Pure - Common Gateway Interface Class.
  Flag, that means saving query data.
  When is enable, is possible use query_data method.
  Default value is 0.
+
+=item * B<utf8>
+
+ Flag, that means utf8 CGI parameters handling.
+ Default is 1.
 
 =back
 
