@@ -562,7 +562,7 @@ sub _parse_params {
 		}
 
 		# Add parameter.
-		$self->_add_param($key, $pairs_hr->{$key});
+		$self->_add_param($key, $value);
 	}
 	return;
 }
