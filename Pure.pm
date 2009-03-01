@@ -705,6 +705,11 @@ CGI::Pure - Common Gateway Interface Class.
  Default value is '&'.
  Possible values are '&' or ';'.
 
+=item * B<par_callback>
+
+ Parameter callback for decoding from URL parsing.
+ Default value is undef.
+
 =item * B<post_max>
 
  Maximal post length.
