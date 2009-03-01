@@ -41,6 +41,9 @@ sub new {
 	# Parameter separator.
 	$self->{'par_sep'} = q{&};
 
+	# Parameter callback for CGI::Deurl::XS.
+	$self->{'par_callback'} = undef;
+
 	# Use a post max of 100K ($POST_MAX),
 	# set to -1 ($POST_MAX_NO_LIMIT) for no limits.
 	$self->{'post_max'} = $POST_MAX;
@@ -547,6 +550,18 @@ sub _parse_params {
 	# Parse params.
 	my $pairs_hr = parse_query_string($data);
 	foreach my $key (keys %{$pairs_hr}) {
+
+		# Value processing.
+		my $value;
+		if (defined $self->{'par_callback'} 
+			&& ref $self->{'par_callback'} eq 'CODE') {
+
+			$value = $self->{'par_callback'}->($pairs_hr->{$key});
+		} else {
+			$value = $pairs_hr->{$key};
+		}
+
+		# Add parameter.
 		$self->_add_param($key, $pairs_hr->{$key});
 	}
 	return;
