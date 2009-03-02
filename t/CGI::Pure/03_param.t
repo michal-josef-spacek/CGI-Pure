@@ -1,62 +1,63 @@
-print "Testing: param() empty method.\n" if $debug;
-my $obj = $class->new;
+# Modules.
+use CGI::Pure;
+use Test::More 'tests' => 18;
+
+print "Testing: param() empty method.\n";
+my $obj = CGI::Pure->new;
 my $param = $obj->param;
-ok($param, 0);
+is($param, 0);
 my @params = $obj->param;
-ok($#params, -1);
+is($#params, -1);
 
-print "Testing: param('param') not inicialized param.\n" if $debug;
-$obj = $class->new;
+print "Testing: param('param') not inicialized param.\n";
+$obj = CGI::Pure->new;
 $param = $obj->param('param');
-ok($param, undef);
+is($param, undef);
 @params = $obj->param;
-ok($#params, -1);
+is($#params, -1);
 
-print "Testing: param('param', 'value') is initialization of 'param' value.\n"
-	if $debug;
-$obj = $class->new;
+print "Testing: param('param', 'value') is initialization of 'param' value.\n";
+$obj = CGI::Pure->new;
 $param = $obj->param('param', 'value');
-ok($param, 'value');
+is($param, 'value');
 @params = $obj->param('param', 'value');
-ok(join(' ', @params), 'value');
+is(join(' ', @params), 'value');
 
 print "Testing: param('param', ['value1', 'value2']) is initialization of ".
-	"'param' value.\n" if $debug;
-$obj = $class->new;
+	"'param' value.\n";
+$obj = CGI::Pure->new;
 $param = $obj->param('param', ['value1', 'value2']);
-ok($param, 'value1');
+is($param, 'value1');
 @params = $obj->param('param', ['value1', 'value2']);
-ok(join(' ', @params), 'value1 value2');
+is(join(' ', @params), 'value1 value2');
 
-print "Testing: param('param', 'value3') is overwriting of 'param' value.\n" 
-	if $debug;
+print "Testing: param('param', 'value3') is overwriting of 'param' value.\n";
 $param = $obj->param('param', 'value3');
-ok($param, 'value3');
+is($param, 'value3');
 @params = $obj->param('param', 'value3');
-ok(join(' ', @params), 'value3');
+is(join(' ', @params), 'value3');
 
-print "Testing: param('param') read 'param' value.\n" if $debug;
+print "Testing: param('param') read 'param' value.\n";
 $param = $obj->param('param');
-ok($param, 'value3');
+is($param, 'value3');
 @params = $obj->param('param');
-ok(join(' ', @params), 'value3');
+is(join(' ', @params), 'value3');
 
 print "Testing: append_param('param', 'value4') adding 'value4' of param ".
-	"'param'.\n" if $debug;
+	"'param'.\n";
 $param = $obj->append_param('param', 'value4');
-ok($param, 'value3');
+is($param, 'value3');
 @params = $obj->param('param');
-ok(join(' ', @params), 'value3 value4');
+is(join(' ', @params), 'value3 value4');
 
 print "Testing: delete_param('param') deletes param 'param'.\n";
 my $ret = $obj->delete_param('param');
-ok($ret, 1);
+is($ret, 1);
 $param = $obj->param('param');
-ok($param, undef);
+is($param, undef);
 @params = $obj->param('param');
-ok($#params, -1);
+is($#params, -1);
 
 print "Testing: delete_param('param') deletes no-exists param 'param'.\n";
 $ret = $obj->delete_param('param');
-ok($ret, undef);
-
+is($ret, undef);

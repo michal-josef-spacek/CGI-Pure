@@ -1,80 +1,83 @@
+# Modules.
+use CGI::Pure;
+use Test::More 'tests' => 25;
+
 print "Testing: new('init' => {'foo' => '1', 'bar' => [2, 3, 4]}) ".
-	"hash constructor.\n" if $debug;
-my $obj = $class->new(
+	"hash constructor.\n";
+my $obj = CGI::Pure->new(
 	'init' => {'foo' => '1', 'bar' => [2, 3, 4]},
 	'utf8' => 1,
 );
 my @params = $obj->param;
 ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
-ok($obj->param('foo'), 1);
-ok($obj->param('bar'), 2);
+is($obj->param('foo'), 1);
+is($obj->param('bar'), 2);
 @params = $obj->param('bar');
-ok(join(' ', @params), '2 3 4');
+is(join(' ', @params), '2 3 4');
 
-$obj = $class->new(
+$obj = CGI::Pure->new(
 	'init' => {'foo' => '1', 'bar' => [2, 3, 4]}, 
 	'utf8' => 0
 );
 @params = $obj->param;
 ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
-ok($obj->param('foo'), 1);
-ok($obj->param('bar'), 2);
+is($obj->param('foo'), 1);
+is($obj->param('bar'), 2);
 @params = $obj->param('bar');
-ok(join(' ', @params), '2 3 4');
+is(join(' ', @params), '2 3 4');
 
 print "Testing: new('init' => 'foo=5&bar=6&bar=7&bar=8') query string ".
-	"constructor.\n" if $debug;
-$obj = $class->new(
+	"constructor.\n";
+$obj = CGI::Pure->new(
 	'init' => 'foo=5&bar=6&bar=7&bar=8',
 	'utf8' => 1,
 );
 @params = $obj->param;
 ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
-ok($obj->param('foo'), 5);
-ok($obj->param('bar'), 6);
+is($obj->param('foo'), 5);
+is($obj->param('bar'), 6);
 @params = $obj->param('bar');
-ok(join(' ', @params), '6 7 8');
+is(join(' ', @params), '6 7 8');
 
-$obj = $class->new(
+$obj = CGI::Pure->new(
 	'init' => 'foo=5&bar=6&bar=7&bar=8',
 	'utf8' => 0,
 );
 @params = $obj->param;
 ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
-ok($obj->param('foo'), 5);
-ok($obj->param('bar'), 6);
+is($obj->param('foo'), 5);
+is($obj->param('bar'), 6);
 @params = $obj->param('bar');
-ok(join(' ', @params), '6 7 8');
+is(join(' ', @params), '6 7 8');
 
-print "Testing: new('init' => \$".$class."_object) clone constructor.\n" 
-	if $debug;
+print "Testing: new('init' => \$CGI::Pure_object) clone constructor.\n";
 my $old_obj = $obj;
-$obj = $class->new(
+$obj = CGI::Pure->new(
 	'init' => $old_obj,
 	'utf8' => 1,
 );
 @params = $obj->param;
 ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
-ok($obj->param('foo'), 5);
-ok($obj->param('bar'), 6);
+is($obj->param('foo'), 5);
+is($obj->param('bar'), 6);
 @params = $obj->param('bar');
-ok(join(' ', @params), '6 7 8');
+is(join(' ', @params), '6 7 8');
 
-$obj = $class->new(
+$obj = CGI::Pure->new(
 	'init' => $old_obj,
 	'utf8' => 0,
 );
 @params = $obj->param;
 ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
-ok($obj->param('foo'), 5);
-ok($obj->param('bar'), 6);
+is($obj->param('foo'), 5);
+is($obj->param('bar'), 6);
 @params = $obj->param('bar');
-ok(join(' ', @params), '6 7 8');
+is(join(' ', @params), '6 7 8');
 
-print "Testing: new() constructor for 'GET' method.\n" if $debug;
+print "Testing: new() constructor for 'GET' method.\n";
 $ENV{'QUERY_STRING'} = 'name=JaPh%2C&color=red&color=green&color=blue';
 $ENV{'REQUEST_METHOD'} = 'GET';
-$obj = $class->new;
+$obj = CGI::Pure->new;
 @params = $obj->param;
 ok(join(' ', @params) eq 'name color' || join(' ', @params) eq 'color name');
 

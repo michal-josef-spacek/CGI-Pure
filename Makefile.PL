@@ -13,4 +13,10 @@ WriteMakefile(
 		'URI::Escape' => 3.22,
 	},
 	'VERSION' => 0.03,
+	'test' => {
+		'TESTS' => 't/CGI::Pure/*.t '.
+			't/CGI::Pure::Fast/*.t '.
+			't/CGI::Pure::ModPerl2/*.t '.
+			't/CGI::Pure::Save/*.t',
+	},
 );
