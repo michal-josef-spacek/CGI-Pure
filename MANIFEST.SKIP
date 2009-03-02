@@ -8,3 +8,4 @@ TODO
 \bprovisional\b
 ModPerl.pm
 test_multipart/*
+MANIFEST.SKIP
