@@ -1,7 +1,5 @@
 TODO
 ====
-1. V adresari tests budou jednotlive testy, ktere se nactou testovacim 
-   skriptem a otestuji.
 2. Debug mod bude resen tak, ze tam bude autoload a ten zavola nejprve nejake
    debug hlasky a potom tu funkci.
    Druha moznost je to nejak resit pomoci volani metod, funkci.. apod..
@@ -47,3 +45,7 @@ OK [20080622] skim
 
 14. Dokumentace pro CGI::Pure.
 OK [20080622] skim
+
+1. V adresari tests budou jednotlive testy, ktere se nactou testovacim 
+   skriptem a otestuji.
+OK [20090301] skim
