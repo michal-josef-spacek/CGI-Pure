@@ -738,7 +738,7 @@ CGI::Pure - Common Gateway Interface Class.
 =item B<append_param($param, [@values])>
 
  Append param value.
- Return all values for param.
+ Returns all values for param.
 
 =item B<clone($class)>
 
@@ -748,7 +748,7 @@ CGI::Pure - Common Gateway Interface Class.
 
  Delete param.
  Returns undef, when param doesn't exist.
- Return 1, when param was deleted.
+ Returns 1, when param was deleted.
 
 =item B<delete_all_params()>
 
@@ -769,7 +769,7 @@ CGI::Pure - Common Gateway Interface Class.
 
 =item B<query_string()>
 
- Return actual query string.
+ Returns actual query string.
 
 =item B<upload($filename, [$write_to])>
 
@@ -781,7 +781,7 @@ CGI::Pure - Common Gateway Interface Class.
 
 =item B<upload_info($filename, [$info])>
 
- Return informations from uploaded files.
+ Returns informations from uploaded files.
  upload_info() returns array of uploaded files.
  upload_info('filename') returns size of uploaded 'filename' file.
  upload_info('filename', 'mime') returns mime type of uploaded 'filename' file.
@@ -842,7 +842,7 @@ L<URI::Escape(3pm)>.
 =head1 SEE ALSO
 
 L<CGI::Pure::Fast(3pm)>,
-L<CGI::Pure::ModPerl(3pm)>,
+L<CGI::Pure::ModPerl2(3pm)>,
 L<CGI::Pure::Save(3pm)>.
 
 =head1 AUTHOR
