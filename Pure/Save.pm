@@ -33,7 +33,9 @@ sub new {
         while (@params) {
                 my $key = shift @params;
                 my $val = shift @params;
-                err "Unknown parameter '$key'." if ! exists $self->{$key};
+		if (! exists $self->{$key}) {
+	                err "Unknown parameter '$key'.";
+		}
                 $self->{$key} = $val;
         }
 
@@ -59,7 +61,9 @@ sub load {
 	local $INPUT_RECORD_SEPARATOR = "\n";
 	while (my $pair = <$fh>) {
 		chomp $pair;
-		return 1 if $pair eq '=';
+		if ($pair eq q{=}) {
+			return 1;
+		}
 		$self->{'cgi_pure'}->_parse_params($pair);
 	}
 	return;
