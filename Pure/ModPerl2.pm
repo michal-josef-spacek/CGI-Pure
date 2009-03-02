@@ -96,3 +96,63 @@ sub _is_mod_perl2 {
 }
 
 1;
+
+__END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+CGI::Pure::ModPerl2 - TODO
+
+=head1 SYNOPSIS
+
+ use CGI::Pure::ModPerl2;
+ my $cgi = CGI::Pure::ModPerl2->new(%parameters);
+ TODO
+
+=head1 METHODS
+
+=over 8
+
+ Extends CGI::Pure.
+ All methods are same as CGI::Pure.
+
+=back
+
+=head1 EXAMPLE
+
+TODO
+
+=head1 DEPENDENCIES
+
+L<Apache2::RequestIO(3pm)>,
+L<Apache2::RequestRec(3pm)>,
+L<Apache2::RequestUtil(3pm)>,
+L<Apache2::Response(3pm)>,
+L<APR::Pool(3pm)>,
+L<CGI::Pure(3pm)>,
+L<Error::Simple::Multiple(3pm)>,
+L<mod_perl2(3pm)>.
+
+=head1 SEE ALSO
+
+L<CGI::Pure(3pm)>.
+L<CGI::Pure::Fast(3pm)>,
+L<CGI::Pure::Save(3pm)>.
+
+=head1 AUTHOR
+
+Michal Špaček L<tupinek@gmail.com>
+
+=head1 LICENSE AND COPYRIGHT
+
+BSD license.
+
+=head1 VERSION
+
+0.01
+
+=cut

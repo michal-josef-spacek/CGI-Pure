@@ -92,3 +92,76 @@ sub save {
 }
 
 1;
+
+__END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+CGI::Pure::Save - TODO
+
+=head1 SYNOPSIS
+
+ use CGI::Pure::Save;
+ my $cgi = CGI::Pure::Save->new(%parameters);
+ TODO
+
+=head1 METHODS
+
+=over 8
+
+=item B<new(%parameters)>
+
+ Constructor
+
+=over 8
+
+=item * B<cgi_pure>
+
+ TODO
+
+=back
+
+=item B<load(TODO)>
+
+ TODO
+
+=item B<save(TODO)>
+
+ TODO
+
+=back
+
+=head1 EXAMPLE
+
+TODO
+
+=head1 DEPENDENCIES
+
+L<English(3pm)>,
+L<Error::Simple::Multiple(3pm)>,
+L<Readonly(3pm)>,
+L<URI::Escape(3pm)>.
+
+=head1 SEE ALSO
+
+L<CGI::Pure(3pm)>.
+L<CGI::Pure::Fast(3pm)>,
+L<CGI::Pure::ModPerl2(3pm)>.
+
+=head1 AUTHOR
+
+Michal Špaček L<tupinek@gmail.com>
+
+=head1 LICENSE AND COPYRIGHT
+
+BSD license.
+
+=head1 VERSION
+
+0.01
+
+=cut
