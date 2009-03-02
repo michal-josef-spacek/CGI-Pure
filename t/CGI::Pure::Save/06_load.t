@@ -1,10 +1,10 @@
+# Tests directory.
+my $test_dir = "$ENV{'PWD'}/t/CGI::Pure::Save";
+
 # Modules.
 use CGI::Pure;
 use CGI::Pure::Save;
 use Test::More 'tests' => 2;
-
-# Tests directory.
-my $test_dir = "$ENV{'PWD'}/t/CGI::Pure::Save";
 
 print "Testing: load(\$fh) - loading parameters to CGI::Pure object.\n";
 my $cgi_pure = CGI::Pure->new;
