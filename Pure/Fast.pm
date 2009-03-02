@@ -57,3 +57,65 @@ sub new {
 }
 
 1;
+
+__END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+CGI::Pure::Fast - Fast Common Gateway Interface Class.
+
+=head1 SYNOPSIS
+
+ use CGI::Pure::Fast;
+ my $cgi = CGI::Pure::Fast->new(%parameters);
+ $cgi->append_param('par', 'value');
+ my @par_value = $cgi->param('par');
+ $cgi->delete_param('par');
+ $cgi->delete_all_params;
+ my $query_string = $cgi->query_string;
+ $cgi->upload('filename', '~/filename');
+ my $mime = $cgi->upload_info('filename', 'mime');
+ my $query_data = $cgi->query_data;
+
+=head1 METHODS
+
+=over 8
+
+=item B<new(%parameters)>
+
+ Constructor.
+ Extends CGI::Pure for FCGI.
+
+=back
+
+ Other methods are same as CGI::Pure.
+
+=head1 DEPENDENCIES
+
+L<CGI::Pure(3pm)>,
+L<FCGI(3pm)>,
+L<Readonly(3pm)>.
+
+=head1 SEE ALSO
+
+L<CGI::Pure(3pm)>,
+L<CGI::Pure::ModPerl2(3pm)>,
+L<CGI::Pure::Save(3pm)>.
+
+=head1 AUTHOR
+
+Michal Špaček L<tupinek@gmail.com>
+
+=head1 LICENSE AND COPYRIGHT
+
+BSD license.
+
+=head1 VERSION
+
+0.02
+
+=cut
