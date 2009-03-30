@@ -530,7 +530,13 @@ sub _parse_multipart {
 #
 #				next READ;
 #			}
-			$self->_add_param($param, $1);
+			my $param_value;
+			if ($self->{'utf8'}) {
+				$param_value = decode_utf8($1);
+			} else {
+				$param_value = $1;
+			}
+			$self->_add_param($param, $param_value);
 		}
 	}
 
