@@ -27,7 +27,9 @@ TODO
     dat samostatne.
 20. Kdyz jsou hodnoty parametru v utf8, tak co s tim? 
     Asi idealni obecny callback na parametry.
-21.
+21. Kdyz prekodovavam parametry, tak co s vicenasobnymi parametry? input
+    type=checkbox xkrat.
+22.
 
 Applied
 =======
