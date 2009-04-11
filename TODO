@@ -29,7 +29,8 @@ TODO
     Asi idealni obecny callback na parametry.
 21. Kdyz prekodovavam parametry, tak co s vicenasobnymi parametry? input
     type=checkbox xkrat.
-22.
+22. V t/CGI::Pure/ mam dva testy na constructor. Sjednotit.
+23.
 
 Applied
 =======
