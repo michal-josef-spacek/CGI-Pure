@@ -1,15 +1,16 @@
-# Tests directory.
-my $test_dir = "$ENV{'PWD'}/t/CGI::Pure::Save";
-
 # Modules.
 use CGI::Pure;
 use CGI::Pure::Save;
+use File::Object;
 use Test::More 'tests' => 2;
+
+# Directories.
+my $data_dir = File::Object->new->up->dir('data')->serialize;
 
 print "Testing: save(\$fh) - saving parameters from CGI::Pure object.\n";
 my $cgi_pure = CGI::Pure->new('init' => 'par=val&par2=val2');
 my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
-my $file = "$test_dir/data/params";
+my $file = "$data_dir/params";
 open my $ouf, '>', $file || die "Can't open file '$file'.";
 my $ret = $obj->save($ouf);
 is($ret, 1);

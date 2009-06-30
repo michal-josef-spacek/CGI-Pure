@@ -28,4 +28,4 @@ t/CGI::Pure::Save/03_pod.t
 t/CGI::Pure::Save/04_constructor.t
 t/CGI::Pure::Save/05_save.t
 t/CGI::Pure::Save/06_load.t
-t/CGI::Pure::Save/data/params2
+t/data/params2
