@@ -21,6 +21,7 @@ our $VERSION = 0.02;
 our $EXT_REQUEST;
 
 # Workaround for known bug in libfcgi.
+# XXX Remove?
 while (each %ENV) { }
 
 # If ENV{'FCGI_SOCKET_PATH'} is specified, we maintain a FCGI Request handle
@@ -47,9 +48,13 @@ sub new {
 	my ($class, %params) = @_;
 	if (! exists $params{'init'}) {
 		if ($EXT_REQUEST) {
-			return if $EXT_REQUEST->Accept < 0;
+			if ($EXT_REQUEST->Accept < 0) {
+				return;
+			}
 		} else {
-			return if FCGI::accept < 0;
+			if (FCGI::accept < 0) {
+				return;
+			}
 		}
 	}
 	my $self = $class->SUPER::new(%params);
