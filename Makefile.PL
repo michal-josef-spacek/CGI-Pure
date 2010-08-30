@@ -6,6 +6,7 @@ WriteMakefile(
 	'AUTHOR' => 'Michal Spacek',
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
+		'Apache2::RequestIO' => 0,
 		'CGI::Deurl::XS' => 0,
 		'Error::Simple::Multiple' => 0.05,
 		'FCGI' => 0,
