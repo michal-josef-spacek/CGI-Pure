@@ -3,12 +3,17 @@ use CGI::Pure;
 use English qw(-no_match_vars);
 use Test::More 'tests' => 3;
 
-print "Testing: new() plain constructor.\n";
+# Debug message.
+print "Testing: new() constructor.\n";
+
+# Test.
 my $obj = CGI::Pure->new;
 ok(defined $obj);
+
+# Test.
 ok($obj->isa('CGI::Pure'));
 
-print "Testing: new() empty constructor.\n";
+# Test.
 eval {
 	$obj = CGI::Pure->new('');
 };
