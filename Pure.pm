@@ -248,9 +248,12 @@ sub upload_info {
 			'specify enctype="multipart/form-data" in your '.
 			'form.';
 	}
-	return keys %{$self->{'.tmpfiles'}} if ! $filename;
-	return $self->{'.tmpfiles'}->{$filename}->{'mime'}
-		if $info =~ /mime/ism;
+	if (! $filename) {
+		return keys %{$self->{'.tmpfiles'}};
+	}
+	if ($info =~ m/mime/ims) {
+		return $self->{'.tmpfiles'}->{$filename}->{'mime'}
+	}
 	return $self->{'.tmpfiles'}->{$filename}->{'size'};
 }
 
