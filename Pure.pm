@@ -151,7 +151,7 @@ sub param {
 	}
 
 	# Return values of param, or first value of param.
-	return wantarray ? @{$self->{'.parameters'}->{$param}}
+	return wantarray ? sort @{$self->{'.parameters'}->{$param}}
 		: $self->{'.parameters'}->{$param}->[0];
 }
 
