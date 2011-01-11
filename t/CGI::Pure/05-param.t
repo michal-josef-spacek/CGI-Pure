@@ -3,12 +3,12 @@ use CGI::Pure;
 use Test::More 'tests' => 18;
 
 # Debug message.
-print "Testing: param() empty method.\n";
+print "Testing: param() method.\n";
 
 # Test.
 my $obj = CGI::Pure->new;
 my $param = $obj->param;
-is($param, 0);
+is($param, undef);
 my @params = $obj->param;
 is(@params, 0);
 
