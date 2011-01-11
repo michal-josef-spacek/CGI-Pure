@@ -34,7 +34,7 @@ $obj = CGI::Pure->new(
 ok($obj->isa('CGI::Pure'));
 
 # Test.
-my $obj = CGI::Pure->new(
+$obj = CGI::Pure->new(
 	'init' => {'foo' => '1', 'bar' => [2, 3, 4]},
 	'utf8' => 1,
 );
