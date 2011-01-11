@@ -1,7 +1,7 @@
 # Modules.
 use CGI::Pure;
 use English qw(-no_match_vars);
-use Test::More 'tests' => 28;
+use Test::More 'tests' => 30;
 
 # Debug message.
 print "Testing: new() constructor.\n";
@@ -15,9 +15,23 @@ ok($obj->isa('CGI::Pure'));
 
 # Test.
 eval {
-	$obj = CGI::Pure->new('');
+	CGI::Pure->new('');
 };
 is($EVAL_ERROR, "Unknown parameter ''.\n");
+
+# Test.
+eval {
+	CGI::Pure->new(
+		'par_sep' => '+',
+	);
+};
+is($EVAL_ERROR, "Bad parameter separator '+'.\n");
+
+# Test.
+$obj = CGI::Pure->new(
+	'par_sep' => ';',
+);
+ok($obj->isa('CGI::Pure'));
 
 # Test.
 my $obj = CGI::Pure->new(
@@ -28,8 +42,8 @@ my @params = $obj->param;
 is_deeply(
 	\@params,
 	[
-		'foo',
 		'bar',
+		'foo',
 	],
 );
 is($obj->param('foo'), 1);
