@@ -12,7 +12,6 @@ t/CGI::Pure/02-pod_coverage.t
 t/CGI::Pure/03-pod.t
 t/CGI::Pure/04-constructor.t
 t/CGI::Pure/05-param.t
-t/CGI::Pure/06-constructor.t
 t/CGI::Pure::Fast/00-use.t
 t/CGI::Pure::Fast/01-version.t
 t/CGI::Pure::Fast/02-pod_coverage.t
