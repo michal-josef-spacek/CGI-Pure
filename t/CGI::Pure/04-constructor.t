@@ -25,7 +25,13 @@ my $obj = CGI::Pure->new(
 	'utf8' => 1,
 );
 my @params = $obj->param;
-ok(join(' ', @params) eq 'foo bar' || join(' ', @params) eq 'bar foo');
+is_deeply(
+	\@params,
+	[
+		'foo',
+		'bar',
+	],
+);
 is($obj->param('foo'), 1);
 is($obj->param('bar'), 2);
 @params = $obj->param('bar');
