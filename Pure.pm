@@ -135,7 +135,7 @@ sub param {
 
 	# Return list of all params.
 	if (! defined $param) {
-		return keys %{$self->{'.parameters'}};
+		return sort keys %{$self->{'.parameters'}};
 	}
 
 	# Return values for $param.
