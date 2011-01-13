@@ -365,7 +365,19 @@ sub _crlf {
 
 	# If not defined.
 	if (! $self->{'.crlf'}) {
-		$self->{'.crlf'} = ($OSNAME =~ m/VMS/ism) ? "\n" : "\r\n";
+
+		# VMS.
+		if ($OSNAME =~ m/VMS/ims) {
+			$self->{'.crlf'} = "\n";
+
+		# EBCDIC systems.
+		} elsif ("\t" eq "\011") {
+			$self->{'.crlf'} = "\015\012";
+
+		# Other.
+		} else {
+			$self->{'.crlf'} = "\r\n";
+		}
 	}
 
 	# Return sequence.
