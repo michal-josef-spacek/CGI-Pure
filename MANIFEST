@@ -15,6 +15,7 @@ t/CGI::Pure/05-param.t
 t/CGI::Pure/06-append_param.t
 t/CGI::Pure/07-delete_all_params.t
 t/CGI::Pure/08-query_data.t
+t/CGI::Pure/09-query_string.t
 t/CGI::Pure::Fast/00-use.t
 t/CGI::Pure::Fast/01-version.t
 t/CGI::Pure::Fast/02-pod_coverage.t
