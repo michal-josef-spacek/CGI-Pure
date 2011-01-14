@@ -440,7 +440,7 @@ sub _parse_multipart {
 
 	# BUG: IE 3.01 on the Macintosh uses just the boundary, forgetting
 	# the --
-	if ($ENV{'HTTP_USER_AGENT'} !~ m/
+	if (! exists $ENV{'HTTP_USER_AGENT'} || $ENV{'HTTP_USER_AGENT'} !~ m/
 		MSIE\s+
 		3\.0[12];
 		\s*
