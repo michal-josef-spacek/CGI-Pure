@@ -33,6 +33,9 @@ sub new {
 	my ($class, @params) = @_;
 	my $self = bless {}, $class;
 
+	# CRLF separator.
+	$self->{'crlf'} = undef;
+
 	# Disable upload.
 	$self->{'disable_upload'} = 1;
 
@@ -356,32 +359,27 @@ sub _crlf {
 #------------------------------------------------------------------------------
 # Define the CRLF sequence.
 
-	my ($self, $CRLF) = @_;
-
-	# Allow value to be set manually.
-	if ($CRLF) {
-		$self->{'.crlf'} = $CRLF;
-	}
+	my $self = shift;
 
 	# If not defined.
-	if (! $self->{'.crlf'}) {
+	if (! defined $self->{'crlf'}) {
 
 		# VMS.
 		if ($OSNAME =~ m/VMS/ims) {
-			$self->{'.crlf'} = "\n";
+			$self->{'crlf'} = "\n";
 
 		# EBCDIC systems.
 		} elsif ("\t" eq "\011") {
-			$self->{'.crlf'} = "\015\012";
+			$self->{'crlf'} = "\015\012";
 
 		# Other.
 		} else {
-			$self->{'.crlf'} = "\r\n";
+			$self->{'crlf'} = "\r\n";
 		}
 	}
 
 	# Return sequence.
-	return $self->{'.crlf'};
+	return $self->{'crlf'};
 }
 
 #------------------------------------------------------------------------------
