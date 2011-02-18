@@ -499,7 +499,7 @@ sub _parse_multipart {
 					\s+
 					filename="?([^\"]*)"?
 				/msx;
-			if (defined $filename) {
+			if ($filename) {
 				my ($mime) = $unfold =~ m/
 						Content-Type:
 						\s+
