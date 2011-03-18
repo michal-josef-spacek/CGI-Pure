@@ -1,6 +1,4 @@
-#------------------------------------------------------------------------------
 package CGI::Pure;
-#------------------------------------------------------------------------------
 
 # Pragmas.
 use strict;
@@ -25,11 +23,8 @@ Readonly::Array my @PAR_SEP => (q{&}, q{;});
 # Version.
 our $VERSION = 0.03;
 
-#------------------------------------------------------------------------------
-sub new {
-#------------------------------------------------------------------------------
 # Constructor.
-
+sub new {
 	my ($class, @params) = @_;
 	my $self = bless {}, $class;
 
@@ -82,22 +77,16 @@ sub new {
 	return $self;
 }
 
-#------------------------------------------------------------------------------
-sub append_param {
-#------------------------------------------------------------------------------
 # Append param value.
-
+sub append_param {
 	my ($self, $param, @values) = @_;
 	$self->_add_param($param, ((defined $values[0] and ref $values[0])
 		? $values[0] : [@values]));
 	return $self->param($param);
 }
 
-#------------------------------------------------------------------------------
-sub clone {
-#------------------------------------------------------------------------------
 # Clone class to my class.
-
+sub clone {
 	my ($self, $class) = @_;
 	foreach my $param ($class->param) {
 		$self->param($param, $class->param($param));
@@ -105,11 +94,8 @@ sub clone {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub delete_param {
-#------------------------------------------------------------------------------
 # Delete param.
-
+sub delete_param {
 	my ($self, $param) = @_;
 	if (! defined $self->{'.parameters'}->{$param}) {
 		return;
@@ -118,22 +104,16 @@ sub delete_param {
 	return 1;
 }
 
-#------------------------------------------------------------------------------
-sub delete_all_params {
-#------------------------------------------------------------------------------
 # Delete all params.
-
+sub delete_all_params {
 	my $self = shift;
 	delete $self->{'.parameters'};
 	$self->{'.parameters'} = {};
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub param {
-#------------------------------------------------------------------------------
 # Return param[s]. If sets parameters, than overwrite.
-
+sub param {
 	my ($self, $param, @values) = @_;
 
 	# Return list of all params.
@@ -158,11 +138,8 @@ sub param {
 		: $self->{'.parameters'}->{$param}->[0];
 }
 
-#------------------------------------------------------------------------------
-sub query_data {
-#------------------------------------------------------------------------------
 # Gets query data from server.
-
+sub query_data {
 	my $self = shift;
 	if ($self->{'save_query_data'}) {
 		return $self->{'.query_data'};
@@ -171,11 +148,8 @@ sub query_data {
 	}
 }
 
-#------------------------------------------------------------------------------
-sub query_string {
-#------------------------------------------------------------------------------
 # Return actual query string.
-
+sub query_string {
 	my $self = shift;
 	my @pairs;
 	foreach my $param ($self->param) {
@@ -190,11 +164,8 @@ sub query_string {
 	return join $self->{'par_sep'}, @pairs;
 }
 
-#------------------------------------------------------------------------------
-sub upload {
-#------------------------------------------------------------------------------
 # Upload file from tmp.
-
+sub upload {
 	my ($self, $filename, $writefile) = @_;
 	if ($ENV{'CONTENT_TYPE'} !~ m/^multipart\/form-data/ismx) {
 		err 'File uploads only work if you specify '.
@@ -240,11 +211,8 @@ sub upload {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub upload_info {
-#------------------------------------------------------------------------------
 # Return informations from uploaded files.
-
+sub upload_info {
 	my ($self, $filename, $info) = @_;
 	if ($ENV{'CONTENT_TYPE'} !~ m/^multipart\/form-data/ismx) {
 		err 'File uploads only work if you '.
@@ -260,15 +228,8 @@ sub upload_info {
 	return $self->{'.tmpfiles'}->{$filename}->{'size'};
 }
 
-#------------------------------------------------------------------------------
-# Private methods.
-#------------------------------------------------------------------------------
-
-#------------------------------------------------------------------------------
-sub _add_param {
-#------------------------------------------------------------------------------
 # Adding param.
-
+sub _add_param {
 	my ($self, $param, $value, $overwrite) = @_;
 	if (! defined $param) {
 		return ();
@@ -285,11 +246,8 @@ sub _add_param {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub _common_parse {
-#------------------------------------------------------------------------------
 # Common parsing from any methods..
-
+sub _common_parse {
 	my $self = shift;
 	my $data;
 
@@ -354,11 +312,8 @@ sub _common_parse {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub _crlf {
-#------------------------------------------------------------------------------
 # Define the CRLF sequence.
-
+sub _crlf {
 	my $self = shift;
 
 	# If not defined.
@@ -382,22 +337,16 @@ sub _crlf {
 	return $self->{'crlf'};
 }
 
-#------------------------------------------------------------------------------
-sub _global_variables {
-#------------------------------------------------------------------------------
 # Sets global object variables.
-
+sub _global_variables {
 	my $self = shift;
 	$self->{'.parameters'} = {};
 	$self->{'.query_data'} = $EMPTY_STR;
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub _initialize {
-#------------------------------------------------------------------------------
 # Initializating CGI::Pure with something input methods.
-
+sub _initialize {
 	my ($self, $init) = @_;
 
 	# Initialize from QUERY_STRING, STDIN or @ARGV.
@@ -423,11 +372,8 @@ sub _initialize {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub _parse_multipart {
-#------------------------------------------------------------------------------
 # Parse multipart data.
-
+sub _parse_multipart {
 	my $self = shift;
 	my ($boundary) = $ENV{'CONTENT_TYPE'}
 		=~ /
@@ -557,11 +503,8 @@ sub _parse_multipart {
 	return $got_data_length;
 }
 
-#------------------------------------------------------------------------------
-sub _parse_params {
-#------------------------------------------------------------------------------
 # Parse params from data.
-
+sub _parse_params {
 	my ($self, $data) = @_;
 	if (! defined $data) {
 		return ();
@@ -593,11 +536,8 @@ sub _parse_params {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub _save_tmpfile {
-#------------------------------------------------------------------------------
 # Save file from multiform.
-
+sub _save_tmpfile {
 	my ($self, $boundary, $filename, $got_data_length, $data) = @_;
 	my $fh;
 	my $CRLF = $self->_crlf;
@@ -655,11 +595,8 @@ sub _save_tmpfile {
 	return $got_data_length, $data, $fh, $file_size;
 }
 
-#------------------------------------------------------------------------------
-sub _uri_escape {
-#------------------------------------------------------------------------------
 # Escapes uri.
-
+sub _uri_escape {
 	my ($self, $string) = @_;
 	if ($self->{'utf8'}) {
 		$string = uri_escape_utf8($string);
@@ -670,11 +607,8 @@ sub _uri_escape {
 	return $string;
 }
 
-#------------------------------------------------------------------------------
-sub _uri_unescape {
-#------------------------------------------------------------------------------
 # Unescapes uri.
-
+sub _uri_unescape {
 	my ($self, $string) = @_;
 	$string =~ s/\+/\ /gsm;
 	return uri_unescape($string);

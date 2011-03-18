@@ -1,6 +1,4 @@
-#------------------------------------------------------------------------------
 package CGI::Pure::Save;
-#------------------------------------------------------------------------------
 
 # Pragmas.
 use strict;
@@ -18,11 +16,8 @@ Readonly::Scalar my $EMPTY_STR => q{};
 # Version.
 our $VERSION = 0.01;
 
-#------------------------------------------------------------------------------
-sub new {
-#------------------------------------------------------------------------------
 # Constructor.
-
+sub new {
 	my ($class, @params) = @_;
 	my $self = bless {}, $class;
 
@@ -48,11 +43,8 @@ sub new {
 	return $self;
 }
 
-#------------------------------------------------------------------------------
-sub load {
-#------------------------------------------------------------------------------
 # Load parameters from file.
-
+sub load {
 	my ($self, $fh) = @_;
 	if (! $fh || ! fileno $fh) {
 		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
@@ -69,11 +61,8 @@ sub load {
 	return;
 }
 
-#------------------------------------------------------------------------------
-sub save {
-#------------------------------------------------------------------------------
 # Save parameters to file.
-
+sub save {
 	my ($self, $fh) = @_;
 	local $OUTPUT_FIELD_SEPARATOR = $EMPTY_STR;
 	local $OUTPUT_RECORD_SEPARATOR = $EMPTY_STR;

@@ -1,6 +1,4 @@
-#------------------------------------------------------------------------------
 package CGI::Pure::ModPerl;
-#------------------------------------------------------------------------------
 # TODO Predelat na ModPerl1 a upravit podle ModPerl2.
 
 # Pragmas.
@@ -14,22 +12,16 @@ use CGI::Pure;
 # Version.
 our $VERSION = 0.01;
 
-#------------------------------------------------------------------------------
-sub new {
-#------------------------------------------------------------------------------
 # Constructor.
-
+sub new {
 	my $class = shift;
 	my $self = $class->SUPER::new(@_);
 	return $self;
 }
 
-#------------------------------------------------------------------------------
-sub _initialize_mod_perl {
-#------------------------------------------------------------------------------
 # Initialization for mod_perl.
 # XXX From CGI::Simple.
-
+sub _initialize_mod_perl {
         my ($self, $init) = @_;
 
 	# TODO Why?
@@ -79,11 +71,8 @@ sub _initialize_mod_perl {
         }
 }
 
-#------------------------------------------------------------------------------
-sub _is_mod_perl {
-#------------------------------------------------------------------------------
 # Is there mod_perl?
-
+sub _is_mod_perl {
         return (exists $ENV{'MOD_PERL'}
                 || ($ENV{'GATEWAY_INTERFACE'}
                 && $ENV{'GATEWAY_INTERFACE'} =~ m{^CGI-Perl/}));
