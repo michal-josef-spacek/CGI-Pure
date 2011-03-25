@@ -1,5 +1,8 @@
 Changelog
 =========
+0.4 20110325
+	- Remove #----... lines.
+
 0.3 
 	- Rewrite initialization from CGI::Pure class.
 	- Added clone method.
