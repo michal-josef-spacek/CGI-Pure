@@ -6,4 +6,4 @@ use Test::More 'tests' => 1;
 print "Testing: version.\n";
 
 # Test.
-is($CGI::Pure::VERSION, '0.03');
+is($CGI::Pure::VERSION, '0.04');
