@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 
 # Definition.
 WriteMakefile(
-	'AUTHOR' => 'Michal Spacek',
+	'AUTHOR' => 'Michal Špaček <skim@cpan.org>',
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
 		'Apache2::RequestIO' => 0,
