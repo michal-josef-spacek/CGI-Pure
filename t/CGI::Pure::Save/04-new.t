@@ -7,11 +7,13 @@ use CGI::Pure;
 use CGI::Pure::Save;
 use Test::More 'tests' => 3;
 
+# Test.
 eval {
 	CGI::Pure::Save->new;
 };
 is($@, "CGI::Pure object doesn't define.\n");
 
+# Test.
 my $cgi_pure = CGI::Pure->new;
 my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
 ok(defined $obj);
