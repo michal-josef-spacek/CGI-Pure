@@ -20,7 +20,7 @@ WriteMakefile(
 		'Readonly' => 0,
 		'URI::Escape' => 3.22,
 	},
-	'VERSION' => 0.04,
+	'VERSION' => 0.01,
 	'test' => {
 		'TESTS' => 't/CGI::Pure/*.t '.
 			't/CGI::Pure::Save/*.t',
