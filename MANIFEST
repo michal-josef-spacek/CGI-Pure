@@ -7,7 +7,7 @@ t/CGI::Pure/00-use.t
 t/CGI::Pure/01-version.t
 t/CGI::Pure/02-pod_coverage.t
 t/CGI::Pure/03-pod.t
-t/CGI::Pure/04-constructor.t
+t/CGI::Pure/04-new.t
 t/CGI::Pure/05-param.t
 t/CGI::Pure/06-append_param.t
 t/CGI::Pure/07-delete_all_params.t
@@ -17,7 +17,7 @@ t/CGI::Pure::Save/00-use.t
 t/CGI::Pure::Save/01-version.t
 t/CGI::Pure::Save/02-pod_coverage.t
 t/CGI::Pure::Save/03-pod.t
-t/CGI::Pure::Save/04-constructor.t
+t/CGI::Pure::Save/04-new.t
 t/CGI::Pure::Save/05-save.t
 t/CGI::Pure::Save/06-load.t
 t/data/params2
