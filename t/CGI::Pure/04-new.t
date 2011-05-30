@@ -1,3 +1,7 @@
+# Pragmas.
+use strict;
+use warnings;
+
 # Modules.
 use CGI::Pure;
 use English qw(-no_match_vars);
