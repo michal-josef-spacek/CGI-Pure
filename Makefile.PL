@@ -19,6 +19,7 @@ WriteMakefile(
 	'test' => {
 		'TESTS' => 't/CGI::Pure/*.t '.
 			't/CGI::Pure::Fast/*.t '.
+			't/CGI::Pure::ModPerl/*.t '.
 			't/CGI::Pure::ModPerl2/*.t '.
 			't/CGI::Pure::Save/*.t',
 	},
