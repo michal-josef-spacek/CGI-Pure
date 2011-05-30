@@ -9,12 +9,12 @@ use File::Object;
 use Test::More 'tests' => 2;
 
 # Directories.
-my $data_dir = File::Object->new->up->dir('data')->serialize;
+my $data_dir = File::Object->new->up->dir('data');
 
 # Test.
 my $cgi_pure = CGI::Pure->new('init' => 'par=val&par2=val2');
 my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
-my $file = "$data_dir/params";
+my $file = $data_dir->file('params')->s;
 open my $ouf, '>', $file || die "Can't open file '$file'.";
 my $ret = $obj->save($ouf);
 is($ret, 1);
