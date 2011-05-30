@@ -22,7 +22,7 @@ Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
 # Version.
-our $VERSION = 0.05;
+our $VERSION = 0.01;
 
 # Constructor.
 sub new {
