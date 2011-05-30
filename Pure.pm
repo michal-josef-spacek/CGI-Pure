@@ -735,6 +735,10 @@ CGI::Pure - Common Gateway Interface Class.
 
 =back
 
+=head1 ERRORS
+
+ TODO
+
 =head1 EXAMPLE1
 
  # Pragmas.

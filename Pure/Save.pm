@@ -118,6 +118,10 @@ CGI::Pure::Save - TODO
 
 =back
 
+=head1 ERRORS
+
+TODO
+
 =head1 EXAMPLE
 
 TODO
