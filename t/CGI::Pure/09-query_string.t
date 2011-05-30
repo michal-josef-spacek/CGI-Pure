@@ -3,9 +3,6 @@ use CGI::Pure;
 use IO::Scalar;
 use Test::More 'tests' => 3;
 
-# Debug message.
-print "Testing: query_string() method.\n";
-
 # Test.
 my $obj = CGI::Pure->new(
 	'init' => {'foo' => '1', 'bar' => [2, 3, 4]},

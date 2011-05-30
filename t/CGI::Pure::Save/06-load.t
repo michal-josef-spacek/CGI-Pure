@@ -7,7 +7,6 @@ use Test::More 'tests' => 2;
 # Directories.
 my $data_dir = File::Object->new->up->dir('data')->serialize;
 
-print "Testing: load(\$fh) - loading parameters to CGI::Pure object.\n";
 my $cgi_pure = CGI::Pure->new;
 my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
 my $file = "$data_dir/params2";

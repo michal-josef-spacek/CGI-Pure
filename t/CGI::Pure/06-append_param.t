@@ -2,9 +2,6 @@
 use CGI::Pure;
 use Test::More 'tests' => 2;
 
-# Debug message.
-print "Testing: append_param() method.\n";
-
 # Test.
 my $obj = CGI::Pure->new;
 my @ret = $obj->append_param('param', 'foo');

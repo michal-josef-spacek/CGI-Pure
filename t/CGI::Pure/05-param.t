@@ -2,9 +2,6 @@
 use CGI::Pure;
 use Test::More 'tests' => 18;
 
-# Debug message.
-print "Testing: param() method.\n";
-
 # Test.
 my $obj = CGI::Pure->new;
 my $param = $obj->param;
