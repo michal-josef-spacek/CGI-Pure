@@ -5,6 +5,5 @@
 \.old$
 pm_to_blib
 TODO
-\bprovisional\b
 test_multipart/*
 MANIFEST.SKIP
