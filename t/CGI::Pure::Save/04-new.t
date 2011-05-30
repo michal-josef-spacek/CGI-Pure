@@ -16,5 +16,4 @@ is($@, "CGI::Pure object doesn't define.\n");
 # Test.
 my $cgi_pure = CGI::Pure->new;
 my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
-ok(defined $obj);
-ok($obj->isa('CGI::Pure::Save'));
+isa_ok($obj, 'CGI::Pure::Save');
