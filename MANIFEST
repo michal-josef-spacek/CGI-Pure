@@ -2,8 +2,6 @@ Changelog
 Makefile.PL
 MANIFEST			This list of files
 Pure.pm
-Pure/Fast.pm
-Pure/ModPerl2.pm
 Pure/Save.pm
 t/CGI::Pure/00-use.t
 t/CGI::Pure/01-version.t
@@ -15,14 +13,6 @@ t/CGI::Pure/06-append_param.t
 t/CGI::Pure/07-delete_all_params.t
 t/CGI::Pure/08-query_data.t
 t/CGI::Pure/09-query_string.t
-t/CGI::Pure::Fast/00-use.t
-t/CGI::Pure::Fast/01-version.t
-t/CGI::Pure::Fast/02-pod_coverage.t
-t/CGI::Pure::Fast/03-pod.t
-t/CGI::Pure::ModPerl2/00-use.t
-t/CGI::Pure::ModPerl2/01-version.t
-t/CGI::Pure::ModPerl2/02-pod_coverage.t
-t/CGI::Pure::ModPerl2/03-pod.t
 t/CGI::Pure::Save/00-use.t
 t/CGI::Pure::Save/01-version.t
 t/CGI::Pure::Save/02-pod_coverage.t
