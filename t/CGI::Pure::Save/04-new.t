@@ -6,7 +6,7 @@ use warnings;
 use CGI::Pure;
 use CGI::Pure::Save;
 use English qw(-no_match_vars);
-use Test::More 'tests' => 3;
+use Test::More 'tests' => 2;
 
 # Test.
 eval {
