@@ -9,7 +9,7 @@ use CGI::Deurl::XS qw(parse_query_string);
 use Class::Utils qw(set_params);
 use Encode qw(decode_utf8);
 use English qw(-no_match_vars);
-use Error::Simple::Multiple qw(err);
+use Error::Pure qw(err);
 use List::MoreUtils qw(none);
 use Readonly;
 use URI::Escape qw(uri_escape uri_escape_utf8 uri_unescape);
@@ -784,7 +784,7 @@ CGI::Pure - Common Gateway Interface Class.
 
 L<Class::Utils(3pm)>,
 L<CGI::Deurl::XS(3pm)>,
-L<Error::Simple::Multiple(3pm)>,
+L<Error::Pure(3pm)>,
 L<URI::Escape(3pm)>.
 
 =head1 SEE ALSO

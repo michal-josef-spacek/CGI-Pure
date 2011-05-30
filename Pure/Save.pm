@@ -7,7 +7,7 @@ use warnings;
 # Modules.
 use Class::Utils qw(set_params);
 use English qw(-no_match_vars);
-use Error::Simple::Multiple qw(err);
+use Error::Pure qw(err);
 use Readonly;
 use URI::Escape;
 
@@ -126,7 +126,7 @@ TODO
 
 L<Class::Utils(3pm)>,
 L<English(3pm)>,
-L<Error::Simple::Multiple(3pm)>,
+L<Error::Pure(3pm)>,
 L<Readonly(3pm)>,
 L<URI::Escape(3pm)>.
 

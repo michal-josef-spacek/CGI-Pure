@@ -14,7 +14,7 @@ WriteMakefile(
 		'Class::Utils' => 0.01,
 		'Encode' => 0,
 		'English' => 0,
-		'Error::Simple::Multiple' => 0.05,
+		'Error::Pure' => 0.01,
 		'IO::File' => 0,
 		'List::MoreUtils' => 0,
 		'Readonly' => 0,
