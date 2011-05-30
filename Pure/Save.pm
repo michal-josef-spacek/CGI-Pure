@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 # Modules.
+use Class::Utils qw(set_params);
 use English qw(-no_match_vars);
 use Error::Simple::Multiple qw(err);
 use Readonly;
@@ -25,14 +26,7 @@ sub new {
 	$self->{'cgi_pure'} = $EMPTY_STR;
 
 	# Process params.
-        while (@params) {
-                my $key = shift @params;
-                my $val = shift @params;
-		if (! exists $self->{$key}) {
-	                err "Unknown parameter '$key'.";
-		}
-                $self->{$key} = $val;
-        }
+	set_params($self, @params);
 
 	# CGI::Pure object not exist.
 	if (! $self->{'cgi_pure'} || ! $self->{'cgi_pure'}->isa('CGI::Pure')) {
@@ -130,6 +124,7 @@ TODO
 
 =head1 DEPENDENCIES
 
+L<Class::Utils(3pm)>,
 L<English(3pm)>,
 L<Error::Simple::Multiple(3pm)>,
 L<Readonly(3pm)>,

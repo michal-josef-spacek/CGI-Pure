@@ -6,6 +6,7 @@ use warnings;
 
 # Modules.
 use CGI::Deurl::XS qw(parse_query_string);
+use Class::Utils qw(set_params);
 use Encode qw(decode_utf8);
 use English qw(-no_match_vars);
 use Error::Simple::Multiple qw(err);
@@ -51,14 +52,7 @@ sub new {
 	$self->{'utf8'} = 1;
 
 	# Process params.
-	while (@params) {
-		my $key = shift @params;
-		my $val = shift @params;
-		if (! exists $self->{$key}) {
-			err "Unknown parameter '$key'.";
-		}
-		$self->{$key} = $val;
-	}
+	set_params($self, @params);
 
 	# Check to parameter separator.
 	if (none { $_ eq $self->{'par_sep'} } @PAR_SEP) {
@@ -788,6 +782,7 @@ CGI::Pure - Common Gateway Interface Class.
 
 =head1 DEPENDENCIES
 
+L<Class::Utils(3pm)>,
 L<CGI::Deurl::XS(3pm)>,
 L<Error::Simple::Multiple(3pm)>,
 L<URI::Escape(3pm)>.

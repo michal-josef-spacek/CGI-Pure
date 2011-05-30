@@ -11,6 +11,7 @@ WriteMakefile(
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
 		'CGI::Deurl::XS' => 0,
+		'Class::Utils' => 0.01,
 		'Encode' => 0,
 		'English' => 0,
 		'Error::Simple::Multiple' => 0.05,
