@@ -5,13 +5,14 @@ use warnings;
 # Modules.
 use CGI::Pure;
 use CGI::Pure::Save;
+use English qw(-no_match_vars);
 use Test::More 'tests' => 3;
 
 # Test.
 eval {
 	CGI::Pure::Save->new;
 };
-is($@, "CGI::Pure object doesn't define.\n");
+is($EVAL_ERROR, "CGI::Pure object doesn't define.\n");
 
 # Test.
 my $cgi_pure = CGI::Pure->new;
