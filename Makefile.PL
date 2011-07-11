@@ -18,6 +18,7 @@ WriteMakefile(
 	'CONFIGURE_REQUIRES' => {
 		'ExtUtils::MakeMaker' => 0,
 	},
+	'LICENSE' => 'bsd',
 	'NAME' => 'CGI::Pure',
 	'PREREQ_PM' => {
 		'CGI::Deurl::XS' => 0,
