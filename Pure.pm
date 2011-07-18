@@ -786,16 +786,16 @@ CGI::Pure - Common Gateway Interface Class.
 
 =head1 DEPENDENCIES
 
-L<Class::Utils(3pm)>,
-L<CGI::Deurl::XS(3pm)>,
-L<Error::Pure(3pm)>,
-L<URI::Escape(3pm)>.
+L<Class::Utils>,
+L<CGI::Deurl::XS>,
+L<Error::Pure>,
+L<URI::Escape>.
 
 =head1 SEE ALSO
 
-L<CGI::Pure::Fast(3pm)>,
-L<CGI::Pure::ModPerl2(3pm)>,
-L<CGI::Pure::Save(3pm)>.
+L<CGI::Pure::Fast>,
+L<CGI::Pure::ModPerl2>,
+L<CGI::Pure::Save>.
 
 =head1 AUTHOR
 

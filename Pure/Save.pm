@@ -128,17 +128,17 @@ TODO
 
 =head1 DEPENDENCIES
 
-L<Class::Utils(3pm)>,
-L<English(3pm)>,
-L<Error::Pure(3pm)>,
-L<Readonly(3pm)>,
-L<URI::Escape(3pm)>.
+L<Class::Utils>,
+L<English>,
+L<Error::Pure>,
+L<Readonly>,
+L<URI::Escape>.
 
 =head1 SEE ALSO
 
-L<CGI::Pure(3pm)>.
-L<CGI::Pure::Fast(3pm)>,
-L<CGI::Pure::ModPerl2(3pm)>.
+L<CGI::Pure>.
+L<CGI::Pure::Fast>,
+L<CGI::Pure::ModPerl2>.
 
 =head1 AUTHOR
 
