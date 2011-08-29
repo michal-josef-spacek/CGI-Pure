@@ -7,8 +7,6 @@ TODO
 4. Mozna by bylo zahodno udelat misto if ($cgi->param) neco jako if
    ($cgi->is_param). Mohlo by to byt rychlejsi.
 5. URI::Escape a Unescape neresi nahradu + za mezeru. Proc?
-8. Testy k CGI::Pure::Fast. Jak to testovat, kdyz po dalsim konstruktoru 
-   vraci undef. Projit man FCGI a doresit.
 9. Udelat nejaky debug mod. Vytvorit tridu pro debug, ktera dedi CGI::Pure.
    Pridat tam rutinu pro obecne debugovani z prikazove radky. 
    Idealni by by bylo na to napojit nejaky system, ktery by simuloval 
@@ -54,3 +52,8 @@ OK [20080622] skim
 1. V adresari tests budou jednotlive testy, ktere se nactou testovacim 
    skriptem a otestuji.
 OK [20090301] skim
+
+8. Testy k CGI::Pure::Fast. Jak to testovat, kdyz po dalsim konstruktoru 
+   vraci undef. Projit man FCGI a doresit.
+Přesunuto do CGI::Pure::Fast modulu.
+NONE [20110829] skim
