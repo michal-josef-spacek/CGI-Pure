@@ -18,9 +18,6 @@ TODO
     get/post/etc.
 17. Co kdyz poslu postem soubor s utf8 nazvem? Zkousel jsem a vyhodi to chybu na
     quotemeta na radku 457.
-18. Dodelat CGI::Pure::ModPerl1.
-19. Poresit Makefile.PL pro ruzne mod_perl. Pripadne to vyhodit s CGI::Pure a
-    dat samostatne.
 20. Kdyz jsou hodnoty parametru v utf8, tak co s tim? 
     Asi idealni obecny callback na parametry.
 21. Kdyz prekodovavam parametry, tak co s vicenasobnymi parametry? input
@@ -62,4 +59,13 @@ NONE [20110829] skim
 
 15. Dokumentace pro CGI::Pure::Fast.
 Přesunuto do CGI::Pure::Fast modulu.
+NONE [20110829] skim
+
+19. Poresit Makefile.PL pro ruzne mod_perl. Pripadne to vyhodit s CGI::Pure a
+    dat samostatne.
+Už neplatí.
+NONE [20110829] skim
+
+18. Dodelat CGI::Pure::ModPerl1.
+Přesunuto do CGI::Pure::ModPerl1 modulu.
 NONE [20110829] skim
