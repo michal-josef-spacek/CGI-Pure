@@ -27,6 +27,8 @@ our $VERSION = 0.01;
 # Constructor.
 sub new {
 	my ($class, @params) = @_;
+
+	# Create object.
 	my $self = bless {}, $class;
 
 	# CRLF separator.
