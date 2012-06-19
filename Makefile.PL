@@ -19,11 +19,10 @@ requires 'IO::File' => 0;
 requires 'List::MoreUtils' => 0;
 requires 'Readonly' => 0;
 requires 'URI::Escape' => 3.22;
-resources 'repository' => {
-	'url' => 'git://github.com/tupinek/CGI-Pure',
-	'web' => 'https://github.com/tupinek/CGI-Pure',
-	'type' => 'git',
-};
+resources 'bugtracker' => 'https://rt.cpan.org/Public/Dist/Display.html'.
+	'?Name=CGI-Pure';
+resources 'homepage' => 'https://github.com/tupinek/CGI-Pure';
+resources 'repository' => 'git://github.com/tupinek/CGI-Pure';
 test_requires 'English' => 0;
 test_requires 'File::Object' => 0.03;
 test_requires 'IO::Scalar' => 0;
