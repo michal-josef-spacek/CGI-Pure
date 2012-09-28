@@ -25,7 +25,9 @@ TODO
 22. V t/CGI::Pure/ mam dva testy na constructor. Sjednotit.
 23. V testech mam data adresar uvnitr tridy, vyhodit ven.
 24. Pri uploadu se mi vklada na konec prazdny radek. Udelat test.
-25.
+25. CGI::Pure::_uri_unescape nepouzivam a mam tam misto toho decode_utf8.
+    Co s +, ktere v nem resim?
+26.
 
 Applied
 =======
