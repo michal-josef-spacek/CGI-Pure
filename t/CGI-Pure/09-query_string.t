@@ -5,7 +5,7 @@ use warnings;
 # Modules.
 use CGI::Pure;
 use IO::Scalar;
-use Test::More 'tests' => 3;
+use Test::More 'tests' => 4;
 
 # Test.
 my $obj = CGI::Pure->new(
@@ -32,3 +32,13 @@ $ENV{'REQUEST_METHOD'} = 'GET';
 $obj = CGI::Pure->new;
 $ret = $obj->query_string;
 is($ret, 'color=blue&color=green&color=red');
+
+# Test.
+$ENV{'QUERY_STRING'} = 'utf8_string=%C4%9B%C5%A1%C4%8D%C5%99%C5%BE'.
+	'%C3%BD%C3%A1%C3%AD%C3%A9%C3%B3';
+$ENV{'REQUEST_METHOD'} = 'GET';
+$obj = CGI::Pure->new;
+$ret = $obj->query_string;
+my $right_ret = 'utf8_string=%C4%9B%C5%A1%C4%8D%C5%99%C5%BE'.
+	'%C3%BD%C3%A1%C3%AD%C3%A9%C3%B3';
+is($ret, $right_ret, 'QUERY_STRING with encoded utf8 string.');
