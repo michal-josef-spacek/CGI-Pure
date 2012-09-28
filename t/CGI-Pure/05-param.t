@@ -4,7 +4,8 @@ use warnings;
 
 # Modules.
 use CGI::Pure;
-use Test::More 'tests' => 18;
+use Encode qw(decode_utf8);
+use Test::More 'tests' => 19;
 
 # Test.
 my $obj = CGI::Pure->new;
@@ -90,3 +91,11 @@ is(@params, 0);
 # Test.
 $ret = $obj->delete_param('param');
 is($ret, undef);
+
+# Test.
+$ENV{'QUERY_STRING'} = 'utf8_string=%C4%9B%C5%A1%C4%8D%C5%99%C5%BE'.
+	'%C3%BD%C3%A1%C3%AD%C3%A9%C3%B3';
+$ENV{'REQUEST_METHOD'} = 'GET';
+$obj = CGI::Pure->new;
+$param = $obj->param('utf8_string');
+is($param, decode_utf8('ěščřžýáíéó'));
