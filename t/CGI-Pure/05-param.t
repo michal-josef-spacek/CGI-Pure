@@ -5,7 +5,7 @@ use warnings;
 # Modules.
 use CGI::Pure;
 use Encode qw(decode_utf8);
-use Test::More 'tests' => 19;
+use Test::More 'tests' => 21;
 
 # Test.
 my $obj = CGI::Pure->new;
@@ -17,6 +17,13 @@ is(@params, 0);
 # Test.
 $obj = CGI::Pure->new;
 $param = $obj->param('param');
+is($param, undef);
+@params = $obj->param;
+is(@params, 0);
+
+# Test.
+$obj = CGI::Pure->new;
+$param = $obj->param('param', undef);
 is($param, undef);
 @params = $obj->param;
 is(@params, 0);

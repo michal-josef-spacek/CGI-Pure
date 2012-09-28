@@ -76,8 +76,12 @@ sub new {
 # Append param value.
 sub append_param {
 	my ($self, $param, @values) = @_;
-	$self->_add_param($param, ((defined $values[0] and ref $values[0])
-		? $values[0] : [@values]));
+
+	# Clean from undefined values.
+	my @new_values = _remove_undef(@values);
+
+	$self->_add_param($param, ((defined $new_values[0] and ref $new_values[0])
+		? $new_values[0] : [@new_values]));
 	return $self->param($param);
 }
 
@@ -117,16 +121,19 @@ sub param {
 		return sort keys %{$self->{'.parameters'}};
 	}
 
+	# Clean from undefined values.
+	my @new_values = _remove_undef(@values);
+
 	# Return values for $param.
-	if (! @values) {
+	if (! @new_values) {
 		if (! exists $self->{'.parameters'}->{$param}) {
 			return ();
 		}
 
 	# Values exists, than sets them.
 	} else {
-		$self->_add_param($param, (ref $values[0] eq 'ARRAY'
-			? $values[0] : [@values]), 'overwrite');
+		$self->_add_param($param, (ref $new_values[0] eq 'ARRAY'
+			? $new_values[0] : [@new_values]), 'overwrite');
 	}
 
 	# Return values of param, or first value of param.
@@ -150,9 +157,6 @@ sub query_string {
 	my @pairs;
 	foreach my $param ($self->param) {
 		foreach my $value ($self->param($param)) {
-			if (! defined $value) {
-				next;
-			}
 			push @pairs, $self->_uri_escape($param).q{=}.
 				$self->_uri_escape($value);
 		}
@@ -530,6 +534,18 @@ sub _parse_params {
 		$self->_add_param($key, $value);
 	}
 	return;
+}
+
+# Remove undefined values.
+sub _remove_undef {
+	my (@values) = @_;
+	my @new_values;
+	foreach my $value (@values) {
+		if (defined $value) {
+			push @new_values, $value;
+		}
+	}
+	return @new_values;
 }
 
 # Save file from multiform.
