@@ -9,3 +9,4 @@ test_multipart/*
 MANIFEST.SKIP
 MYMETA.json
 MYMETA.yml
+cover_db/
