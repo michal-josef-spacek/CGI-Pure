@@ -5,7 +5,8 @@ use warnings;
 # Modules.
 use CGI::Pure;
 use IO::Scalar;
-use Test::More 'tests' => 4;
+use Test::More 'tests' => 5;
+use Test::NoWarnings;
 
 # Test.
 my $obj = CGI::Pure->new(

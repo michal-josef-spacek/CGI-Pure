@@ -5,7 +5,8 @@ use warnings;
 # Modules.
 use CGI::Pure;
 use English qw(-no_match_vars);
-use Test::More 'tests' => 30;
+use Test::More 'tests' => 31;
+use Test::NoWarnings;
 
 # Test.
 my $obj = CGI::Pure->new;

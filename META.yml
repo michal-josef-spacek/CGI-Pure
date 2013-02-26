@@ -8,6 +8,7 @@ build_requires:
   File::Object: 0.03
   IO::Scalar: 0
   Test::More: 0
+  Test::NoWarnings: 0
   Test::Pod: 0
   Test::Pod::Coverage: 0
 configure_requires:

@@ -5,7 +5,8 @@ use warnings;
 # Modules.
 use CGI::Pure;
 use Encode qw(decode_utf8);
-use Test::More 'tests' => 21;
+use Test::More 'tests' => 22;
+use Test::NoWarnings;
 
 # Test.
 my $obj = CGI::Pure->new;
