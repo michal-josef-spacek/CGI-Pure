@@ -4,7 +4,8 @@ use warnings;
 
 # Modules.
 use CGI::Pure::Save;
-use Test::More 'tests' => 1;
+use Test::More 'tests' => 2;
+use Test::NoWarnings;
 
 # Test.
-is($CGI::Pure::Save::VERSION, 0.01, 'Version.');
+is($CGI::Pure::Save::VERSION, 0.02, 'Version.');

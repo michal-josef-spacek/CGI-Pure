@@ -22,7 +22,7 @@ Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
 # Version.
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 # Constructor.
 sub new {
@@ -827,6 +827,6 @@ BSD license.
 
 =head1 VERSION
 
-0.01
+0.02
 
 =cut
