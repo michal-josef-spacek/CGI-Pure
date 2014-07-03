@@ -4,6 +4,7 @@ use warnings;
 
 # Modules.
 use CGI::Pure;
+use Error::Pure::Utils qw(clean);
 use English qw(-no_match_vars);
 use Test::More 'tests' => 31;
 use Test::NoWarnings;
@@ -20,6 +21,7 @@ eval {
 	CGI::Pure->new('');
 };
 is($EVAL_ERROR, "Unknown parameter ''.\n");
+clean();
 
 # Test.
 eval {
@@ -28,6 +30,7 @@ eval {
 	);
 };
 is($EVAL_ERROR, "Bad parameter separator '+'.\n");
+clean();
 
 # Test.
 $obj = CGI::Pure->new(
