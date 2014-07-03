@@ -3,6 +3,7 @@
  - Add Test::NoWarnings to tests.
  - Rename CHANGES to Changes.
  - Rewrite Changes file to CPAN::Changes::SPEC format.
+ - Update Module::Install to 1.08 version.
 
 0.01 2013-02-26
  - First version.
