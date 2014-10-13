@@ -7,7 +7,7 @@ use inc::Module::Install;
 
 # Definition.
 abstract 'Common Gateway Interface Class.';
-author 'Michal Špaček <skim@cpan.org>';
+author 'Michal Spacek <skim@cpan.org>';
 license 'bsd';
 name 'CGI-Pure';
 requires 'CGI::Deurl::XS' => 0;
