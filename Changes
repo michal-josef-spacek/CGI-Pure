@@ -2,6 +2,7 @@
  - Add LICENSE file.
  - Add README file.
  - Add Test::NoWarnings to tests.
+ - Add minimal version of Perl.
  - Add missing Error::Pure::Utils::clean() after errors in tests.
  - Rename CHANGES to Changes.
  - Rewrite Changes file to CPAN::Changes::SPEC format.
