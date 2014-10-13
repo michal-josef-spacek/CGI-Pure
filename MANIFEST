@@ -18,6 +18,7 @@ META.yml
 Pure.pm
 Pure/Save.pm
 README
+SIGNATURE
 t/CGI-Pure-Save/00-use.t
 t/CGI-Pure-Save/01-version.t
 t/CGI-Pure-Save/02-pod_coverage.t
