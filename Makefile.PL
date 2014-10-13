@@ -10,6 +10,7 @@ abstract 'Common Gateway Interface Class.';
 author 'Michal Spacek <skim@cpan.org>';
 license 'bsd';
 name 'CGI-Pure';
+readme_from 'Pure.pm';
 requires 'CGI::Deurl::XS' => 0;
 requires 'Class::Utils' => 0.02;
 requires 'Encode' => 0;

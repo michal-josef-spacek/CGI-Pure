@@ -8,6 +8,7 @@ inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
+inc/Module/Install/ReadmeFromPod.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 LICENSE
@@ -16,6 +17,7 @@ MANIFEST			This list of files
 META.yml
 Pure.pm
 Pure/Save.pm
+README
 t/CGI-Pure-Save/00-use.t
 t/CGI-Pure-Save/01-version.t
 t/CGI-Pure-Save/02-pod_coverage.t

@@ -1,5 +1,6 @@
 0.02
  - Add LICENSE file.
+ - Add README file.
  - Add Test::NoWarnings to tests.
  - Add missing Error::Pure::Utils::clean() after errors in tests.
  - Rename CHANGES to Changes.
