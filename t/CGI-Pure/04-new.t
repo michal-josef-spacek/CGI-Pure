@@ -6,21 +6,18 @@ use warnings;
 use CGI::Pure;
 use Error::Pure::Utils qw(clean);
 use English qw(-no_match_vars);
-use Test::More 'tests' => 31;
+use Test::More 'tests' => 26;
 use Test::NoWarnings;
 
 # Test.
 my $obj = CGI::Pure->new;
-ok(defined $obj);
-
-# Test.
-ok($obj->isa('CGI::Pure'));
+isa_ok($obj, 'CGI::Pure');
 
 # Test.
 eval {
 	CGI::Pure->new('');
 };
-is($EVAL_ERROR, "Unknown parameter ''.\n");
+is($EVAL_ERROR, "Unknown parameter ''.\n", "Unknown parameter ''.");
 clean();
 
 # Test.
@@ -29,14 +26,15 @@ eval {
 		'par_sep' => '+',
 	);
 };
-is($EVAL_ERROR, "Bad parameter separator '+'.\n");
+is($EVAL_ERROR, "Bad parameter separator '+'.\n",
+	"Bad parameter separator '+'.");
 clean();
 
 # Test.
 $obj = CGI::Pure->new(
 	'par_sep' => ';',
 );
-ok($obj->isa('CGI::Pure'));
+isa_ok($obj, 'CGI::Pure');
 
 # Test.
 $obj = CGI::Pure->new(
@@ -50,13 +48,17 @@ is_deeply(
 		'bar',
 		'foo',
 	],
+	'Init hash in utf8 mode: CGI parameters.',
 );
-is($obj->param('foo'), 1);
-is($obj->param('bar'), 2);
+is($obj->param('foo'), 1, 'Init hash in utf8 mode: Scalar CGI parameter '.
+	'value.');
+is($obj->param('bar'), 2, 'Init hash in utf8 mode: Array CGI parameter '.
+	'values - first.');
 @params = $obj->param('bar');
 is_deeply(
 	\@params,
 	[2, 3, 4],
+	'Init hash in utf8 mode: Array CGI parameter values.',
 );
 
 # Test.
@@ -71,13 +73,17 @@ is_deeply(
 		'bar',
 		'foo',
 	],
+	'Init hash in ascii mode: CGI parameters.',
 );
-is($obj->param('foo'), 1);
-is($obj->param('bar'), 2);
+is($obj->param('foo'), 1, 'Init hash in ascii mode: Scalar CGI parameter '.
+	'value.');
+is($obj->param('bar'), 2, 'Init hash in ascii mode: Array CGI parameter '.
+	'values - first.');
 @params = $obj->param('bar');
 is_deeply(
 	\@params,
 	[2, 3, 4],
+	'Init hash in ascii mode: Array CGI parameter values.',
 );
 
 # Test.
@@ -92,13 +98,17 @@ is_deeply(
 		'bar',
 		'foo',
 	],
+	'Init query string in utf8 mode: CGI parameters.',
 );
-is($obj->param('foo'), 5);
-is($obj->param('bar'), 6);
+is($obj->param('foo'), 5, 'Init query string in utf8 mode: Scalar CGI '.
+	'parameter value.');
+is($obj->param('bar'), 6, 'Init query string in utf8 mode: Array CGI '.
+	'parameter values - first.');
 @params = $obj->param('bar');
 is_deeply(
 	\@params,
 	[6, 7, 8],
+	'Init query string in utf8 mode: Array CGI parameter values.',
 );
 
 # Test.
@@ -113,20 +123,23 @@ is_deeply(
 		'bar',
 		'foo',
 	],
+	'Init query string in ascii mode: CGI parameters.',
 );
-is($obj->param('foo'), 5);
-is($obj->param('bar'), 6);
+is($obj->param('foo'), 5, 'Init query string in ascii mode: Scalar CGI '.
+	'parameter value.');
+is($obj->param('bar'), 6, 'Init query string in ascii mode: Array CGI '.
+	'parameter values - first.');
 @params = $obj->param('bar');
 is_deeply(
 	\@params,
 	[6, 7, 8],
+	'Init query string in ascii mode: Array CGI parameter values.',
 );
 
 # Test.
 my $old_obj = $obj;
 $obj = CGI::Pure->new(
 	'init' => $old_obj,
-	'utf8' => 1,
 );
 @params = $obj->param;
 is_deeply(
@@ -135,34 +148,17 @@ is_deeply(
 		'bar',
 		'foo',
 	],
+	'Init CGI::Pure object: CGI parameters.',
 );
-is($obj->param('foo'), 5);
-is($obj->param('bar'), 6);
+is($obj->param('foo'), 5, 'Init CGI::Pure object: Scalar CGI '.
+	'parameter value.');
+is($obj->param('bar'), 6, 'Init CGI::Pure object: Array CGI '.
+	'parameter values - first.');
 @params = $obj->param('bar');
 is_deeply(
 	\@params,
 	[6, 7, 8],
-);
-
-# Test.
-$obj = CGI::Pure->new(
-	'init' => $old_obj,
-	'utf8' => 0,
-);
-@params = $obj->param;
-is_deeply(
-	\@params,
-	[
-		'bar',
-		'foo',
-	],
-);
-is($obj->param('foo'), 5);
-is($obj->param('bar'), 6);
-@params = $obj->param('bar');
-is_deeply(
-	\@params,
-	[6, 7, 8],
+	'Init CGI::Pure object: Array CGI parameter values.',
 );
 
 # Test.
@@ -176,4 +172,5 @@ is_deeply(
 		'color',
 		'name',
 	],
+	'Environment query string: CGI parameters.',
 );
