@@ -27,7 +27,9 @@ TODO
 24. Pri uploadu se mi vklada na konec prazdny radek. Udelat test.
 25. CGI::Pure::_uri_unescape nepouzivam a mam tam misto toho decode_utf8.
     Co s +, ktere v nem resim?
-26.
+26. Kdyz mam 'init' z CGI::Pure object, ostatni parametery constructoru se
+    zrusi, protoze je prepise clone(CGI::Pure). Je to dobre?
+27.
 
 Applied
 =======
