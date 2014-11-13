@@ -1,4 +1,4 @@
-0.04
+0.04 2014-11-13T19:45:05+01:00
  - Add ERRORS section to doc.
  - Add tests for clone() method.
  - Add tests for delete_param() method.
