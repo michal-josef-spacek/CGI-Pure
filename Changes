@@ -2,6 +2,7 @@
  - Add ERRORS section to doc.
  - Add tests for clone() method.
  - Add tests for delete_param() method.
+ - Add tests for delete_all_params() method.
  - Improve constructor tests.
  - Rewrite B<> to C<> in doc.
  - Sort tests in t/CGI-Pure/ directory.
