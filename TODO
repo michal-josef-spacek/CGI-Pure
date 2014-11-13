@@ -76,7 +76,7 @@ Je to k nicemu.
 NONE [20141113] skim
 
 22. V t/CGI::Pure/ mam dva testy na constructor. Sjednotit.
-NONE [20141113] skim
+OK [20141113] skim
 
 23. V testech mam data adresar uvnitr tridy, vyhodit ven.
-NONE [20141113] skim
+OK [20141113] skim
