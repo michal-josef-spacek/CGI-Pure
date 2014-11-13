@@ -13,7 +13,6 @@ TODO
    prohlizec.
 10. CGI::Pure zabira o neco vice pameti nez CGI::Simple. Proc?
     Viz priklady na zabirani pameti v cvsprac/perl/CGI::Simple vs CGI::Pure.
-12. Priklady z CGI::Minimal?
 16. Testy pro multipart. Predelat testy, aby se testovaly samostatne ruzne
     get/post/etc.
 17. Co kdyz poslu postem soubor s utf8 nazvem? Zkousel jsem a vyhodi to chybu na
@@ -73,3 +72,7 @@ NONE [20110829] skim
 18. Dodelat CGI::Pure::ModPerl1.
 Přesunuto do CGI::Pure::ModPerl1 modulu.
 NONE [20110829] skim
+
+12. Priklady z CGI::Minimal?
+Je to k nicemu.
+NONE [20141113] skim
