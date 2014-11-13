@@ -755,7 +755,28 @@ CGI::Pure - Common Gateway Interface Class.
 
 =head1 ERRORS
 
- TODO
+ new():
+         400 Malformed multipart, no terminating boundary.
+         400 No boundary supplied for multipart/form-data.
+         405 Not Allowed - File uploads are disabled.
+         413 Request entity too large: %s bytes on STDIN exceeds post_max !
+         500 Bad read! wanted %s, got %s.
+         500 IO::File can\'t create new temp_file.
+         500 IO::File is not available %s.
+         Bad parameter separator '%s'.
+         From Class::Utils::set_params():
+                 Unknown parameter '%s'.
+
+ upload():
+         Cannot close file '%s': %s.
+         Cannot write file '%s': %s.
+         File uploads only work if you specify enctype="multipart/form-data" in your form.
+         No filehandle for '%s'. Are uploads enabled (disable_upload = 0)? Is post_max big enough?
+         No filename submitted for upload to '$writefile'.
+
+ upload_info():
+         File uploads only work if you specify enctype="multipart/form-data" in your form.
+
 
 =head1 EXAMPLE1
 

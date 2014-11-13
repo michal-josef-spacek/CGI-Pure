@@ -1,4 +1,5 @@
 0.04
+ - Add ERRORS section to doc.
  - Add tests for clone() method.
  - Add tests for delete_param() method.
  - Improve constructor tests.
