@@ -655,18 +655,18 @@ CGI::Pure - Common Gateway Interface Class.
 
 =over 8
 
-=item B<new(%parameters)>
+=item C<new(%parameters)>
 
  Constructor
 
 =over 8
 
-=item * B<disable_upload>
+=item * C<disable_upload>
 
  Disables file upload.
  Default value is 1.
 
-=item * B<init>
+=item * C<init>
 
  Initialization variable.
  May be:
@@ -675,51 +675,51 @@ CGI::Pure - Common Gateway Interface Class.
  - Query string.
  Default is undef.
 
-=item * B<par_sep>
+=item * C<par_sep>
 
  Parameter separator.
  Default value is '&'.
  Possible values are '&' or ';'.
 
-=item * B<post_max>
+=item * C<post_max>
 
  Maximal post length.
  -1 means no limit.
  Default value is 102400kB
 
-=item * B<save_query_data>
+=item * C<save_query_data>
 
  Flag, that means saving query data.
  When is enable, is possible use query_data method.
  Default value is 0.
 
-=item * B<utf8>
+=item * C<utf8>
 
  Flag, that means utf8 CGI parameters handling.
  Default is 1.
 
 =back
 
-=item B<append_param($param, [@values])>
+=item C<append_param($param, [@values])>
 
  Append param value.
  Returns all values for param.
 
-=item B<clone($class)>
+=item C<clone($class)>
 
  Clone class to my class.
 
-=item B<delete_param($param)>
+=item C<delete_param($param)>
 
  Delete param.
  Returns undef, when param doesn't exist.
  Returns 1, when param was deleted.
 
-=item B<delete_all_params()>
+=item C<delete_all_params()>
 
  Delete all params.
 
-=item B<param([$param], [@values])>
+=item C<param([$param], [@values])>
 
  Returns or sets parameters in CGI.
  params() returns all parameters name.
@@ -727,16 +727,16 @@ CGI::Pure - Common Gateway Interface Class.
  params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2'
  values.
 
-=item B<query_data()>
+=item C<query_data()>
 
  Gets query data from server.
  There is possible only for enabled 'save_data' flag.
 
-=item B<query_string()>
+=item C<query_string()>
 
  Returns actual query string.
 
-=item B<upload($filename, [$write_to])>
+=item C<upload($filename, [$write_to])>
 
  Upload file from tmp.
  upload() returns array of uploaded filenames.
@@ -744,7 +744,7 @@ CGI::Pure - Common Gateway Interface Class.
  upload($filename, $write_to) uploads temporary '$filename' file to
  '$write_to' file.
 
-=item B<upload_info($filename, [$info])>
+=item C<upload_info($filename, [$info])>
 
  Returns informations from uploaded files.
  upload_info() returns array of uploaded files.

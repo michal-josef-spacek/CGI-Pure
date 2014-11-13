@@ -14,15 +14,15 @@ SYNOPSIS
      my $query_data = $cgi->query_data;
 
 METHODS
-    new(%parameters)
+    "new(%parameters)"
              Constructor
 
-            *       disable_upload
+            *       "disable_upload"
 
                      Disables file upload.
                      Default value is 1.
 
-            *       init
+            *       "init"
 
                      Initialization variable.
                      May be:
@@ -31,66 +31,66 @@ METHODS
                      - Query string.
                      Default is undef.
 
-            *       par_sep
+            *       "par_sep"
 
                      Parameter separator.
                      Default value is '&'.
                      Possible values are '&' or ';'.
 
-            *       post_max
+            *       "post_max"
 
                      Maximal post length.
                      -1 means no limit.
                      Default value is 102400kB
 
-            *       save_query_data
+            *       "save_query_data"
 
                      Flag, that means saving query data.
                      When is enable, is possible use query_data method.
                      Default value is 0.
 
-            *       utf8
+            *       "utf8"
 
                      Flag, that means utf8 CGI parameters handling.
                      Default is 1.
 
-    append_param($param, [@values])
+    "append_param($param, [@values])"
              Append param value.
              Returns all values for param.
 
-    clone($class)
+    "clone($class)"
              Clone class to my class.
 
-    delete_param($param)
+    "delete_param($param)"
              Delete param.
              Returns undef, when param doesn't exist.
              Returns 1, when param was deleted.
 
-    delete_all_params()
+    "delete_all_params()"
              Delete all params.
 
-    param([$param], [@values])
+    "param([$param], [@values])"
              Returns or sets parameters in CGI.
              params() returns all parameters name.
              params('param') returns parameter 'param' value.
              params('param', 'val1', 'val2') sets parameter 'param' to 'val1' and 'val2'
              values.
 
-    query_data()
+    "query_data()"
              Gets query data from server.
              There is possible only for enabled 'save_data' flag.
 
-    query_string()
+    "query_string()"
              Returns actual query string.
 
-    upload($filename, [$write_to])
+    "upload($filename, [$write_to])"
              Upload file from tmp.
              upload() returns array of uploaded filenames.
              upload($filename) returns handler to uploaded filename.
              upload($filename, $write_to) uploads temporary '$filename' file to
              '$write_to' file.
 
-    upload_info($filename, [$info])
+    "upload_info($filename, [$info])"
              Returns informations from uploaded files.
              upload_info() returns array of uploaded files.
              upload_info('filename') returns size of uploaded 'filename' file.
