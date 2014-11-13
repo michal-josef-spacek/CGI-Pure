@@ -5,6 +5,7 @@
  - Improve constructor tests.
  - Rewrite B<> to C<> in doc.
  - Sort tests in t/CGI-Pure/ directory.
+ - Update LICENSE AND COPYRIGHT secion in doc to my standard.
  - Update Module::Install to 1.14 version.
 
 0.03 2014-10-13T13:24:03+02:00
