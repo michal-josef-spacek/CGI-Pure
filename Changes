@@ -1,4 +1,5 @@
 0.04
+ - Add tests for clone() method.
  - Improve constructor tests.
  - Rewrite B<> to C<> in doc.
  - Sort tests in t/CGI-Pure/ directory.

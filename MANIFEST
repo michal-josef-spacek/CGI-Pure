@@ -32,8 +32,9 @@ t/CGI-Pure/02-pod_coverage.t
 t/CGI-Pure/03-pod.t
 t/CGI-Pure/04-new.t
 t/CGI-Pure/05-append_param.t
-t/CGI-Pure/06-param.t
-t/CGI-Pure/07-delete_all_params.t
-t/CGI-Pure/08-query_data.t
-t/CGI-Pure/09-query_string.t
+t/CGI-Pure/06-clone.t
+t/CGI-Pure/07-param.t
+t/CGI-Pure/08-delete_all_params.t
+t/CGI-Pure/09-query_data.t
+t/CGI-Pure/10-query_string.t
 t/data/params2
