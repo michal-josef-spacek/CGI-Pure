@@ -137,8 +137,7 @@ L<URI::Escape>.
 =head1 SEE ALSO
 
 L<CGI::Pure>.
-L<CGI::Pure::Fast>,
-L<CGI::Pure::ModPerl2>.
+L<CGI::Pure::Fast>.
 
 =head1 AUTHOR
 

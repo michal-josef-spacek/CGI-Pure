@@ -833,7 +833,6 @@ L<URI::Escape>.
 =head1 SEE ALSO
 
 L<CGI::Pure::Fast>,
-L<CGI::Pure::ModPerl2>,
 L<CGI::Pure::Save>.
 
 =head1 AUTHOR

@@ -166,7 +166,7 @@ DEPENDENCIES
     Class::Utils, CGI::Deurl::XS, Error::Pure, URI::Escape.
 
 SEE ALSO
-    CGI::Pure::Fast, CGI::Pure::ModPerl2, CGI::Pure::Save.
+    CGI::Pure::Fast, CGI::Pure::Save.
 
 AUTHOR
     Michal Špaček <mailto:skim@cpan.org>
