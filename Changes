@@ -1,4 +1,5 @@
 0.05
+ - Improve LICENSE AND COPYRIGHT section in doc.
  - Remove obsolete item from SEE ALSO section.
  - Update Module::Install to 1.16 version.
 
