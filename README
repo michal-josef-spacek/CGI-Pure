@@ -166,7 +166,11 @@ DEPENDENCIES
     Class::Utils, CGI::Deurl::XS, Error::Pure, URI::Escape.
 
 SEE ALSO
-    CGI::Pure::Fast, CGI::Pure::Save.
+    CGI::Pure::Fast
+        Fast Common Gateway Interface Class for CGI::Pure.
+
+    CGI::Pure::Save
+        TODO
 
 AUTHOR
     Michal Špaček <mailto:skim@cpan.org>

@@ -832,8 +832,17 @@ L<URI::Escape>.
 
 =head1 SEE ALSO
 
-L<CGI::Pure::Fast>,
-L<CGI::Pure::Save>.
+=over
+
+=item L<CGI::Pure::Fast>
+
+Fast Common Gateway Interface Class for CGI::Pure.
+
+=item L<CGI::Pure::Save>
+
+TODO
+
+=back
 
 =head1 AUTHOR
 
