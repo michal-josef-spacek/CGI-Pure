@@ -2,6 +2,7 @@
  - Improve LICENSE AND COPYRIGHT section in doc.
  - Remove obsolete item from SEE ALSO section.
  - Update Module::Install to 1.16 version.
+ - Update copyright years.
 
 0.04 2014-11-13T19:45:05+01:00
  - Add ERRORS section to doc.
