@@ -41,8 +41,7 @@ sub new {
 sub load {
 	my ($self, $fh) = @_;
 	if (! $fh || ! fileno $fh) {
-		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
-		return;
+		err 'Invalid filehandle.';
 	}
 	local $INPUT_RECORD_SEPARATOR = "\n";
 	while (my $pair = <$fh>) {
@@ -61,8 +60,7 @@ sub save {
 	local $OUTPUT_FIELD_SEPARATOR = $EMPTY_STR;
 	local $OUTPUT_RECORD_SEPARATOR = $EMPTY_STR;
 	if (! $fh || ! fileno $fh) {
-		$self->{'cgi_pure'}->cgi_error('Invalid filehandle.');
-		return;
+		err 'Invalid filehandle.';
 	}
 	foreach my $param ($self->{'cgi_pure'}->param) {
 		foreach my $value ($self->{'cgi_pure'}->param($param)) {
