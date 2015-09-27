@@ -82,7 +82,7 @@ __END__
 
 =head1 NAME
 
-CGI::Pure::Save - TODO
+CGI::Pure::Save - Common Gateway Interface Class for loading/saving object in file.
 
 =head1 SYNOPSIS
 

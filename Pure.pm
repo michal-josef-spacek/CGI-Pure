@@ -840,7 +840,7 @@ Fast Common Gateway Interface Class for CGI::Pure.
 
 =item L<CGI::Pure::Save>
 
-TODO
+Common Gateway Interface Class for loading/saving object in file.
 
 =back
 

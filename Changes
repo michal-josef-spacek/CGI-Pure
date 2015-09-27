@@ -8,6 +8,7 @@
  - Update copyright years.
 
  [CGI::Pure::Save]
+ - Add class description.
  - Fix error handling.
  - Every return returns undef.
 

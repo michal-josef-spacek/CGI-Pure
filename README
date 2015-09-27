@@ -170,7 +170,7 @@ SEE ALSO
         Fast Common Gateway Interface Class for CGI::Pure.
 
     CGI::Pure::Save
-        TODO
+        Common Gateway Interface Class for loading/saving object in file.
 
 AUTHOR
     Michal Špaček <mailto:skim@cpan.org>
