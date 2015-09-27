@@ -18,7 +18,7 @@ my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
 my $file = $data_dir->file('params2')->s;
 open my $inf, $file || die "Can't open file '$file'.";
 my $ret = $obj->load($inf);
-is($ret, 1);
+is($ret, undef);
 close $inf;
 my @params = $cgi_pure->param;
 ok((join q{ }, @params) eq 'param1 param2' 

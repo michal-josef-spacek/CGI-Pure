@@ -18,7 +18,7 @@ my $obj = CGI::Pure::Save->new('cgi_pure' => $cgi_pure);
 my $file = $data_dir->file('params')->s;
 open my $ouf, '>', $file || die "Can't open file '$file'.";
 my $ret = $obj->save($ouf);
-is($ret, 1);
+is($ret, undef);
 close $ouf;
 open my $inf, '<', $file || die "Can't read file '$file'.";
 my $inf_string = join q{}, <$inf>;
