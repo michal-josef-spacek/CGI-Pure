@@ -1,4 +1,4 @@
-0.05
+0.05 2015-09-27T15:20:36+02:00
  [CGI::Pure::Save]
  - Add class description.
  - Fix error handling.
