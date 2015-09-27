@@ -1,4 +1,10 @@
 0.05
+ [CGI::Pure::Save]
+ - Add class description.
+ - Fix error handling.
+ - Every return returns undef.
+ - Remove TODOs from doc, add examples.
+
  [Common]
  - Improve LICENSE AND COPYRIGHT section in doc.
  - Improve SEE ALSO section in doc.
@@ -6,12 +12,6 @@
  - Remove obsolete item from SEE ALSO section.
  - Update Module::Install to 1.16 version.
  - Update copyright years.
-
- [CGI::Pure::Save]
- - Add class description.
- - Fix error handling.
- - Every return returns undef.
- - Remove TODOs from doc, add examples.
 
 0.04 2014-11-13T19:45:05+01:00
  - Add ERRORS section to doc.
