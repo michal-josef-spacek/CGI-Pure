@@ -47,7 +47,7 @@ sub load {
 	while (my $pair = <$fh>) {
 		chomp $pair;
 		if ($pair eq q{=}) {
-			return 1;
+			return;
 		}
 		$self->{'cgi_pure'}->_parse_params($pair);
 	}
@@ -69,7 +69,7 @@ sub save {
 		}
 	}
 	print {$fh} "=\n";
-	return 1;
+	return;
 }
 
 1;
