@@ -1,6 +1,6 @@
+use lib '.';
 use strict;
 use warnings;
-use lib 'inc';
 
 use inc::Module::Install;
 
