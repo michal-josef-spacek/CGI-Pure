@@ -1,4 +1,5 @@
 0.06
+ - Fix Makefile.PL for new version of Perl and no default »use lib '.'«.
  - Update Module::Install to 1.18 version.
 
 0.05 2015-09-27T15:20:36+02:00

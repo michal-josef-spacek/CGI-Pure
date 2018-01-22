@@ -1,6 +1,7 @@
 # Pragmas.
 use strict;
 use warnings;
+use lib 'inc';
 
 # Modules.
 use inc::Module::Install;
