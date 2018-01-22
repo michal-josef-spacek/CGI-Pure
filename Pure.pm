@@ -22,7 +22,7 @@ Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
 # Version.
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 
 # Constructor.
 sub new {
@@ -857,6 +857,6 @@ L<http://skim.cz>
 
 =head1 VERSION
 
-0.06
+0.07
 
 =cut
