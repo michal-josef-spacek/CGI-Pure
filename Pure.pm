@@ -536,12 +536,9 @@ sub _parse_params {
 # Remove undefined values.
 sub _remove_undef {
 	my (@values) = @_;
-	my @new_values;
-	foreach my $value (@values) {
-		if (defined $value) {
-			push @new_values, $value;
-		}
-	}
+
+	my @new_values = grep { defined $_ } @values;
+
 	return @new_values;
 }
 
