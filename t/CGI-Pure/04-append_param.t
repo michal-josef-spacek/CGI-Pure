@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 use CGI::Pure;
-use Test::More 'tests' => 5;
+use English;
+use Test::More 'tests' => 8;
 use Test::NoWarnings;
 
 # Test.
@@ -52,4 +53,32 @@ is_deeply(
 	],
 	'Add parameters with reference to array.',
 );
+
+# Test.
+$obj = CGI::Pure->new;
+@ret = $obj->append_param('param', 'foo', ['bar'], 'baz');
+is_deeply(
+	\@ret,
+	[
+		'bar',
+		'baz',
+		'foo',
+	],
+	'Add mixture of scalar and reference to array parameters.',
 );
+
+# Test.
+$obj = CGI::Pure->new;
+eval {
+	$obj->append_param('param', {});
+};
+is($EVAL_ERROR, "Parameter 'param' has bad value.\n",
+	"Parameter 'param' has bad value - reference to hash.");
+
+# Test.
+$obj = CGI::Pure->new;
+eval {
+	$obj->append_param('param', CGI::Pure->new);
+};
+is($EVAL_ERROR, "Parameter 'param' has bad value.\n",
+	"Parameter 'param' has bad value - object instance.");

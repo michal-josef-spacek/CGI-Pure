@@ -77,8 +77,19 @@ sub append_param {
 	# Clean from undefined values.
 	my @new_values = _remove_undef(@values);
 
-	$self->_add_param($param, ((defined $new_values[0] and ref $new_values[0])
-		? $new_values[0] : [@new_values]));
+	# Process scalars, arrays, err on other.
+	my @values_to_add;
+	foreach my $value (@new_values) {
+		if (ref $value eq 'ARRAY') {
+			push @values_to_add, @{$value};
+		} elsif (ref $value eq '') {
+			push @values_to_add, $value;
+		} else {
+			err "Parameter '$param' has bad value.";
+		}
+	}
+	$self->_add_param($param, [@values_to_add]);
+
 	return $self->param($param);
 }
 
@@ -761,6 +772,9 @@ CGI::Pure - Common Gateway Interface Class.
          Bad parameter separator '%s'.
          From Class::Utils::set_params():
                  Unknown parameter '%s'.
+
+ append_param():
+         Parameter '%s' has bad value.
 
  upload():
          Cannot close file '%s': %s.

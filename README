@@ -110,6 +110,9 @@ ERRORS
              From Class::Utils::set_params():
                      Unknown parameter '%s'.
 
+     append_param():
+             Parameter '%s' has bad value.
+
      upload():
              Cannot close file '%s': %s.
              Cannot write file '%s': %s.

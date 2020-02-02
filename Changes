@@ -1,5 +1,6 @@
 0.08
  - Add tests for append_param() method.
+ - Fix and improve functionality of append_param() method.
  - Simplify _remove_undef() method.
  - Update Module::Install to 1.19 version.
  - Update author github username.
