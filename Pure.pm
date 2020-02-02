@@ -19,7 +19,7 @@ Readonly::Scalar my $POST_MAX_NO_LIMIT => -1;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
-our $VERSION = 0.08;
+our $VERSION = 0.09;
 
 # Constructor.
 sub new {
@@ -862,6 +862,6 @@ L<http://skim.cz>
 
 =head1 VERSION
 
-0.08
+0.09
 
 =cut
