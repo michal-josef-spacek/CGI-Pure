@@ -638,6 +638,7 @@ CGI::Pure - Common Gateway Interface Class.
 =head1 SYNOPSIS
 
  use CGI::Pure;
+
  my $cgi = CGI::Pure->new(%parameters);
  $cgi->append_param('par', 'value');
  my @par_value = $cgi->param('par');

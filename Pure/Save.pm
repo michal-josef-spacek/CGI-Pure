@@ -84,6 +84,7 @@ CGI::Pure::Save - Common Gateway Interface Class for loading/saving object in fi
 =head1 SYNOPSIS
 
  use CGI::Pure::Save;
+
  my $cgi = CGI::Pure::Save->new(%parameters);
  $cgi->save($fh);
  $cgi->load($fh);
