@@ -1,10 +1,8 @@
 package CGI::Pure::Save;
 
-# Pragmas.
 use strict;
 use warnings;
 
-# Modules.
 use Class::Utils qw(set_params);
 use English qw(-no_match_vars);
 use Error::Pure qw(err);
@@ -14,7 +12,6 @@ use URI::Escape;
 # Constants.
 Readonly::Scalar my $EMPTY_STR => q{};
 
-# Version.
 our $VERSION = 0.08;
 
 # Constructor.
@@ -134,11 +131,9 @@ CGI::Pure::Save - Common Gateway Interface Class for loading/saving object in fi
 
 =head1 EXAMPLE1
 
- # Pragmas.
  use strict;
  use warnings;
 
- # Modules.
  use CGI::Pure;
  use CGI::Pure::Save;
  use File::Temp qw(tempfile);
@@ -178,11 +173,9 @@ CGI::Pure::Save - Common Gateway Interface Class for loading/saving object in fi
 
 =head1 EXAMPLE2
 
- # Pragmas.
  use strict;
  use warnings;
 
- # Modules.
  use CGI::Pure;
  use CGI::Pure::Save;
  use IO::Barf qw(barf);

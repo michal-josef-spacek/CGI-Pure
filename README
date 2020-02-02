@@ -120,11 +120,9 @@ ERRORS
              File uploads only work if you specify enctype="multipart/form-data" in your form.
 
 EXAMPLE1
-     # Pragmas.
      use strict;
      use warnings;
 
-     # Modules.
      use CGI::Pure;
 
      # Object.
@@ -141,11 +139,9 @@ EXAMPLE1
      # Param 'par2': value
 
 EXAMPLE2
-     # Pragmas.
      use strict;
      use warnings;
 
-     # Modules.
      use CGI::Pure;
 
      # Object.

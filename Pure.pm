@@ -1,10 +1,8 @@
 package CGI::Pure;
 
-# Pragmas.
 use strict;
 use warnings;
 
-# Modules.
 use CGI::Deurl::XS qw(parse_query_string);
 use Class::Utils qw(set_params);
 use Encode qw(decode_utf8);
@@ -21,7 +19,6 @@ Readonly::Scalar my $POST_MAX_NO_LIMIT => -1;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
-# Version.
 our $VERSION = 0.08;
 
 # Constructor.
@@ -780,11 +777,9 @@ CGI::Pure - Common Gateway Interface Class.
 
 =head1 EXAMPLE1
 
- # Pragmas.
  use strict;
  use warnings;
 
- # Modules.
  use CGI::Pure;
 
  # Object.
@@ -802,11 +797,9 @@ CGI::Pure - Common Gateway Interface Class.
 
 =head1 EXAMPLE2
 
- # Pragmas.
  use strict;
  use warnings;
 
- # Modules.
  use CGI::Pure;
 
  # Object.
