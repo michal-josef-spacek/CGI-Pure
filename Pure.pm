@@ -19,7 +19,7 @@ Readonly::Scalar my $POST_MAX_NO_LIMIT => -1;
 Readonly::Scalar my $BLOCK_SIZE => 4_096;
 Readonly::Array my @PAR_SEP => (q{&}, q{;});
 
-our $VERSION = 0.09;
+our $VERSION = 0.10;
 
 # Constructor.
 sub new {
@@ -863,6 +863,6 @@ BSD 2-Clause License
 
 =head1 VERSION
 
-0.09
+0.10
 
 =cut
